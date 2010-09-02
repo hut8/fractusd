@@ -1,0 +1,246 @@
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
+import java.util.logging.Logger;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
+import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.agreement.ECDHBasicAgreement;
+import org.bouncycastle.crypto.params.ECDomainParameters;
+import org.bouncycastle.crypto.params.ECPrivateKeyParameters;
+import org.bouncycastle.crypto.params.ECPublicKeyParameters;
+import org.bouncycastle.jce.ECNamedCurveTable;
+import org.bouncycastle.jce.spec.ECParameterSpec;
+import org.bouncycastle.util.encoders.*;
+import org.bouncycastle.jce.interfaces.ECPrivateKey;
+import org.bouncycastle.jce.interfaces.ECPublicKey;
+
+public class EncryptionManager {
+	private static Logger log;
+	
+	private KeyPair keyPair;
+	private String encodingType;
+	private String encodedKey;
+	ECDHBasicAgreement agreement;
+	
+	static {
+		log = Logger.getLogger(EncryptionManager.class.getName());
+	}
+	
+	public static byte[] convertToBytes(char[] passwd) {
+		byte[] salt;
+		try {
+			salt = "man, fractus is really secure".getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new FractusError(e);
+		}
+		byte[] b = new byte[passwd.length+salt.length];
+		for(int i = 0; i < passwd.length; i++) {
+			b[i] = (byte) passwd[i];
+		}
+		for(int i = passwd.length; i < b.length; i++) {
+			b[i] = salt[i-passwd.length];
+		}
+	    MessageDigest digest = null;
+		try {
+			digest = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    digest.reset();
+	    byte[] input = digest.digest(b);
+		return input;
+	}
+	
+	public static byte[] serialize(KeyPair kp) throws IOException {
+		log.info("Serializing KeyPair with Public Key [" + kp.getPublic().getEncoded() + "]");
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		oos.writeObject(kp);
+		byte[] mem = baos.toByteArray();
+		log.info("Serialized " + mem.length + " bytes");
+		return mem;
+		
+	}
+	
+	private static KeyPair decryptKey(String keyfile, char[] passwd)
+	throws IOException {
+		log.info("Attemping to decrypt key from " + keyfile);
+		
+		File file = new File(keyfile);
+		FileInputStream fis = new FileInputStream(keyfile);
+		byte[] inputData = new byte[(int)file.length()];
+		fis.read(inputData);
+		fis.close();
+		
+		Cipher outCipher = getCipher();
+		SecretKeySpec skeySpec = new SecretKeySpec(convertToBytes(passwd), "AES");
+		try {
+			outCipher.init(Cipher.DECRYPT_MODE, skeySpec);
+		} catch (InvalidKeyException e) {
+			throw new FractusError(e);
+		}
+		byte[] cipherData = null;
+		try {
+			cipherData = outCipher.doFinal(inputData);
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(cipherData));
+		KeyPair keyPair;
+		try {
+			keyPair = (KeyPair)ois.readObject();
+		} catch (ClassNotFoundException e) {
+			throw new FractusError(e);
+		}
+		return keyPair;
+	}
+	
+	private static Cipher getCipher() {
+		Cipher c;
+		try {
+			c = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
+		} catch (NoSuchAlgorithmException e) {
+			throw new FractusError(e);
+		} catch (NoSuchProviderException e) {
+			throw new FractusError(e);
+		} catch (NoSuchPaddingException e) {
+			throw new FractusError(e);
+		}
+		return c;
+	}
+	
+	private static void encryptKey(KeyPair keypair, String keyfile, char[] passwd)
+	throws IOException {
+		Cipher outCipher = getCipher();
+		SecretKeySpec skeySpec = new SecretKeySpec(convertToBytes(passwd), "AES");
+
+		byte[] cipherData = null;
+		try {
+			outCipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+			cipherData = outCipher.doFinal(serialize(keypair));
+		} catch (Exception e) {
+			throw new FractusError(e);
+		}
+		FileOutputStream fos;
+		fos = new FileOutputStream(keyfile);
+		fos.write(cipherData);
+		fos.flush();
+		fos.close();
+	}
+	
+	public EncryptionManager(String keyfile, char[] passwd)
+	throws IOException {
+		keyPair = decryptKey(keyfile,passwd);
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try {
+			Base64.encode(keyPair.getPublic().getEncoded(), baos);
+		} catch (IOException e) {
+			throw new FractusError(e);
+		}
+		
+		try {
+			encodedKey = baos.toString("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new FractusError(e);
+		}
+		encodingType = keyPair.getPublic().getFormat();
+		
+		// Reference Private Key
+		ECPrivateKey privKey = (ECPrivateKey)keyPair.getPrivate();
+		log.info("Constructed private key object from key in format: " + encodingType);
+		
+		log.info("Initializing ECDH Agreement Engine");
+		// Initialize ECDH
+		agreement = new ECDHBasicAgreement();
+		ECParameterSpec spec = privKey.getParameters();
+		ECDomainParameters dp = new ECDomainParameters(spec.getCurve(), spec.getG(), spec.getN(), spec.getH(), spec.getSeed());
+		ECPrivateKeyParameters pkp = new ECPrivateKeyParameters(privKey.getD(), dp);
+		agreement.init(pkp);
+		log.info("ECDH Agreement Engine initialized");
+	}
+	
+
+	public SecretKeySpec deriveKey(CipherParameters cp) {
+		BigInteger bi = agreement.calculateAgreement(cp);
+		byte[] key = bi.toByteArray();
+		MessageDigest digest = null;
+		try {
+			digest = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+	    digest.reset();
+	    byte[] hash = digest.digest(key);
+		
+		return new SecretKeySpec(hash, 0, hash.length, "AES");
+	}
+	
+	private static KeyPair generateKeyPair() {
+		log.info("Initializing keypair generator for EC secp521r1");
+		ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec("secp521r1");
+		KeyPairGenerator g;
+		try {
+			g = KeyPairGenerator.getInstance("ECDH", "BC");
+		} catch (NoSuchAlgorithmException e) {
+			throw new FractusError(e);
+		} catch (NoSuchProviderException e) {
+			throw new FractusError(e);
+		}
+		try {
+			g.initialize(ecSpec, new SecureRandom());
+		} catch (InvalidAlgorithmParameterException e) {
+			throw new FractusError(e);
+		}
+		log.info("Generating EC secp521r1 Key Pair");
+		return g.generateKeyPair();
+	}
+	
+	public static void generateKey(String filename, char[] passwd) throws IOException {
+		log.info("Generating EC Key Pair and exporting to [" + filename + "]");
+		KeyPair pair = generateKeyPair();
+		encryptKey(pair, filename, passwd);
+	}
+	
+	public String getEncodingFormat() {
+		return encodingType;
+	}
+	
+	public String getEncodedKey() {
+		return encodedKey;
+	}
+
+	public SecretKeySpec deriveKey(ECPublicKey pubkey) {
+		// Extract parameters
+		ECParameterSpec spec = pubkey.getParameters();
+		ECDomainParameters dp = new ECDomainParameters(spec.getCurve(), spec.getG(), spec.getN(), spec.getH(), spec.getSeed());
+		ECPublicKeyParameters pkp = new ECPublicKeyParameters(pubkey.getQ(), dp);
+		return deriveKey(pkp);
+	}
+}

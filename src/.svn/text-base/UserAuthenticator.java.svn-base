@@ -1,0 +1,41 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+
+public class UserAuthenticator {
+	private UserCredentials credentials;
+	
+	public UserAuthenticator(UserCredentials credentials) {
+		this.credentials = credentials;
+	}
+	
+	public Integer authenticate() {
+		Connection db = Database.getConnection();
+		try {
+			PreparedStatement sth = db.prepareStatement("CALL AuthenticateUser_prc(?,?)");			
+			sth.setString(1, credentials.getUsername());
+			sth.setString(2, credentials.getPassword());
+			sth.execute();
+			ResultSet authRes = sth.getResultSet();
+			
+			if (authRes.first()) {
+				db.close();
+				System.out.println("user authenticated "+credentials.getUsername());
+				return 1;
+			}
+			
+		} catch (SQLException e) {
+			try {
+				db.close();
+			} catch (SQLException e1) { }
+			return null;
+		} finally {
+			try {
+				db.close();
+			} catch (SQLException e) { }
+		}
+		return null;
+	}
+}

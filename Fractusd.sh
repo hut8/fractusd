@@ -1,0 +1,1 @@
+java -jar fractusd.jar fractus.key 1337

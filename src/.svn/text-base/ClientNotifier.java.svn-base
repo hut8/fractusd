@@ -1,0 +1,132 @@
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+import javax.crypto.NoSuchPaddingException;
+
+
+public class ClientNotifier
+implements Runnable {
+	private FractusMessage message;
+	private UserLocation location;
+	private EncryptionManager em;
+	private Object sockMutex;
+	private Logger log;
+	/**
+	 * Class to asynchronously send a message to a client
+	 * (for notifications of buddylist changes, etc)
+	 * @param message
+	 */
+	public ClientNotifier(FractusMessage message, UserLocation location, EncryptionManager em) {
+		this.message = message;
+		this.location = location;
+		this.em = em;
+		this.sockMutex = new Object();
+		this.log = Logger.getLogger(this.getClass().getName());
+	}
+	
+	@Override
+	public void run() {
+		log.info("client notifier thread alive for: " + location.getAddress() +
+				" port: " + location.getPort().toString());
+		// Connect
+		Socket s = new Socket();
+		InetAddress addr;
+		try {
+			addr = InetAddress.getByName(location.getAddress());
+		} catch (UnknownHostException e) {
+			Logger.getAnonymousLogger().log(Level.WARNING, "unable to notify client: could not resolve user location host: " + location.getAddress());
+			e.printStackTrace();
+			return;
+		}
+		InetSocketAddress buddyaddr = new InetSocketAddress(addr,location.getPort());
+		try {
+			s.connect(buddyaddr);
+		} catch (IOException e) {
+			Logger.getAnonymousLogger().log(Level.WARNING,
+					"unable to notify client: could not connect to host: " + location.getAddress() +
+					" port: " + location.getPort().toString());
+			e.printStackTrace();
+			return;
+		}
+		
+		// Handle headers and encryption
+		// Create actual connection with streams
+		
+		Headers recvHeaders;
+		try {
+			InputStream input = s.getInputStream();
+			OutputStream output = s.getOutputStream();
+			// Transfer headers
+			Headers sendHeaders = new Headers();
+			sendHeaders.writeHeaders(output, em);
+			try {
+				recvHeaders = Headers.receive(input);
+			} catch (ProtocolException e1) {
+				e1.printStackTrace();
+				return;
+			}
+			// Make crypto data
+			PeerCryptoData pcd;
+			try {
+				pcd = PeerCryptoData.negotiate(recvHeaders, em);
+			} catch (NoSuchAlgorithmException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				return;
+			} catch (NoSuchProviderException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				return;
+			} catch (InvalidKeySpecException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				return;
+			}
+			
+			FractusPacket fp = null;
+			
+			synchronized (sockMutex) {
+				try {
+					output.write(new FractusPacket(message.serialize().getBytes("UTF-8"), pcd.getSecretKeySpec()).serialize());
+				} catch (InvalidKeyException e) {
+					Logger.getAnonymousLogger().log(Level.SEVERE, "");
+					e.printStackTrace();
+					return;
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchPaddingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				fp = new FractusPacket(pcd.getSecretKeySpec());
+				try {
+					fp.readPacket(input, pcd.getEncodedKey(), em);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException e1) {
+			Logger.getAnonymousLogger().log(Level.WARNING,
+					"unable to notify client: could not connect to host: " + location.getAddress() +
+					" port: " + location.getPort().toString());
+			return;
+		} finally {
+			try {
+				s.close();
+			} catch (IOException e) { }
+		}
+	}
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project fractusd with Jar-in-Jar Loader">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="/home/bowenl2/workspace/fractusd/fractusd.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="FractusServer"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ bcprov-jdk16-145.jar jdbc-mysql.jar"/>
+            </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
+            <fileset dir="/home/bowenl2/workspace/fractusd/bin"/>
+            <zipfileset dir="/home/bowenl2/workspace/fractusd/lib" includes="bcprov-jdk16-145.jar"/>
+            <zipfileset dir="/home/bowenl2/workspace/fractusd/lib" includes="jdbc-mysql.jar"/>
+        </jar>
+    </target>
+</project>

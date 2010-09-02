@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/fractusd/!svn/ver/52/trunk/lib
+END
+bcprov-jdk16-145.jar
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/fractusd/!svn/ver/33/trunk/lib/bcprov-jdk16-145.jar
+END
+jdbc-mysql.jar
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/fractusd/!svn/ver/52/trunk/lib/jdbc-mysql.jar
+END

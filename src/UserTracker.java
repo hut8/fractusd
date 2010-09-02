@@ -1,0 +1,304 @@
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Element;
+
+
+
+public class UserTracker {
+	private Map<String, String> keyMap;
+	private Logger log;
+	
+	public UserTracker() {
+		keyMap = new HashMap<String, String>();
+		log = Logger.getLogger(this.getClass().getName());
+	}
+
+	public void addContact(FractusMessage response, String sourceUser, String destUser, ClientConnector fc, EncryptionManager em) {
+		UserData su,du;
+
+		try {
+			su = new UserData(sourceUser);
+			du = new UserData(destUser);
+		} catch (UnknownUserException e) {
+			AddContactResponse acrs = new AddContactResponse("invalid-user");
+			response.appendElement(acrs.serialize(response.getDocument()));
+			return;
+		} catch (SQLException e) {
+			AddContactResponse acrs = new AddContactResponse("internal-error");
+			response.appendElement(acrs.serialize(response.getDocument()));
+			return;
+		}
+
+		boolean validPair;
+		try {
+			validPair = su.addContact(du,fc);
+		} catch (DuplicateAddRequestException e) {
+			AddContactResponse acrs = new AddContactResponse("redundant-request");
+			response.appendElement(acrs.serialize(response.getDocument()));
+			return;
+		}
+
+		AddContactResponse acrs = new AddContactResponse(validPair);
+		if (validPair) {
+			// TODO: If reciprocal contact exists, send Contact Data as well
+			List<UserLocation> locations = du.locate();
+			acrs.setLocationData(locations);
+		} else {
+			// Construct message to send to destination user
+			FractusMessage addNotification;
+			try {
+				addNotification = new FractusMessage();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return;
+			}
+			
+			Element notifyElm = addNotification.getDocument().createElement("contact-notification");
+			notifyElm.setAttribute("username", sourceUser);
+			addNotification.getDocumentElement().appendChild(notifyElm);
+			
+			// Locate destination user
+			List<UserLocation> locations = du.locate();
+			for (UserLocation loc : locations) {
+				ClientNotifier cn = new ClientNotifier(addNotification, loc, em);
+				new Thread(cn).start();
+			}
+			
+		}
+		response.appendElement(acrs.serialize(response.getDocument()));
+	}
+
+	public void removeContact(FractusMessage response, String sourceUser, String destUser, ClientConnector fc) {
+		UserData su,du;
+
+		try {
+			su = new UserData(sourceUser);
+			du = new UserData(destUser);
+		} catch (UnknownUserException e) {
+			RemoveContactResponse acr = new RemoveContactResponse("invalid-user");
+			response.appendElement(acr.serialize(response.getDocument()));
+			return;
+		} catch (SQLException e) {
+			RemoveContactResponse acr = new RemoveContactResponse("internal-error");
+			response.appendElement(acr.serialize(response.getDocument()));
+			return;
+		}
+
+
+		if (su.removeContact(du,fc)) {
+			/* success */
+			RemoveContactResponse acr = new RemoveContactResponse();
+			response.appendElement(acr.serialize(response.getDocument()));
+		} else {
+			/* failure */
+			RemoveContactResponse acr = new RemoveContactResponse("redundant-request");
+			response.appendElement(acr.serialize(response.getDocument()));
+		}
+	}
+
+	public void sendContactData(FractusMessage response, String username, ClientConnector fc) {
+		// Get User Object
+		UserData user = null;
+		try {
+			user = new UserData(username);
+		} catch (UnknownUserException e) {
+			e.printStackTrace();
+			return;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		// Assemble data map
+		Map<String, List<UserLocation>> dataMap = new HashMap<String,List<UserLocation>>();
+		Connection db = null;
+		ResultSet rs;
+		CallableStatement sth;
+
+		// Retrieve contacts and empty location list
+		try {
+			db = Database.getConnection();
+			sth = db.prepareCall("CALL GetUserContacts_prc(?)");
+			sth.setInt(1, user.getUserId());
+			rs = sth.executeQuery();
+			while (rs.next()) {
+				dataMap.put(rs.getString(1), new ArrayList<UserLocation>());
+			}
+		} catch (SQLException e1) { e1.printStackTrace(); return; }
+		
+
+		// Get their locations
+		try {
+			sth = db.prepareCall("CALL SendContactData_prc(?)");
+			sth.setInt(1, user.getUserId());
+			rs = sth.executeQuery();
+			while (rs.next()) {
+				String contactUsername = rs.getString(1);
+				if (!dataMap.containsKey(contactUsername)) {
+					// Should not happen
+					dataMap.put(contactUsername, new ArrayList<UserLocation>());
+				}
+				List<UserLocation> locations = dataMap.get(contactUsername);
+				locations.add(new UserLocation(rs.getString(2),rs.getInt(3)));
+			}
+		} catch (SQLException e) { e.printStackTrace(); return;	}
+
+		response.appendElement(new ContactDataResponse(dataMap).serialize(response.getDocument()));
+	}
+
+	public void registerKey(FractusMessage response, String username, String key, ClientConnector fc) {
+		// Make sure key isn't taken
+		if (keyMap.containsKey(key)) {
+			RegisterKeyResponse res = new RegisterKeyResponse("key-collision");
+			response.appendElement(res.serialize(response.getDocument()));
+			try {
+				fc.sendMessage(response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return;
+		}
+
+		keyMap.put(key, username);
+		RegisterKeyResponse res = new RegisterKeyResponse();
+		response.appendElement(res.serialize(response.getDocument()));
+	}
+
+	public String identifyKey(String encodedKey) {
+		return keyMap.get(encodedKey);
+	}
+	
+	public void identifyKey(FractusMessage response, String encodedKey, ClientConnector fc) {
+		String username = keyMap.get(encodedKey);
+		if (username == null) {
+			log.info("Identified [" + encodedKey + "]: ["+keyMap.get(encodedKey) + "]");
+			IdentifyKeyResponse ikr = new IdentifyKeyResponse(true, keyMap.get(encodedKey), encodedKey);
+			response.appendElement(ikr.serialize(response.getDocument()));
+		} else {
+			log.info("Could not identify key [" + encodedKey + "]");
+			IdentifyKeyResponse ikr = new IdentifyKeyResponse(false, "unknown-key", encodedKey);
+			response.appendElement(ikr.serialize(response.getDocument()));
+		}
+	}
+
+
+	public void registerLocation(FractusMessage response, String username, String address, String portString, ClientConnector fc) {
+		// Parse parameters
+		if (address == null || portString == null) {
+			// Create error packet and send back to fc
+			RegisterLocationResponse res = new RegisterLocationResponse("null-parameters");
+			response.appendElement(res.serialize(response.getDocument()));
+			return;
+		}
+
+		int port = 0;
+		try {
+			port = Integer.parseInt(portString);
+		} catch (NumberFormatException nfe) {
+			RegisterLocationResponse res = new RegisterLocationResponse("nonnumeric-port");
+			response.appendElement(res.serialize(response.getDocument()));
+			return;
+		}
+
+		// Find user object
+		UserData ud;
+		try {
+			ud = new UserData(username);
+		} catch (UnknownUserException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			return;
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			return;
+		}
+		
+		// Store in database
+		RegisterLocationResponse res;
+		Connection c = null;
+		try {
+			c = Database.getConnection();
+			CallableStatement auStmt = c.prepareCall("call RecordUserLocation_prc(?,?,?)");
+			auStmt.setInt(1, ud.getUserId());
+			auStmt.setString(2, address);
+			auStmt.setInt(3, port);
+			auStmt.execute();
+			int uc = auStmt.getUpdateCount();
+			if (uc == 1) {
+				res = new RegisterLocationResponse(new UserLocation(address, port));
+			} else {
+				throw new SQLException("Invalid results returned from server");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			res = new RegisterLocationResponse("internal-error");
+		}
+		response.appendElement(res.serialize(response.getDocument()));
+	}
+
+	public void invalidateLocation(FractusMessage response, String username, String address, String portString) {
+		// Parse parameters
+		InvalidateLocationResponse res;
+		if (address == null || portString == null) {
+			// Create error packet and send back to fc
+			res = new InvalidateLocationResponse("null-parameters");
+			response.appendElement(res.serialize(response.getDocument()));
+			return;
+		}
+
+		int port = 0;
+		try {
+			port = Integer.parseInt(portString);
+		} catch (NumberFormatException nfe) {
+			res = new InvalidateLocationResponse("nonnumeric-port");
+			response.appendElement(res.serialize(response.getDocument()));
+			return;
+		}
+
+		// Find user object
+		UserData ud;
+		try {
+			ud = new UserData(username);
+		} catch (UnknownUserException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			return;
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			return;
+		}
+		
+		Connection c = null;
+		try {
+			c = Database.getConnection();
+			CallableStatement auStmt = c.prepareCall("CALL InvalidateUserLocation_prc(?,?,?)");
+			auStmt.setInt(1, ud.getUserId());
+			auStmt.setString(2, address);
+			auStmt.setInt(3, port);
+			auStmt.execute();
+			int uc = auStmt.getUpdateCount();
+			if (uc == 1) {
+				res = new InvalidateLocationResponse();
+			} else {
+				throw new SQLException("Invalid results returned from server");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			res = new InvalidateLocationResponse("internal-error");
+		}
+		response.appendElement(res.serialize(response.getDocument()));
+	}
+}

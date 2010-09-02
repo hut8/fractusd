@@ -1,0 +1,185 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/fractusd/!svn/ver/94/trunk/src
+END
+PeerCryptoData.java
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/fractusd/!svn/ver/93/trunk/src/PeerCryptoData.java
+END
+UserTracker.java
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/fractusd/!svn/ver/94/trunk/src/UserTracker.java
+END
+FractusPacket.java
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/fractusd/!svn/ver/94/trunk/src/FractusPacket.java
+END
+ContactDataResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/fractusd/!svn/ver/67/trunk/src/ContactDataResponse.java
+END
+EncryptionManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/fractusd/!svn/ver/92/trunk/src/EncryptionManager.java
+END
+UserAuthenticator.java
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/fractusd/!svn/ver/59/trunk/src/UserAuthenticator.java
+END
+FractusServer.java
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/fractusd/!svn/ver/92/trunk/src/FractusServer.java
+END
+Headers.java
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/fractusd/!svn/ver/92/trunk/src/Headers.java
+END
+ServerUserAuthenticator.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/fractusd/!svn/ver/34/trunk/src/ServerUserAuthenticator.java
+END
+FractusErrorResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/fractusd/!svn/ver/34/trunk/src/FractusErrorResponse.java
+END
+Callback.java
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/fractusd/!svn/ver/68/trunk/src/Callback.java
+END
+FractusError.java
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/fractusd/!svn/ver/91/trunk/src/FractusError.java
+END
+FractusMessage.java
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/fractusd/!svn/ver/34/trunk/src/FractusMessage.java
+END
+PacketHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/fractusd/!svn/ver/93/trunk/src/PacketHandler.java
+END
+ClientConnector.java
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/fractusd/!svn/ver/91/trunk/src/ClientConnector.java
+END
+UserLocation.java
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/fractusd/!svn/ver/34/trunk/src/UserLocation.java
+END
+AddContactResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/fractusd/!svn/ver/81/trunk/src/AddContactResponse.java
+END
+RegisterKeyResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/fractusd/!svn/ver/93/trunk/src/RegisterKeyResponse.java
+END
+RemoveContactResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/fractusd/!svn/ver/34/trunk/src/RemoveContactResponse.java
+END
+Database.java
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/fractusd/!svn/ver/94/trunk/src/Database.java
+END
+UnknownUserException.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/fractusd/!svn/ver/94/trunk/src/UnknownUserException.java
+END
+RegisterLocationResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/fractusd/!svn/ver/90/trunk/src/RegisterLocationResponse.java
+END
+ProtocolException.java
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/fractusd/!svn/ver/93/trunk/src/ProtocolException.java
+END
+DuplicateAddRequestException.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/fractusd/!svn/ver/91/trunk/src/DuplicateAddRequestException.java
+END
+UserData.java
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/fractusd/!svn/ver/94/trunk/src/UserData.java
+END
+IdentifyKeyResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/fractusd/!svn/ver/34/trunk/src/IdentifyKeyResponse.java
+END
+WorkerProcess.java
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/fractusd/!svn/ver/93/trunk/src/WorkerProcess.java
+END
+UserCredentials.java
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/fractusd/!svn/ver/94/trunk/src/UserCredentials.java
+END
+InvalidateLocationResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/fractusd/!svn/ver/71/trunk/src/InvalidateLocationResponse.java
+END
+ClientNotifier.java
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/fractusd/!svn/ver/91/trunk/src/ClientNotifier.java
+END

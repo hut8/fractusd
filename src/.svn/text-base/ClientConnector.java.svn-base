@@ -1,0 +1,131 @@
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.Socket;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
+
+public class ClientConnector
+implements Runnable {
+	private Socket socket;
+	private EncryptionManager em;
+	private Object sendMutex;
+	private InputStream input;
+	private OutputStream output;
+	private PacketHandler handler;
+	private SecretKeySpec sks;
+	private String encodedPublicKey;
+
+
+	public ClientConnector(Socket socket, EncryptionManager em, PacketHandler handler) {
+		this.socket = socket;
+		this.em = em;
+		this.handler = handler;
+		sendMutex = new Object();
+	}
+	
+	public void sendMessage(String message)
+	throws IOException {
+		synchronized (sendMutex) {
+			try {
+				Logger.getAnonymousLogger().log(Level.INFO, "sending " + message);
+				output.write(new FractusPacket(message.getBytes("UTF-8"), sks).serialize());
+			} catch (InvalidKeyException e) {
+				throw new FractusError(e);
+			} catch (NoSuchAlgorithmException e) {
+				throw new FractusError(e);
+			} catch (NoSuchPaddingException e) {
+				throw new FractusError(e);
+			}
+		}
+	}
+	
+	public void disconnect() {
+		Logger.getAnonymousLogger().log(Level.INFO, "disconnecting");
+		try {
+			socket.close();
+		} catch (IOException e) { }
+	}
+	
+	private void connectStreams() {
+		try {
+			output = socket.getOutputStream();
+			input = socket.getInputStream();
+		} catch (IOException e) {
+			Logger.getAnonymousLogger().log(Level.SEVERE, "could not get stream from socket");
+			disconnect(); return;
+		}
+	}
+	
+	@Override
+	public void run() {
+		Logger.getAnonymousLogger().log(Level.INFO, "ClientConnector alive");
+		connectStreams();
+		// Send headers
+		Headers sendHeaders = new Headers();
+		sendHeaders.writeHeaders(output, em);
+		
+		// Receive headers
+		Headers recvHeaders;
+		try {
+			recvHeaders = Headers.receive(input);
+		} catch (IOException e) {
+			Logger.getAnonymousLogger().log(Level.SEVERE, "error: encountered I/O error while trying to receive headers: " + e.getLocalizedMessage());
+			disconnect(); return;
+		} catch (ProtocolException e) {
+			Logger.getAnonymousLogger().log(Level.SEVERE, "error: encountered protocol error while trying to receive headers: " + e.getLocalizedMessage());
+			disconnect(); return;
+		}
+		
+		PeerCryptoData pcd;
+		try {
+			pcd = PeerCryptoData.negotiate(recvHeaders, em);
+		} catch (NoSuchAlgorithmException e) {
+			Logger.getAnonymousLogger().log(Level.SEVERE, "error: could not load appropriate algorithm: " + e.getLocalizedMessage());
+			disconnect(); return;
+		} catch (NoSuchProviderException e) {
+			Logger.getAnonymousLogger().log(Level.SEVERE, "error: could not load BC provider: " + e.getLocalizedMessage());
+			disconnect(); return;
+		} catch (InvalidKeySpecException e) {
+			Logger.getAnonymousLogger().log(Level.SEVERE, "error: encountered invalid key spec while negotiating: " + e.getLocalizedMessage());
+			disconnect(); return;
+		}
+		
+		if (pcd == null) {
+			Logger.getAnonymousLogger().log(Level.SEVERE, "error: could not receive peer cryptographic data.  disconnecting.");
+			disconnect();
+		}
+		sks = pcd.getSecretKeySpec();
+		encodedPublicKey = pcd.getEncodedKey();
+		serveConnection();
+	}
+	
+	private void serveConnection() {
+		while (socket.isConnected()) {
+			Logger.getAnonymousLogger().log(Level.INFO, "waiting for packet");
+			FractusPacket fp = new FractusPacket(sks);
+			try {
+				fp.readPacket(input, encodedPublicKey, em);
+			} catch (Exception e) {
+				Logger.getAnonymousLogger().log(Level.INFO, "encountered exception: " + e.getLocalizedMessage());
+				disconnect(); return;
+			}
+			
+			Logger.getAnonymousLogger().log(Level.INFO, "received fractus packet");
+			handler.handle(fp,this);
+		}
+	}
+
+	public void sendMessage(FractusMessage message)
+	throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, IOException {
+		sendMessage(message.serialize());
+	}
+}
