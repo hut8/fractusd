@@ -18,20 +18,22 @@ import org.apache.log4j.Logger;
 public class ClientConnector
         implements Runnable {
     private Socket socket;
+    private final Object sendMutex;
     private EncryptionManager em;
-    private Object sendMutex;
     private InputStream input;
     private OutputStream output;
-    private PacketHandler handler;
+    private MessageHandler handler;
     private ClientCipher clientCipher;
     private String encodedPublicKey;
-    private Logger log;
+    private static Logger log;
+    static {
+        log = Logger.getLogger(ClientConnector.class.getName());
+    }
 
-    public ClientConnector(Socket socket, EncryptionManager em, PacketHandler handler) {
+    public ClientConnector(Socket socket, EncryptionManager em, MessageHandler handler) {
         this.socket = socket;
         this.em = em;
         this.handler = handler;
-        this.log = Logger.getLogger(this.getClass().getName());
         sendMutex = new Object();
     }
 
@@ -68,7 +70,12 @@ public class ClientConnector
 
     private void negotiateCipherData() throws IOException, GeneralSecurityException {
         // Get the packet
+        log.debug("Negotiating symmetric key (waiting for remote side)");
         FractusPacket fp = FractusPacket.read(input);
+        if (fp == null) {
+            log.warn("Unable to retrieve remote public key.  Disconnecting.");
+            disconnect(); return;
+        }
         ProtocolBuffer.PublicKey remotePKPB = ProtocolBuffer.PublicKey.parseFrom(fp.getContents());
 
         String remotePKEncoding = remotePKPB.getEncoding();
@@ -99,13 +106,12 @@ public class ClientConnector
             log.warn("Encountered security exception while negotiating key", ex);
             disconnect(); return;
         }
-
         
-
         serveConnection();
     }
 
     private void serveConnection() {
+        log.info("Entering main client service loop");
         while (socket.isConnected()) {
             log.debug("Waiting for packet");
             FractusPacket fp;
@@ -115,6 +121,12 @@ public class ClientConnector
                 log.info("Remote host disconnected", ex);
                 disconnect(); return;
             }
+
+            if (fp == null) {
+                log.info("Received null packet.  Disconnecting.");
+                disconnect(); return;
+            }
+
             log.debug("Received packet");
             handler.handle(fp, this);
         }
@@ -122,6 +134,7 @@ public class ClientConnector
 
     public void sendMessage(FractusMessage message) throws
             IllegalBlockSizeException, BadPaddingException, IOException {
+        log.debug("ClientConnector will send FractusMessage: " + message.getDescriptorName());
         byte[] plainText = message.getSerialized();
         byte[] cipherText = clientCipher.encrypt(plainText);
         FractusPacket sendPacket = new FractusPacket(cipherText);

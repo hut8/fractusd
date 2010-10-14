@@ -7,16 +7,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
-import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.Element;
 
 public class UserTracker {
-
     private Map<String, String> keyMap;
-    private Logger log;
+    private static Logger log;
 
     public UserTracker() {
         keyMap = new HashMap<String, String>();

@@ -48,7 +48,7 @@ public class FractusServer {
             System.exit(-1);
         }
         log.debug("Creating callbacks");
-        PacketHandler handler = new PacketHandler(generateCallbackMap(), tracker);
+        MessageHandler handler = new MessageHandler(generateCallbackMap(), tracker);
         log.info("Waiting for connections");
 
         while (serverSock.isBound()) {

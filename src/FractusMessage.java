@@ -5,7 +5,9 @@
 
 
 import com.google.protobuf.Message;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -21,7 +23,6 @@ import org.apache.log4j.*;
  */
 public class FractusMessage {
     // Key Management
-
     public static short PUBLIC_KEY = 0x01a4;
     public static short PUBLISH_KEY_REQ = 0x0bbb;
     public static short PUBLISH_KEY_RES = 0x18d9;
@@ -63,6 +64,11 @@ public class FractusMessage {
                 log.debug("Found instance field: " + f.getName());
                 continue;
             }
+            if (!f.getType().equals(short.class)) {
+                log.debug("Found non-short field: " + f.getName());
+                continue;
+            }
+
 
             try {
                 descriptorMap.put(f.getShort(null), f.getName());
@@ -90,6 +96,12 @@ public class FractusMessage {
     public Short getDescriptor() {
         return descriptor;
     }
+    public String getDescriptorName() {
+        if (!descriptorMap.containsKey(descriptor)) {
+            return "[UNKNOWN]";
+        }
+        return descriptorMap.get(descriptor);
+    }
     private byte[] serialized;
 
     public byte[] getSerialized() {
@@ -113,9 +125,21 @@ public class FractusMessage {
             message.writeTo(baos);
         } catch (IOException ex) {
             log.warn("Cannot serialize FractusMessage.", ex);
+            return null;
         }
         prototype.serialized = baos.toByteArray();
-
         return prototype;
     }
+
+    public FractusMessage(FractusPacket packet) throws IOException {
+        byte[] packetContents = packet.getContents();
+        DataInputStream dis = new DataInputStream(new ByteArrayInputStream(packetContents));
+        Short packetDescriptor = dis.readShort();
+        // Validate and assign descriptor
+        //ProtocolBuffer.PublicKey.newBuilder().
+
+        //Integer sequence = dis.readInt();
+        
+    }
+    
 }

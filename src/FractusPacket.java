@@ -38,6 +38,10 @@ public class FractusPacket {
     public static FractusPacket read(InputStream input) throws IOException {
         DataInputStream dis = new DataInputStream(input);
         Integer packetLength = dis.readInt();
+        if (packetLength > 0xffff) {
+            log.warn(String.format("Received unreasonable size for packet (%1$X).  Abandoning.", packetLength));
+            return null;
+        }
         byte[] contents = new byte[packetLength];
         input.read(contents);
         return new FractusPacket(contents);
