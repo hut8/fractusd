@@ -210,6 +210,10 @@ public class EncryptionManager {
 		return encodedKey;
 	}
 
+        public byte[] getPublicKey() {
+            return keyPair.getPublic().getEncoded();
+        }
+
 	public SecretKeySpec deriveKey(ECPublicKey pubkey)
 	throws NoSuchAlgorithmException {
 		// Extract parameters

@@ -1,84 +1,121 @@
-import org.w3c.dom.*;
-import java.io.*;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.*;
-import javax.xml.transform.stream.*;
+
+import com.google.protobuf.Message;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import org.apache.log4j.*;
 
 /**
- * Represents a message in Fractus, which is always put into a FractusPacket
- * Provides for easy XML serializing and neat handling
- * @author bowenl2
  *
+ * @author bowenl2
  */
 public class FractusMessage {
-	private Document document;
-	
-	public FractusMessage (Document document) {
-		this.document = document;
-		
-	}
-	
-	public FractusMessage()
-	throws ParserConfigurationException {
-		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-		document = docBuilder.newDocument();
-		document.appendChild(document.createElement("fractus"));
-	}
-	
-	
-	public Document getDocument() {
-		return document;
-	}
-	
-	public Element getDocumentElement() {
-		if (document == null) return null;
-		return document.getDocumentElement();
-	}
-	
-	public FractusMessage appendElement(Element e) {
-		document.getDocumentElement().appendChild(e);
-		return this;
-	}
-	
-	public void setError(String errorMsg) {
-		document.getDocumentElement().setAttribute("error", errorMsg);
-	}
-	
-	public UserCredentials getUserCredentials() {
-		Element rootElement = document.getDocumentElement();
-		String username = rootElement.getAttribute("username");
-		String password = rootElement.getAttribute("password");
-		if (username == null || password == null) {
-			return null;
-		}
-		return new UserCredentials(username, password);
-	}
-	
-	public void setUserCredentials(UserCredentials uc) {
-		Element rootElement = document.getDocumentElement();
-		rootElement.setAttribute("username", uc.getUsername());
-		rootElement.setAttribute("password", uc.getPassword());
-	}
-		
-	public String serialize() {
-        try {
-            Source source = new DOMSource(document.getDocumentElement());
-            StringWriter stringWriter = new StringWriter();
-            Result result = new StreamResult(stringWriter);
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer();
-            transformer.transform(source, result);
-            return stringWriter.getBuffer().toString();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            e.printStackTrace();
+    // Key Management
+
+    public static short PUBLIC_KEY = 0x01a4;
+    public static short PUBLISH_KEY_REQ = 0x0bbb;
+    public static short PUBLISH_KEY_RES = 0x18d9;
+    public static short REVOKE_KEY_REQ = 0x6a3c;
+    public static short REVOKE_KEY_RES = 0x6df3;
+    public static short IDENTIFY_KEY_REQ = 0x739e;
+    public static short IDENTIFY_KEY_RES = 0x0c80;
+    // Locations
+    public static short REGISTER_LOCATION_REQ = 0x533a;
+    public static short UNREGISTER_LOCATION_REQ = 0x7224;
+    // Contacts
+    public static short CONTACT_DATA_REQ = 0x33ea;
+    public static short CONTACT_DATA_RES = 0x38cf;
+    public static short ADD_CONTACT_REQ = 0x7984;
+    public static short ADD_CONTACT_RES = 0x5d77;
+    public static short ADD_CONTACT_NOTICE = 0x13e6;
+    public static short REMOVE_CONTACT_REQ = 0x1aa3;
+    public static short REMOVE_CONTACT_RES = 0x2fde;
+    public static short ONEWAY_CONTACT_REQ = 0x5cec;
+    public static short ONEWAY_CONTACT_RES = 0x4c7e;
+    // IMs
+    public static short INSTANT_MESSAGE = 0x5789;
+    // Status
+    public static short PUBLISH_STATUS = 0x448d;
+
+    public static boolean validateDescriptor(short type) {
+        return descriptorMap.containsKey(type);
+    }
+    private final static Logger log = Logger.getLogger(FractusMessage.class);
+    private final static HashMap<Short, String> descriptorMap;
+    private final static HashMap<Class, Short> typeDescriptorMap;
+
+    static {
+        descriptorMap = new HashMap<Short, String>();
+        typeDescriptorMap = new HashMap<Class, Short>();
+        Field[] fields = FractusMessage.class.getDeclaredFields();
+        for (Field f : fields) {
+            if (!Modifier.isStatic(f.getModifiers())) {
+                log.debug("Found instance field: " + f.getName());
+                continue;
+            }
+
+            try {
+                descriptorMap.put(f.getShort(null), f.getName());
+                log.debug("Mapping " + f.getShort(null) + " to " + f.getName());
+            } catch (IllegalArgumentException ex) {
+                log.error("Unable to construct MessageType map.", ex);
+            } catch (IllegalAccessException ex) {
+                log.error("Unable to construct MessageType map", ex);
+            }
         }
-        return null;
-	}
+
+        typeDescriptorMap.put(ProtocolBuffer.PublicKey.class, PUBLIC_KEY);
+    }
+
+    // Explicit private constructor
+    private FractusMessage() {
+    }
+    private Integer sequenceNumber;
+
+    public Integer getSequenceNumber() {
+        return sequenceNumber;
+    }
+    private Short descriptor;
+
+    public Short getDescriptor() {
+        return descriptor;
+    }
+    private byte[] serialized;
+
+    public byte[] getSerialized() {
+        return serialized;
+    }
+
+    // Factory method
+    public static FractusMessage build(Message message) {
+        FractusMessage prototype = new FractusMessage();
+        prototype.sequenceNumber = 0;
+        // Determine first two bytes
+        Class sourceClass = message.getClass();
+        Short sourceDescriptor = typeDescriptorMap.get(sourceClass);
+        prototype.descriptor = sourceDescriptor;
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream dos = new DataOutputStream(baos);
+        try {
+            dos.writeShort(sourceDescriptor);
+            dos.writeInt(0);
+            message.writeTo(baos);
+        } catch (IOException ex) {
+            log.warn("Cannot serialize FractusMessage.", ex);
+        }
+        prototype.serialized = baos.toByteArray();
+
+        return prototype;
+    }
 }
