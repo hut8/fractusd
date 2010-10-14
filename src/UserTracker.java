@@ -52,24 +52,16 @@ public class UserTracker {
             // TODO Append Location Data
         } else {
             // Construct message to send to destination user
-            FractusMessage addNotification;
-            try {
-                addNotification = new FractusMessage();
-            } catch (ParserConfigurationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return;
-            }
 
-            Element notifyElm = addNotification.getDocument().createElement("contact-notification");
-            notifyElm.setAttribute("username", sourceUser);
-            addNotification.getDocumentElement().appendChild(notifyElm);
+
+            
+            
 
             // Locate destination user
             List<UserLocation> locations = du.locate();
             for (UserLocation loc : locations) {
-                ClientNotifier cn = new ClientNotifier(addNotification, loc, em);
-                new Thread(cn).start();
+                
+                
             }
 
         }
@@ -84,11 +76,11 @@ public class UserTracker {
             du = new UserData(destUser);
         } catch (UnknownUserException e) {
             RemoveContactResponse acr = new RemoveContactResponse("invalid-user");
-            response.appendElement(acr.serialize(response.getDocument()));
+            
             return;
         } catch (SQLException e) {
             RemoveContactResponse acr = new RemoveContactResponse("internal-error");
-            response.appendElement(acr.serialize(response.getDocument()));
+            
             return;
         }
 
@@ -96,11 +88,11 @@ public class UserTracker {
         if (su.removeContact(du, fc)) {
             /* success */
             RemoveContactResponse acr = new RemoveContactResponse();
-            response.appendElement(acr.serialize(response.getDocument()));
+            
         } else {
             /* failure */
             RemoveContactResponse acr = new RemoveContactResponse("redundant-request");
-            response.appendElement(acr.serialize(response.getDocument()));
+            
         }
     }
 
@@ -157,14 +149,14 @@ public class UserTracker {
             return;
         }
 
-        response.appendElement(new ContactDataResponse(dataMap).serialize(response.getDocument()));
+        
     }
 
     public void registerKey(FractusMessage response, String username, String key, ClientConnector fc) {
         // Make sure key isn't taken
         if (keyMap.containsKey(key)) {
             RegisterKeyResponse res = new RegisterKeyResponse("key-collision");
-            response.appendElement(res.serialize(response.getDocument()));
+            
             try {
                 fc.sendMessage(response);
             } catch (Exception e) {
@@ -175,7 +167,7 @@ public class UserTracker {
 
         keyMap.put(key, username);
         RegisterKeyResponse res = new RegisterKeyResponse();
-        response.appendElement(res.serialize(response.getDocument()));
+        
     }
 
     public String identifyKey(String encodedKey) {
@@ -187,11 +179,11 @@ public class UserTracker {
         if (username == null) {
             log.info("Identified [" + encodedKey + "]: [" + keyMap.get(encodedKey) + "]");
             IdentifyKeyResponse ikr = new IdentifyKeyResponse(true, keyMap.get(encodedKey), encodedKey);
-            response.appendElement(ikr.serialize(response.getDocument()));
+            
         } else {
             log.info("Could not identify key [" + encodedKey + "]");
             IdentifyKeyResponse ikr = new IdentifyKeyResponse(false, "unknown-key", encodedKey);
-            response.appendElement(ikr.serialize(response.getDocument()));
+            
         }
     }
 
@@ -200,7 +192,7 @@ public class UserTracker {
         if (address == null || portString == null) {
             // Create error packet and send back to fc
             RegisterLocationResponse res = new RegisterLocationResponse("null-parameters");
-            response.appendElement(res.serialize(response.getDocument()));
+            
             return;
         }
 
@@ -209,7 +201,7 @@ public class UserTracker {
             port = Integer.parseInt(portString);
         } catch (NumberFormatException nfe) {
             RegisterLocationResponse res = new RegisterLocationResponse("nonnumeric-port");
-            response.appendElement(res.serialize(response.getDocument()));
+            
             return;
         }
 
@@ -247,7 +239,7 @@ public class UserTracker {
             e.printStackTrace();
             res = new RegisterLocationResponse("internal-error");
         }
-        response.appendElement(res.serialize(response.getDocument()));
+        
     }
 
     public void invalidateLocation(FractusMessage response, String username, String address, String portString) {
@@ -256,7 +248,7 @@ public class UserTracker {
         if (address == null || portString == null) {
             // Create error packet and send back to fc
             res = new InvalidateLocationResponse("null-parameters");
-            response.appendElement(res.serialize(response.getDocument()));
+            
             return;
         }
 
@@ -265,7 +257,7 @@ public class UserTracker {
             port = Integer.parseInt(portString);
         } catch (NumberFormatException nfe) {
             res = new InvalidateLocationResponse("nonnumeric-port");
-            response.appendElement(res.serialize(response.getDocument()));
+            
             return;
         }
 
@@ -301,6 +293,6 @@ public class UserTracker {
             e.printStackTrace();
             res = new InvalidateLocationResponse("internal-error");
         }
-        response.appendElement(res.serialize(response.getDocument()));
+        // TODO: GIVE RESPONSE
     }
 }

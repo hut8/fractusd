@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 
 import javax.crypto.NoSuchPaddingException;
 
@@ -15,7 +17,6 @@ import org.apache.log4j.Logger;
 
 public class ClientConnector
         implements Runnable {
-
     private Socket socket;
     private EncryptionManager em;
     private Object sendMutex;
@@ -65,11 +66,15 @@ public class ClientConnector
         output.write(fp.serialize());
     }
 
-    private void receiveCipherData() throws IOException {
+    private void negotiateCipherData() throws IOException, GeneralSecurityException {
         // Get the packet
         FractusPacket fp = FractusPacket.read(input);
-        fp.getContents();
+        ProtocolBuffer.PublicKey remotePKPB = ProtocolBuffer.PublicKey.parseFrom(fp.getContents());
 
+        String remotePKEncoding = remotePKPB.getEncoding();
+        byte[] remotePKData = remotePKPB.getPublicKey().toByteArray();
+
+        clientCipher = new ClientCipher(remotePKEncoding, remotePKData, em);
     }
 
     @Override
@@ -85,54 +90,44 @@ public class ClientConnector
         }
 
         try {
-            receiveCipherData();
+            negotiateCipherData();
         } catch (IOException ex) {
             log.warn("Could not receive cipher data from remote client", ex);
             disconnect();
             return;
+        } catch (GeneralSecurityException ex) {
+            log.warn("Encountered security exception while negotiating key", ex);
+            disconnect(); return;
         }
 
-        PeerCryptoData pcd;
-        try {
-            pcd = PeerCryptoData.negotiate(recvHeaders, em);
-        } catch (GeneralSecurityException e) {
-            log.warning("Encountered general security exception while negotiating peer crypto data: " + e.getMessage());
-            disconnect();
-            return;
-        }
+        
 
-        if (pcd == null) {
-            Logger.getAnonymousLogger().log(Level.SEVERE, "error: could not receive peer cryptographic data.  disconnecting.");
-            disconnect();
-        }
-        sks = pcd.getSecretKeySpec();
-        encodedPublicKey = pcd.getEncodedKey();
         serveConnection();
     }
 
     private void serveConnection() {
         while (socket.isConnected()) {
-            Logger.getAnonymousLogger().log(Level.INFO, "waiting for packet");
-            FractusPacket fp = new FractusPacket(sks);
+            log.debug("Waiting for packet");
+            FractusPacket fp;
             try {
-                fp.readPacket(input, encodedPublicKey, em);
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (ProtocolException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (GeneralSecurityException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                fp = FractusPacket.read(input);
+            } catch (IOException ex) {
+                log.info("Remote host disconnected", ex);
+                disconnect(); return;
             }
-            Logger.getAnonymousLogger().log(Level.INFO, "received fractus packet");
+            log.debug("Received packet");
             handler.handle(fp, this);
         }
     }
 
-    public void sendMessage(FractusMessage message)
-            throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, IOException {
-        sendMessage(message.serialize());
+    public void sendMessage(FractusMessage message) throws
+            IllegalBlockSizeException, BadPaddingException, IOException {
+        byte[] plainText = message.getSerialized();
+        byte[] cipherText = clientCipher.encrypt(plainText);
+        FractusPacket sendPacket = new FractusPacket(cipherText);
+
+        synchronized(sendMutex) {
+            output.write(sendPacket.serialize());
+        }
     }
 }
