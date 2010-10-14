@@ -25,15 +25,11 @@ public class FractusServer {
     public FractusServer(int port, EncryptionManager em)
             throws IOException {
         this.em = em;
-
         this.tracker = new UserTracker();
-
-        log.info("Creating server socket");
-
+        log.debug("Creating server socket");
         this.serverSock = new ServerSocket();
         log.info("Server socket created");
-
-        log.info("Setting socket option: reuse address");
+        log.debug("Setting socket option: reuse address");
         try {
             this.serverSock.setReuseAddress(true);
         } catch (SocketException e) {
@@ -51,7 +47,7 @@ public class FractusServer {
             System.err.println("Fatal error: could not bind to socket");
             System.exit(-1);
         }
-        log.info("Creating callbacks");
+        log.debug("Creating callbacks");
         PacketHandler handler = new PacketHandler(generateCallbackMap(), tracker);
         log.info("Waiting for connections");
 
@@ -59,9 +55,9 @@ public class FractusServer {
             try {
                 Socket clientSock = serverSock.accept();
                 log.info("Accepted connection from " + clientSock.getInetAddress().getHostAddress());
-                new Thread(new WorkerProcess(clientSock, em, handler, tracker)).start();
+                new Thread(new ClientConnector(clientSock, em, handler)).start();
             } catch (IOException e) {
-                log.error("Could not accept client  connection");
+                log.warn("Could not accept client connection", e);
                 continue;
             }
         }

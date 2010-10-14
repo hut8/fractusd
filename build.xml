@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="FractusServer" default="compile" basedir=".">
+    <property name="app.name"      value="FractusServer"/>
+    <property name="app.version"   value="0.1-dev"/>
+    <property name="build.home"    value="${basedir}/build"/>
+    <property name="dist.home"     value="${basedir}/dist"/>
+    <property name="docs.home"     value="${basedir}/docs"/>
+    <property name="src.home"      value="${basedir}/src"/>
+    <property name="lib.home"      value="${basedir}/lib"/>
+
+    <property name="compile.debug"       value="true"/>
+    <property name="compile.deprecation" value="false"/>
+    <property name="compile.optimize"    value="true"/>
+
+    <path id="compile.classpath">
+        <fileset dir="${lib.home}">
+            <include name="log4j.properties"/>
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="all" depends="clean,compile"
+   description="Clean build and dist directories, then compile"/>
+
+    <target name="clean"
+   description="Delete old build and dist directories">
+        <delete dir="${build.home}"/>
+        <delete file="${dist.home}/${app.name}-${app.version}.jar"/>
+    </target>
+
+    <target name="compile"
+   description="Compile Java sources">
+
+    <!-- Compile Java classes as necessary -->
+        <mkdir dir="${build.home}"/>
+        <javac srcdir="${src.home}"
+          destdir="${build.home}"
+            debug="${compile.debug}"
+      deprecation="${compile.deprecation}"
+         optimize="${compile.optimize}"
+         includeantruntime="false">
+            <classpath refid="compile.classpath"/>
+            
+        </javac>
+
+    <!-- Copy application resources -->
+        <copy  todir="${build.home}">
+            <fileset dir="${src.home}" excludes="**/*.java"/>
+        </copy>
+    </target>
+
+    <target name="jar" depends="compile"
+   description="Create binary distribution">
+        <jar destfile="${dist.home}/${app.name}-${app.version}.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="FractusServer"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ log4j.properties log4j-1.2.16.jar protobuf-java-2.3.0.jar bcprov-jdk16-145.jar jdbc-mysql.jar"/>
+            </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
+            <fileset dir="${build.home}"/>
+            <zipfileset dir="./lib" includes="bcprov-jdk16-145.jar"/>
+            <zipfileset dir="./lib" includes="jdbc-mysql.jar"/>
+            <zipfileset dir="./lib" includes="log4j-1.2.16.jar"/>
+            <zipfileset dir="./lib" includes="protobuf-java-2.3.0.jar"/>
+            <fileset dir="${build.home}" file="lib/log4j.properties" />
+        </jar>
+    </target>
+</project>
