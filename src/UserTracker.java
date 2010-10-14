@@ -1,4 +1,5 @@
 
+import java.security.interfaces.ECPublicKey;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -7,16 +8,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Logger;
+import org.bouncycastle.math.ec.ECPoint;
 
 
 
 public class UserTracker {
-    private Map<String, String> keyMap;
+    private Map<ECPoint, String> keyMap;
     private static Logger log;
+    static {
+        log = Logger.getLogger(UserTracker.class.getName());
+    }
 
     public UserTracker() {
-        keyMap = new HashMap<String, String>();
-        log = Logger.getLogger(this.getClass().getName());
+        keyMap = new HashMap<ECPoint, String>();
     }
 
     public void addContact(FractusMessage response, String sourceUser, String destUser, ClientConnector fc, EncryptionManager em) {
@@ -71,11 +76,11 @@ public class UserTracker {
             su = new UserData(sourceUser);
             du = new UserData(destUser);
         } catch (UnknownUserException e) {
-            RemoveContactResponse acr = new RemoveContactResponse("invalid-user");
+            
             
             return;
         } catch (SQLException e) {
-            RemoveContactResponse acr = new RemoveContactResponse("internal-error");
+            
             
             return;
         }
@@ -83,11 +88,11 @@ public class UserTracker {
 
         if (su.removeContact(du, fc)) {
             /* success */
-            RemoveContactResponse acr = new RemoveContactResponse();
+            
             
         } else {
             /* failure */
-            RemoveContactResponse acr = new RemoveContactResponse("redundant-request");
+            
             
         }
     }
@@ -151,7 +156,7 @@ public class UserTracker {
     public void registerKey(FractusMessage response, String username, String key, ClientConnector fc) {
         // Make sure key isn't taken
         if (keyMap.containsKey(key)) {
-            RegisterKeyResponse res = new RegisterKeyResponse("key-collision");
+            
             
             try {
                 fc.sendMessage(response);
@@ -161,8 +166,8 @@ public class UserTracker {
             return;
         }
 
-        keyMap.put(key, username);
-        RegisterKeyResponse res = new RegisterKeyResponse();
+        //keyMap.put(key, username);
+        
         
     }
 
@@ -174,11 +179,11 @@ public class UserTracker {
         String username = keyMap.get(encodedKey);
         if (username == null) {
             log.info("Identified [" + encodedKey + "]: [" + keyMap.get(encodedKey) + "]");
-            IdentifyKeyResponse ikr = new IdentifyKeyResponse(true, keyMap.get(encodedKey), encodedKey);
+            
             
         } else {
             log.info("Could not identify key [" + encodedKey + "]");
-            IdentifyKeyResponse ikr = new IdentifyKeyResponse(false, "unknown-key", encodedKey);
+            
             
         }
     }
@@ -187,7 +192,7 @@ public class UserTracker {
         // Parse parameters
         if (address == null || portString == null) {
             // Create error packet and send back to fc
-            RegisterLocationResponse res = new RegisterLocationResponse("null-parameters");
+            
             
             return;
         }
@@ -196,7 +201,7 @@ public class UserTracker {
         try {
             port = Integer.parseInt(portString);
         } catch (NumberFormatException nfe) {
-            RegisterLocationResponse res = new RegisterLocationResponse("nonnumeric-port");
+
             
             return;
         }
@@ -216,7 +221,7 @@ public class UserTracker {
         }
 
         // Store in database
-        RegisterLocationResponse res;
+        
         Connection c = null;
         try {
             c = Database.getConnection();
@@ -227,23 +232,23 @@ public class UserTracker {
             auStmt.execute();
             int uc = auStmt.getUpdateCount();
             if (uc == 1) {
-                res = new RegisterLocationResponse(new UserLocation(address, port));
+                //res = new RegisterLocationResponse(new UserLocation(address, port));
             } else {
                 throw new SQLException("Invalid results returned from server");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            res = new RegisterLocationResponse("internal-error");
+            //res = new RegisterLocationResponse("internal-error");
         }
         
     }
 
     public void invalidateLocation(FractusMessage response, String username, String address, String portString) {
         // Parse parameters
-        InvalidateLocationResponse res;
+        
         if (address == null || portString == null) {
             // Create error packet and send back to fc
-            res = new InvalidateLocationResponse("null-parameters");
+        
             
             return;
         }
@@ -252,7 +257,7 @@ public class UserTracker {
         try {
             port = Integer.parseInt(portString);
         } catch (NumberFormatException nfe) {
-            res = new InvalidateLocationResponse("nonnumeric-port");
+            
             
             return;
         }
@@ -281,13 +286,13 @@ public class UserTracker {
             auStmt.execute();
             int uc = auStmt.getUpdateCount();
             if (uc == 1) {
-                res = new InvalidateLocationResponse();
+                //res = new InvalidateLocationResponse();
             } else {
                 throw new SQLException("Invalid results returned from server");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            res = new InvalidateLocationResponse("internal-error");
+            //res = new InvalidateLocationResponse("internal-error");
         }
         // TODO: GIVE RESPONSE
     }

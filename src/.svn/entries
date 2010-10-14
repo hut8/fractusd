@@ -570,40 +570,6 @@ snakie
 
 958
 
-Headers.java
-file
-
-
-
-
-2010-07-08T09:33:59.000000Z
-400dc0fe784dbb0c29bb5c6b4ff3b0ca
-2010-07-06T07:21:21.005200Z
-92
-bowenl2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1143
-
 DuplicateAddRequestException.java
 file
 
@@ -638,6 +604,74 @@ bowenl2
 
 134
 
+Headers.java
+file
+
+
+
+
+2010-07-08T09:33:59.000000Z
+400dc0fe784dbb0c29bb5c6b4ff3b0ca
+2010-07-06T07:21:21.005200Z
+92
+bowenl2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1143
+
+RegisterKeyResponse.java
+file
+
+
+
+delete
+2010-07-08T09:33:59.000000Z
+c4fbda67fda00c7997c16ee7a2586791
+2010-07-06T07:45:38.495829Z
+93
+bowenl2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+570
+
 FractusMessage.java
 file
 
@@ -671,40 +705,6 @@ snakie
 
 
 2562
-
-RegisterKeyResponse.java
-file
-
-
-
-
-2010-07-08T09:33:59.000000Z
-c4fbda67fda00c7997c16ee7a2586791
-2010-07-06T07:45:38.495829Z
-93
-bowenl2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-570
 
 ClientNotifier.java
 file
@@ -831,40 +831,6 @@ bowenl2
 
 7626
 
-RemoveContactResponse.java
-file
-
-
-
-
-2010-05-17T00:04:27.000000Z
-10aeef2f99d694acce40c03826a22df7
-2010-05-16T15:39:29.578687Z
-34
-snakie
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-589
-
 InvalidateLocationResponse.java
 file
 
@@ -898,6 +864,40 @@ bowenl2
 
 
 674
+
+RemoveContactResponse.java
+file
+
+
+
+delete
+2010-05-17T00:04:27.000000Z
+10aeef2f99d694acce40c03826a22df7
+2010-05-16T15:39:29.578687Z
+34
+snakie
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+589
 
 UserTracker.java
 file
@@ -933,74 +933,6 @@ bowenl2
 
 9745
 
-UserCredentials.java
-file
-
-
-
-
-2010-07-08T09:33:59.000000Z
-c10ad677ad94cf3251b0b06261d3bf84
-2010-07-08T04:50:26.434269Z
-94
-bowenl2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-366
-
-RegisterLocationResponse.java
-file
-
-
-
-
-2010-05-18T07:35:19.000000Z
-234b781090697783745410a2471976c1
-2010-05-18T04:35:42.669006Z
-90
-bowenl2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-800
-
 Callback.java
 file
 
@@ -1034,6 +966,74 @@ bowenl2
 
 
 177
+
+RegisterLocationResponse.java
+file
+
+
+
+delete
+2010-05-18T07:35:19.000000Z
+234b781090697783745410a2471976c1
+2010-05-18T04:35:42.669006Z
+90
+bowenl2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+800
+
+UserCredentials.java
+file
+
+
+
+
+2010-07-08T09:33:59.000000Z
+c10ad677ad94cf3251b0b06261d3bf84
+2010-07-08T04:50:26.434269Z
+94
+bowenl2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+366
 
 FractusServer.java
 file

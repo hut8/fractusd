@@ -10,6 +10,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.SecretKeySpec;
 import org.apache.log4j.Logger;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
+import org.bouncycastle.math.ec.ECPoint;
 
 /*
  * To change this template, choose Tools | Templates
@@ -20,7 +21,8 @@ import org.bouncycastle.jce.interfaces.ECPublicKey;
  * @author bowenl2
  */
 public class ClientCipher {
-    private byte[] remotePublicKey;
+    private ECPoint remotePublicPoint;
+    private ECPublicKey remotePublicKey;
     private SecretKeySpec secretKeySpec;
     private Cipher encryptCipher;
     private Cipher decryptCipher;
@@ -37,17 +39,22 @@ public class ClientCipher {
             return;
         }
 
-        this.remotePublicKey = remotePublicKey;
         log.debug("Trying to derive secret key from ours and " + remotePublicKey);
 
         // Create their public key object for ECDH
-        KeySpec ks = new X509EncodedKeySpec(remotePublicKey);
-        PublicKey pubkey;
+        X509EncodedKeySpec ks = new X509EncodedKeySpec(remotePublicKey);
         KeyFactory kf = KeyFactory.getInstance("ECDH", "BC");
-        pubkey = kf.generatePublic(ks);
-
+        try {
+            this.remotePublicKey = (ECPublicKey)kf.generatePublic(ks);
+        } catch (ClassCastException ex) {
+            log.warn("Not given an EC Public Key!", ex);
+            return;
+        }
+        
+        this.remotePublicPoint = this.remotePublicKey.getQ();
+        
         // Extract CipherParameters
-        this.secretKeySpec = em.deriveKey((ECPublicKey) pubkey);
+        this.secretKeySpec = em.deriveKey(this.remotePublicKey);
 
         encryptCipher = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
         encryptCipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
