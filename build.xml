@@ -54,7 +54,7 @@
         <jar destfile="${dist.home}/${app.name}-${app.version}.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                <attribute name="Rsrc-Main-Class" value="FractusServer"/>
+                <attribute name="Rsrc-Main-Class" value="fractus.main.FractusServer"/>
                 <attribute name="Class-Path" value="."/>
                 <attribute name="Rsrc-Class-Path" value="./ log4j.properties log4j-1.2.16.jar protobuf-java-2.3.0.jar bcprov-jdk16-145.jar jdbc-mysql.jar"/>
             </manifest>

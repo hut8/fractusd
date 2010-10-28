@@ -1,0 +1,11 @@
+package fractus.main;
+
+
+public enum EventType {
+	DAEMON_START,
+	DAEMON_LISTEN,
+	CLIENT_CONNECT,
+	CLIENT_DISCONNECT,
+	HEADER_NEGOTIATE,
+	CRYPTO_NEGOTIATE
+}

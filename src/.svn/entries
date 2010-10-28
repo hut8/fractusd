@@ -439,7 +439,7 @@ file
 
 
 
-
+delete
 2010-05-17T08:31:54.000000Z
 5873034698ee292d2a386d78c1421aa5
 2010-05-17T02:37:18.992063Z
@@ -570,40 +570,6 @@ snakie
 
 958
 
-DuplicateAddRequestException.java
-file
-
-
-
-
-2010-07-08T09:33:59.000000Z
-caac998f6af35a47fb29ff2f969378b6
-2010-07-06T07:19:22.189301Z
-91
-bowenl2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-134
-
 Headers.java
 file
 
@@ -638,16 +604,16 @@ bowenl2
 
 1143
 
-RegisterKeyResponse.java
+DuplicateAddRequestException.java
 file
 
 
 
-delete
+
 2010-07-08T09:33:59.000000Z
-c4fbda67fda00c7997c16ee7a2586791
-2010-07-06T07:45:38.495829Z
-93
+caac998f6af35a47fb29ff2f969378b6
+2010-07-06T07:19:22.189301Z
+91
 bowenl2
 
 
@@ -670,7 +636,7 @@ bowenl2
 
 
 
-570
+134
 
 FractusMessage.java
 file
@@ -705,6 +671,40 @@ snakie
 
 
 2562
+
+RegisterKeyResponse.java
+file
+
+
+
+delete
+2010-07-08T09:33:59.000000Z
+c4fbda67fda00c7997c16ee7a2586791
+2010-07-06T07:45:38.495829Z
+93
+bowenl2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+570
 
 ClientNotifier.java
 file
@@ -831,40 +831,6 @@ bowenl2
 
 7626
 
-InvalidateLocationResponse.java
-file
-
-
-
-delete
-2010-05-17T08:10:40.000000Z
-c7091fb6daecdf9d8fd5076389f73dfd
-2010-05-17T03:22:40.669572Z
-71
-bowenl2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-674
-
 RemoveContactResponse.java
 file
 
@@ -898,6 +864,40 @@ snakie
 
 
 589
+
+InvalidateLocationResponse.java
+file
+
+
+
+delete
+2010-05-17T08:10:40.000000Z
+c7091fb6daecdf9d8fd5076389f73dfd
+2010-05-17T03:22:40.669572Z
+71
+bowenl2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+674
 
 UserTracker.java
 file
@@ -933,16 +933,16 @@ bowenl2
 
 9745
 
-Callback.java
+UserCredentials.java
 file
 
 
 
 
-2010-05-17T08:10:40.000000Z
-1d29b0744abb10f7bfd5364ffad7f4d2
-2010-05-17T02:43:56.986515Z
-68
+2010-07-08T09:33:59.000000Z
+c10ad677ad94cf3251b0b06261d3bf84
+2010-07-08T04:50:26.434269Z
+94
 bowenl2
 
 
@@ -965,7 +965,7 @@ bowenl2
 
 
 
-177
+366
 
 RegisterLocationResponse.java
 file
@@ -1001,16 +1001,16 @@ bowenl2
 
 800
 
-UserCredentials.java
+Callback.java
 file
 
 
 
 
-2010-07-08T09:33:59.000000Z
-c10ad677ad94cf3251b0b06261d3bf84
-2010-07-08T04:50:26.434269Z
-94
+2010-05-17T08:10:40.000000Z
+1d29b0744abb10f7bfd5364ffad7f4d2
+2010-05-17T02:43:56.986515Z
+68
 bowenl2
 
 
@@ -1033,7 +1033,7 @@ bowenl2
 
 
 
-366
+177
 
 FractusServer.java
 file
