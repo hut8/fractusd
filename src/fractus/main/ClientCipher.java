@@ -61,6 +61,10 @@ public class ClientCipher {
         this.encryptionManager = encryptionManager;
     }
 
+    public ECPoint getRemotePoint() {
+        return remotePublicPoint;
+    }
+
     public void negotiate(String keyEncoding, byte[] remotePublicKey)
     throws GeneralSecurityException {
                 if (!"X.509".equals(keyEncoding)) {
@@ -81,9 +85,6 @@ public class ClientCipher {
         }
 
         this.remotePublicPoint = this.remotePublicKey.getQ();
-        log.debug("Remote ECDH Public Key Q Value: \nX:" +
-                remotePublicPoint.getX().toString() + "\n" +
-                remotePublicPoint.getY().toString());
 
         // Extract CipherParameters
         this.secretKeySpec = encryptionManager.deriveKey(this.remotePublicKey);

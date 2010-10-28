@@ -51,10 +51,10 @@ public class FractusConnector
         queue = new ConcurrentLinkedQueue<FractusMessage>();
         // Create new client cipher
         clientCipher = new ClientCipher(em);
-        stateMachine = new StateMachine(handler);
+        stateMachine = new StateMachine(handler, this);
         // Set up the handler to receive only public key messages and nothing else
         handler.register(new MessageDescriptor(MessageDescriptor.PUBLIC_KEY),
-                new PublicKeyStrategy(this, clientCipher));
+                new PublicKeyStrategy(this, stateMachine, clientCipher));
     }
 
     public void disconnect() {

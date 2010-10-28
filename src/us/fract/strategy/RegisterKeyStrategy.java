@@ -5,6 +5,8 @@
 package us.fract.strategy;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import fractus.main.BinaryUtil;
+import fractus.main.ClientCipher;
 import fractus.main.FractusMessage;
 import fractus.main.UserAuthenticator;
 import fractus.main.UserCredentials;
@@ -22,13 +24,15 @@ import org.apache.log4j.Logger;
  */
 public class RegisterKeyStrategy
         implements PacketStrategy {
-
     private static Logger log = Logger.getLogger(RegisterKeyStrategy.class.getName());
-    private UserTracker tracker;
     private FractusConnector connector;
+    private ClientCipher clientCipher;
 
-    public RegisterKeyStrategy(UserTracker tracker, FractusConnector connector) {
-        this.tracker = tracker;
+    public RegisterKeyStrategy(ClientCipher clientCipher, FractusConnector connector) {
+        if (clientCipher == null || !clientCipher.isInitialized()) {
+            throw new IllegalStateException("Cipher not initialized when key registration requested");
+        }
+        this.clientCipher = clientCipher;
         this.connector = connector;
     }
 
@@ -76,8 +80,11 @@ public class RegisterKeyStrategy
         }
 
         log.info("Attempting to register key for " + username);
+        log.debug("Key is: " + BinaryUtil.encodeData(clientCipher.getRemotePoint().getEncoded()));
 
-        tracker.registerKey(null, username);
+        //tracker.registerKey(null, username);
+
+        // Now the client is authenticated
         
     }
 }
