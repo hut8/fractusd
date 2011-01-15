@@ -1,7 +1,5 @@
 package fractus.net;
 
-
-
 import fractus.main.MessageDescriptor;
 import fractus.main.PacketHandler;
 import fractus.main.BinaryUtil;
@@ -61,8 +59,7 @@ public class FractusConnector
         log.info("Disconnecting");
         try {
             socket.close();
-        } catch (IOException e) {
-        }
+        } catch (IOException e) { }
     }
 
     private void connectStreams() {

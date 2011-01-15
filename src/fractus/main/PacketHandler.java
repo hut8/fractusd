@@ -1,7 +1,5 @@
 package fractus.main;
 
-
-
 import fractus.strategy.PacketStrategy;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
