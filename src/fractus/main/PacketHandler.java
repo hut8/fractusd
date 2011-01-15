@@ -2,7 +2,7 @@ package fractus.main;
 
 
 
-import us.fract.strategy.PacketStrategy;
+import fractus.strategy.PacketStrategy;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;

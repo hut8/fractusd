@@ -23,8 +23,8 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 
 import org.apache.log4j.Logger;
-import us.fract.strategy.PublicKeyStrategy;
-import us.fract.strategy.StateMachine;
+import fractus.strategy.PublicKeyStrategy;
+import fractus.strategy.StateMachine;
 
 public class FractusConnector
         implements Runnable {
