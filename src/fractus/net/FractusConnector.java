@@ -30,6 +30,7 @@ public class FractusConnector
     static {
         log = Logger.getLogger(FractusConnector.class.getName());
     }
+    
     //private Delegate<DelegateMethod<ClientConnectionEventData>, ClientConnectionEventData> connectionStateChangeDelegate;
     private InetSocketAddress address;
     private EncryptionManager em;

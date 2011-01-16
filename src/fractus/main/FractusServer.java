@@ -5,9 +5,11 @@ import fractus.net.FractusConnector;
 import java.io.Console;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.Security;
 import java.util.HashMap;
@@ -69,7 +71,10 @@ public class FractusServer {
 
     public static void main(String[] args) {
         // Setup Logging
-        PropertyConfigurator.configure(FractusServer.class.getClassLoader().getResource("log4j.properties"));
+    	String cwd = System.getProperty("user.dir");
+		System.out.println(cwd);
+    	
+        PropertyConfigurator.configure("./lib/log4j.properties");
 
         log = Logger.getLogger(FractusServer.class.getName());
         log.info("Fractus Daemon");
