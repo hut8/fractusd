@@ -22,7 +22,6 @@ import javax.crypto.IllegalBlockSizeException;
 
 import org.apache.log4j.Logger;
 import fractus.strategy.PublicKeyStrategy;
-import fractus.strategy.StateMachine;
 
 public class FractusConnector
         implements Runnable {
@@ -41,7 +40,7 @@ public class FractusConnector
     private final ConcurrentLinkedQueue<FractusMessage> queue;
     private Thread consumer;
     private ClientCipher clientCipher;
-    private StateMachine stateMachine;
+    //private StateMachine stateMachine;
 
     public FractusConnector(Socket socket, EncryptionManager em) {
         this.socket = socket;
@@ -50,10 +49,10 @@ public class FractusConnector
         queue = new ConcurrentLinkedQueue<FractusMessage>();
         // Create new client cipher
         clientCipher = new ClientCipher(em);
-        stateMachine = new StateMachine(handler, this);
+        //stateMachine = new StateMachine(handler, this);
         // Set up the handler to receive only public key messages and nothing else
         handler.register(new MessageDescriptor(MessageDescriptor.PUBLIC_KEY),
-                new PublicKeyStrategy(this, stateMachine, clientCipher));
+                new PublicKeyStrategy(this, clientCipher));
     }
 
     public void disconnect() {
