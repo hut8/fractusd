@@ -71,10 +71,9 @@ public class FractusServer {
 
     public static void main(String[] args) {
         // Setup Logging
-    	String cwd = System.getProperty("user.dir");
-		System.out.println(cwd);
-    	
-        PropertyConfigurator.configure("./lib/log4j.properties");
+        PropertyConfigurator.configure(
+        		Class.class.getResource("/log4j.properties")
+        		);
 
         log = Logger.getLogger(FractusServer.class.getName());
         log.info("Fractus Daemon");
