@@ -44,6 +44,9 @@ public class MessageDescriptor {
     public final static short INSTANT_MESSAGE = 0x5789;
     // Status
     public final static short PUBLISH_STATUS = 0x448d;
+    // Error
+    public final static short PACKET_ERROR = 0x6baa;
+    
 
 
     public static boolean validateDescriptor(short type) {
