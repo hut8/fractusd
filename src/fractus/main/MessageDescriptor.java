@@ -1,14 +1,14 @@
-package fractus.main;
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-
+package fractus.main;
 
 import com.google.protobuf.Message;
+
 import fractus.net.ProtocolBuffer;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
