@@ -15,7 +15,6 @@ public class UserCredentials {
 		return password;
 	}
 
-	
 	public String toString() {
 		return username;
 	}

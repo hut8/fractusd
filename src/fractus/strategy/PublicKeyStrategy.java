@@ -20,7 +20,8 @@ public class PublicKeyStrategy
 implements PacketStrategy {
     private ClientCipher clientCipher;
     private FractusConnector fractusConnector;
-    private final static Logger log = Logger.getLogger(PublicKeyStrategy.class.getName());
+    private final static Logger log =
+    	Logger.getLogger(PublicKeyStrategy.class.getName());
 
     public PublicKeyStrategy(FractusConnector connector, ClientCipher clientCipher) {
         log.debug("Creating new Public Key Strategy with client cipher: " + clientCipher.toString());
@@ -55,7 +56,21 @@ implements PacketStrategy {
         } catch (GeneralSecurityException ex) {
             log.warn("Strategy failed; unable to negotiate AES key.", ex);
         }
+        
+        // TODO: Is this public key already registered?
+        
         log.debug("Strategy successfully deployed");
     }
 
+    /**
+     * Generates strategies after shared key negotiated
+     */
+    private void generateStrategies() {
+    	// Add Contact
+    	
+    	// Remove Contact
+    	// Contact Data
+    	// Identify Key
+    }
+    
 }

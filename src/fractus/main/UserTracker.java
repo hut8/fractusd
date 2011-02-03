@@ -14,8 +14,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.bouncycastle.math.ec.ECPoint;
 
-
-
 public class UserTracker {
     private Map<ECPoint, String> keyMap;
     private static Logger log;

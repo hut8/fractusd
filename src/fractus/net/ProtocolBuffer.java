@@ -296,6 +296,1485 @@ public final class ProtocolBuffer {
     // @@protoc_insertion_point(class_scope:InstantMessage)
   }
   
+  public static final class ClientInfo extends
+      com.google.protobuf.GeneratedMessage {
+    // Use ClientInfo.newBuilder() to construct.
+    private ClientInfo() {
+      initFields();
+    }
+    private ClientInfo(boolean noInit) {}
+    
+    private static final ClientInfo defaultInstance;
+    public static ClientInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public ClientInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fractus.net.ProtocolBuffer.internal_static_ClientInfo_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fractus.net.ProtocolBuffer.internal_static_ClientInfo_fieldAccessorTable;
+    }
+    
+    // optional string version = 1;
+    public static final int VERSION_FIELD_NUMBER = 1;
+    private boolean hasVersion;
+    private java.lang.String version_ = "";
+    public boolean hasVersion() { return hasVersion; }
+    public java.lang.String getVersion() { return version_; }
+    
+    // optional string location = 2;
+    public static final int LOCATION_FIELD_NUMBER = 2;
+    private boolean hasLocation;
+    private java.lang.String location_ = "";
+    public boolean hasLocation() { return hasLocation; }
+    public java.lang.String getLocation() { return location_; }
+    
+    private void initFields() {
+    }
+    public final boolean isInitialized() {
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasVersion()) {
+        output.writeString(1, getVersion());
+      }
+      if (hasLocation()) {
+        output.writeString(2, getLocation());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasVersion()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(1, getVersion());
+      }
+      if (hasLocation()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(2, getLocation());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ClientInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.ClientInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fractus.net.ProtocolBuffer.ClientInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private fractus.net.ProtocolBuffer.ClientInfo result;
+      
+      // Construct using fractus.net.ProtocolBuffer.ClientInfo.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new fractus.net.ProtocolBuffer.ClientInfo();
+        return builder;
+      }
+      
+      protected fractus.net.ProtocolBuffer.ClientInfo internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new fractus.net.ProtocolBuffer.ClientInfo();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fractus.net.ProtocolBuffer.ClientInfo.getDescriptor();
+      }
+      
+      public fractus.net.ProtocolBuffer.ClientInfo getDefaultInstanceForType() {
+        return fractus.net.ProtocolBuffer.ClientInfo.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public fractus.net.ProtocolBuffer.ClientInfo build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private fractus.net.ProtocolBuffer.ClientInfo buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public fractus.net.ProtocolBuffer.ClientInfo buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        fractus.net.ProtocolBuffer.ClientInfo returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fractus.net.ProtocolBuffer.ClientInfo) {
+          return mergeFrom((fractus.net.ProtocolBuffer.ClientInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fractus.net.ProtocolBuffer.ClientInfo other) {
+        if (other == fractus.net.ProtocolBuffer.ClientInfo.getDefaultInstance()) return this;
+        if (other.hasVersion()) {
+          setVersion(other.getVersion());
+        }
+        if (other.hasLocation()) {
+          setLocation(other.getLocation());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              setVersion(input.readString());
+              break;
+            }
+            case 18: {
+              setLocation(input.readString());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // optional string version = 1;
+      public boolean hasVersion() {
+        return result.hasVersion();
+      }
+      public java.lang.String getVersion() {
+        return result.getVersion();
+      }
+      public Builder setVersion(java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasVersion = true;
+        result.version_ = value;
+        return this;
+      }
+      public Builder clearVersion() {
+        result.hasVersion = false;
+        result.version_ = getDefaultInstance().getVersion();
+        return this;
+      }
+      
+      // optional string location = 2;
+      public boolean hasLocation() {
+        return result.hasLocation();
+      }
+      public java.lang.String getLocation() {
+        return result.getLocation();
+      }
+      public Builder setLocation(java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasLocation = true;
+        result.location_ = value;
+        return this;
+      }
+      public Builder clearLocation() {
+        result.hasLocation = false;
+        result.location_ = getDefaultInstance().getLocation();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:ClientInfo)
+    }
+    
+    static {
+      defaultInstance = new ClientInfo(true);
+      fractus.net.ProtocolBuffer.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:ClientInfo)
+  }
+  
+  public static final class ContactDataReq extends
+      com.google.protobuf.GeneratedMessage {
+    // Use ContactDataReq.newBuilder() to construct.
+    private ContactDataReq() {
+      initFields();
+    }
+    private ContactDataReq(boolean noInit) {}
+    
+    private static final ContactDataReq defaultInstance;
+    public static ContactDataReq getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public ContactDataReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fractus.net.ProtocolBuffer.internal_static_ContactDataReq_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fractus.net.ProtocolBuffer.internal_static_ContactDataReq_fieldAccessorTable;
+    }
+    
+    // repeated string usernames = 1;
+    public static final int USERNAMES_FIELD_NUMBER = 1;
+    private java.util.List<java.lang.String> usernames_ =
+      java.util.Collections.emptyList();
+    public java.util.List<java.lang.String> getUsernamesList() {
+      return usernames_;
+    }
+    public int getUsernamesCount() { return usernames_.size(); }
+    public java.lang.String getUsernames(int index) {
+      return usernames_.get(index);
+    }
+    
+    private void initFields() {
+    }
+    public final boolean isInitialized() {
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (java.lang.String element : getUsernamesList()) {
+        output.writeString(1, element);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      {
+        int dataSize = 0;
+        for (java.lang.String element : getUsernamesList()) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeStringSizeNoTag(element);
+        }
+        size += dataSize;
+        size += 1 * getUsernamesList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static fractus.net.ProtocolBuffer.ContactDataReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fractus.net.ProtocolBuffer.ContactDataReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private fractus.net.ProtocolBuffer.ContactDataReq result;
+      
+      // Construct using fractus.net.ProtocolBuffer.ContactDataReq.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new fractus.net.ProtocolBuffer.ContactDataReq();
+        return builder;
+      }
+      
+      protected fractus.net.ProtocolBuffer.ContactDataReq internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new fractus.net.ProtocolBuffer.ContactDataReq();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fractus.net.ProtocolBuffer.ContactDataReq.getDescriptor();
+      }
+      
+      public fractus.net.ProtocolBuffer.ContactDataReq getDefaultInstanceForType() {
+        return fractus.net.ProtocolBuffer.ContactDataReq.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public fractus.net.ProtocolBuffer.ContactDataReq build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private fractus.net.ProtocolBuffer.ContactDataReq buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public fractus.net.ProtocolBuffer.ContactDataReq buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        if (result.usernames_ != java.util.Collections.EMPTY_LIST) {
+          result.usernames_ =
+            java.util.Collections.unmodifiableList(result.usernames_);
+        }
+        fractus.net.ProtocolBuffer.ContactDataReq returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fractus.net.ProtocolBuffer.ContactDataReq) {
+          return mergeFrom((fractus.net.ProtocolBuffer.ContactDataReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fractus.net.ProtocolBuffer.ContactDataReq other) {
+        if (other == fractus.net.ProtocolBuffer.ContactDataReq.getDefaultInstance()) return this;
+        if (!other.usernames_.isEmpty()) {
+          if (result.usernames_.isEmpty()) {
+            result.usernames_ = new java.util.ArrayList<java.lang.String>();
+          }
+          result.usernames_.addAll(other.usernames_);
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              addUsernames(input.readString());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // repeated string usernames = 1;
+      public java.util.List<java.lang.String> getUsernamesList() {
+        return java.util.Collections.unmodifiableList(result.usernames_);
+      }
+      public int getUsernamesCount() {
+        return result.getUsernamesCount();
+      }
+      public java.lang.String getUsernames(int index) {
+        return result.getUsernames(index);
+      }
+      public Builder setUsernames(int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.usernames_.set(index, value);
+        return this;
+      }
+      public Builder addUsernames(java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  if (result.usernames_.isEmpty()) {
+          result.usernames_ = new java.util.ArrayList<java.lang.String>();
+        }
+        result.usernames_.add(value);
+        return this;
+      }
+      public Builder addAllUsernames(
+          java.lang.Iterable<? extends java.lang.String> values) {
+        if (result.usernames_.isEmpty()) {
+          result.usernames_ = new java.util.ArrayList<java.lang.String>();
+        }
+        super.addAll(values, result.usernames_);
+        return this;
+      }
+      public Builder clearUsernames() {
+        result.usernames_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:ContactDataReq)
+    }
+    
+    static {
+      defaultInstance = new ContactDataReq(true);
+      fractus.net.ProtocolBuffer.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:ContactDataReq)
+  }
+  
+  public static final class ContactData extends
+      com.google.protobuf.GeneratedMessage {
+    // Use ContactData.newBuilder() to construct.
+    private ContactData() {
+      initFields();
+    }
+    private ContactData(boolean noInit) {}
+    
+    private static final ContactData defaultInstance;
+    public static ContactData getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public ContactData getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fractus.net.ProtocolBuffer.internal_static_ContactData_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fractus.net.ProtocolBuffer.internal_static_ContactData_fieldAccessorTable;
+    }
+    
+    // required string username = 1;
+    public static final int USERNAME_FIELD_NUMBER = 1;
+    private boolean hasUsername;
+    private java.lang.String username_ = "";
+    public boolean hasUsername() { return hasUsername; }
+    public java.lang.String getUsername() { return username_; }
+    
+    // repeated .Location location = 2;
+    public static final int LOCATION_FIELD_NUMBER = 2;
+    private java.util.List<fractus.net.ProtocolBuffer.Location> location_ =
+      java.util.Collections.emptyList();
+    public java.util.List<fractus.net.ProtocolBuffer.Location> getLocationList() {
+      return location_;
+    }
+    public int getLocationCount() { return location_.size(); }
+    public fractus.net.ProtocolBuffer.Location getLocation(int index) {
+      return location_.get(index);
+    }
+    
+    private void initFields() {
+    }
+    public final boolean isInitialized() {
+      if (!hasUsername) return false;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasUsername()) {
+        output.writeString(1, getUsername());
+      }
+      for (fractus.net.ProtocolBuffer.Location element : getLocationList()) {
+        output.writeMessage(2, element);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasUsername()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(1, getUsername());
+      }
+      for (fractus.net.ProtocolBuffer.Location element : getLocationList()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, element);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static fractus.net.ProtocolBuffer.ContactData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.ContactData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.ContactData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fractus.net.ProtocolBuffer.ContactData prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private fractus.net.ProtocolBuffer.ContactData result;
+      
+      // Construct using fractus.net.ProtocolBuffer.ContactData.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new fractus.net.ProtocolBuffer.ContactData();
+        return builder;
+      }
+      
+      protected fractus.net.ProtocolBuffer.ContactData internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new fractus.net.ProtocolBuffer.ContactData();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fractus.net.ProtocolBuffer.ContactData.getDescriptor();
+      }
+      
+      public fractus.net.ProtocolBuffer.ContactData getDefaultInstanceForType() {
+        return fractus.net.ProtocolBuffer.ContactData.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public fractus.net.ProtocolBuffer.ContactData build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private fractus.net.ProtocolBuffer.ContactData buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public fractus.net.ProtocolBuffer.ContactData buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        if (result.location_ != java.util.Collections.EMPTY_LIST) {
+          result.location_ =
+            java.util.Collections.unmodifiableList(result.location_);
+        }
+        fractus.net.ProtocolBuffer.ContactData returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fractus.net.ProtocolBuffer.ContactData) {
+          return mergeFrom((fractus.net.ProtocolBuffer.ContactData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fractus.net.ProtocolBuffer.ContactData other) {
+        if (other == fractus.net.ProtocolBuffer.ContactData.getDefaultInstance()) return this;
+        if (other.hasUsername()) {
+          setUsername(other.getUsername());
+        }
+        if (!other.location_.isEmpty()) {
+          if (result.location_.isEmpty()) {
+            result.location_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.Location>();
+          }
+          result.location_.addAll(other.location_);
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              setUsername(input.readString());
+              break;
+            }
+            case 18: {
+              fractus.net.ProtocolBuffer.Location.Builder subBuilder = fractus.net.ProtocolBuffer.Location.newBuilder();
+              input.readMessage(subBuilder, extensionRegistry);
+              addLocation(subBuilder.buildPartial());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required string username = 1;
+      public boolean hasUsername() {
+        return result.hasUsername();
+      }
+      public java.lang.String getUsername() {
+        return result.getUsername();
+      }
+      public Builder setUsername(java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasUsername = true;
+        result.username_ = value;
+        return this;
+      }
+      public Builder clearUsername() {
+        result.hasUsername = false;
+        result.username_ = getDefaultInstance().getUsername();
+        return this;
+      }
+      
+      // repeated .Location location = 2;
+      public java.util.List<fractus.net.ProtocolBuffer.Location> getLocationList() {
+        return java.util.Collections.unmodifiableList(result.location_);
+      }
+      public int getLocationCount() {
+        return result.getLocationCount();
+      }
+      public fractus.net.ProtocolBuffer.Location getLocation(int index) {
+        return result.getLocation(index);
+      }
+      public Builder setLocation(int index, fractus.net.ProtocolBuffer.Location value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.location_.set(index, value);
+        return this;
+      }
+      public Builder setLocation(int index, fractus.net.ProtocolBuffer.Location.Builder builderForValue) {
+        result.location_.set(index, builderForValue.build());
+        return this;
+      }
+      public Builder addLocation(fractus.net.ProtocolBuffer.Location value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        if (result.location_.isEmpty()) {
+          result.location_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.Location>();
+        }
+        result.location_.add(value);
+        return this;
+      }
+      public Builder addLocation(fractus.net.ProtocolBuffer.Location.Builder builderForValue) {
+        if (result.location_.isEmpty()) {
+          result.location_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.Location>();
+        }
+        result.location_.add(builderForValue.build());
+        return this;
+      }
+      public Builder addAllLocation(
+          java.lang.Iterable<? extends fractus.net.ProtocolBuffer.Location> values) {
+        if (result.location_.isEmpty()) {
+          result.location_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.Location>();
+        }
+        super.addAll(values, result.location_);
+        return this;
+      }
+      public Builder clearLocation() {
+        result.location_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:ContactData)
+    }
+    
+    static {
+      defaultInstance = new ContactData(true);
+      fractus.net.ProtocolBuffer.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:ContactData)
+  }
+  
+  public static final class ContactDataRes extends
+      com.google.protobuf.GeneratedMessage {
+    // Use ContactDataRes.newBuilder() to construct.
+    private ContactDataRes() {
+      initFields();
+    }
+    private ContactDataRes(boolean noInit) {}
+    
+    private static final ContactDataRes defaultInstance;
+    public static ContactDataRes getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public ContactDataRes getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fractus.net.ProtocolBuffer.internal_static_ContactDataRes_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fractus.net.ProtocolBuffer.internal_static_ContactDataRes_fieldAccessorTable;
+    }
+    
+    public enum ResponseCode
+        implements com.google.protobuf.ProtocolMessageEnum {
+      SUCCESS(0, 0),
+      SERVER_ERROR(1, 1),
+      AUTHENTICATION_FAILURE(2, 2),
+      ;
+      
+      
+      public final int getNumber() { return value; }
+      
+      public static ResponseCode valueOf(int value) {
+        switch (value) {
+          case 0: return SUCCESS;
+          case 1: return SERVER_ERROR;
+          case 2: return AUTHENTICATION_FAILURE;
+          default: return null;
+        }
+      }
+      
+      public static com.google.protobuf.Internal.EnumLiteMap<ResponseCode>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<ResponseCode>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<ResponseCode>() {
+              public ResponseCode findValueByNumber(int number) {
+                return ResponseCode.valueOf(number)
+      ;        }
+            };
+      
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return fractus.net.ProtocolBuffer.ContactDataRes.getDescriptor().getEnumTypes().get(0);
+      }
+      
+      private static final ResponseCode[] VALUES = {
+        SUCCESS, SERVER_ERROR, AUTHENTICATION_FAILURE, 
+      };
+      public static ResponseCode valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+      private final int index;
+      private final int value;
+      private ResponseCode(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+      
+      static {
+        fractus.net.ProtocolBuffer.getDescriptor();
+      }
+      
+      // @@protoc_insertion_point(enum_scope:ContactDataRes.ResponseCode)
+    }
+    
+    // required .ContactDataRes.ResponseCode code = 1;
+    public static final int CODE_FIELD_NUMBER = 1;
+    private boolean hasCode;
+    private fractus.net.ProtocolBuffer.ContactDataRes.ResponseCode code_;
+    public boolean hasCode() { return hasCode; }
+    public fractus.net.ProtocolBuffer.ContactDataRes.ResponseCode getCode() { return code_; }
+    
+    // repeated .ContactData contact_data = 2;
+    public static final int CONTACT_DATA_FIELD_NUMBER = 2;
+    private java.util.List<fractus.net.ProtocolBuffer.ContactData> contactData_ =
+      java.util.Collections.emptyList();
+    public java.util.List<fractus.net.ProtocolBuffer.ContactData> getContactDataList() {
+      return contactData_;
+    }
+    public int getContactDataCount() { return contactData_.size(); }
+    public fractus.net.ProtocolBuffer.ContactData getContactData(int index) {
+      return contactData_.get(index);
+    }
+    
+    private void initFields() {
+      code_ = fractus.net.ProtocolBuffer.ContactDataRes.ResponseCode.SUCCESS;
+    }
+    public final boolean isInitialized() {
+      if (!hasCode) return false;
+      for (fractus.net.ProtocolBuffer.ContactData element : getContactDataList()) {
+        if (!element.isInitialized()) return false;
+      }
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasCode()) {
+        output.writeEnum(1, getCode().getNumber());
+      }
+      for (fractus.net.ProtocolBuffer.ContactData element : getContactDataList()) {
+        output.writeMessage(2, element);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasCode()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, getCode().getNumber());
+      }
+      for (fractus.net.ProtocolBuffer.ContactData element : getContactDataList()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, element);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static fractus.net.ProtocolBuffer.ContactDataRes parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataRes parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataRes parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataRes parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataRes parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataRes parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataRes parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataRes parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataRes parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.ContactDataRes parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fractus.net.ProtocolBuffer.ContactDataRes prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private fractus.net.ProtocolBuffer.ContactDataRes result;
+      
+      // Construct using fractus.net.ProtocolBuffer.ContactDataRes.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new fractus.net.ProtocolBuffer.ContactDataRes();
+        return builder;
+      }
+      
+      protected fractus.net.ProtocolBuffer.ContactDataRes internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new fractus.net.ProtocolBuffer.ContactDataRes();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fractus.net.ProtocolBuffer.ContactDataRes.getDescriptor();
+      }
+      
+      public fractus.net.ProtocolBuffer.ContactDataRes getDefaultInstanceForType() {
+        return fractus.net.ProtocolBuffer.ContactDataRes.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public fractus.net.ProtocolBuffer.ContactDataRes build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private fractus.net.ProtocolBuffer.ContactDataRes buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public fractus.net.ProtocolBuffer.ContactDataRes buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        if (result.contactData_ != java.util.Collections.EMPTY_LIST) {
+          result.contactData_ =
+            java.util.Collections.unmodifiableList(result.contactData_);
+        }
+        fractus.net.ProtocolBuffer.ContactDataRes returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fractus.net.ProtocolBuffer.ContactDataRes) {
+          return mergeFrom((fractus.net.ProtocolBuffer.ContactDataRes)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fractus.net.ProtocolBuffer.ContactDataRes other) {
+        if (other == fractus.net.ProtocolBuffer.ContactDataRes.getDefaultInstance()) return this;
+        if (other.hasCode()) {
+          setCode(other.getCode());
+        }
+        if (!other.contactData_.isEmpty()) {
+          if (result.contactData_.isEmpty()) {
+            result.contactData_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.ContactData>();
+          }
+          result.contactData_.addAll(other.contactData_);
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              fractus.net.ProtocolBuffer.ContactDataRes.ResponseCode value = fractus.net.ProtocolBuffer.ContactDataRes.ResponseCode.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                setCode(value);
+              }
+              break;
+            }
+            case 18: {
+              fractus.net.ProtocolBuffer.ContactData.Builder subBuilder = fractus.net.ProtocolBuffer.ContactData.newBuilder();
+              input.readMessage(subBuilder, extensionRegistry);
+              addContactData(subBuilder.buildPartial());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required .ContactDataRes.ResponseCode code = 1;
+      public boolean hasCode() {
+        return result.hasCode();
+      }
+      public fractus.net.ProtocolBuffer.ContactDataRes.ResponseCode getCode() {
+        return result.getCode();
+      }
+      public Builder setCode(fractus.net.ProtocolBuffer.ContactDataRes.ResponseCode value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasCode = true;
+        result.code_ = value;
+        return this;
+      }
+      public Builder clearCode() {
+        result.hasCode = false;
+        result.code_ = fractus.net.ProtocolBuffer.ContactDataRes.ResponseCode.SUCCESS;
+        return this;
+      }
+      
+      // repeated .ContactData contact_data = 2;
+      public java.util.List<fractus.net.ProtocolBuffer.ContactData> getContactDataList() {
+        return java.util.Collections.unmodifiableList(result.contactData_);
+      }
+      public int getContactDataCount() {
+        return result.getContactDataCount();
+      }
+      public fractus.net.ProtocolBuffer.ContactData getContactData(int index) {
+        return result.getContactData(index);
+      }
+      public Builder setContactData(int index, fractus.net.ProtocolBuffer.ContactData value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.contactData_.set(index, value);
+        return this;
+      }
+      public Builder setContactData(int index, fractus.net.ProtocolBuffer.ContactData.Builder builderForValue) {
+        result.contactData_.set(index, builderForValue.build());
+        return this;
+      }
+      public Builder addContactData(fractus.net.ProtocolBuffer.ContactData value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        if (result.contactData_.isEmpty()) {
+          result.contactData_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.ContactData>();
+        }
+        result.contactData_.add(value);
+        return this;
+      }
+      public Builder addContactData(fractus.net.ProtocolBuffer.ContactData.Builder builderForValue) {
+        if (result.contactData_.isEmpty()) {
+          result.contactData_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.ContactData>();
+        }
+        result.contactData_.add(builderForValue.build());
+        return this;
+      }
+      public Builder addAllContactData(
+          java.lang.Iterable<? extends fractus.net.ProtocolBuffer.ContactData> values) {
+        if (result.contactData_.isEmpty()) {
+          result.contactData_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.ContactData>();
+        }
+        super.addAll(values, result.contactData_);
+        return this;
+      }
+      public Builder clearContactData() {
+        result.contactData_ = java.util.Collections.emptyList();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:ContactDataRes)
+    }
+    
+    static {
+      defaultInstance = new ContactDataRes(true);
+      fractus.net.ProtocolBuffer.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:ContactDataRes)
+  }
+  
   public static final class PublicKey extends
       com.google.protobuf.GeneratedMessage {
     // Use PublicKey.newBuilder() to construct.
@@ -625,335 +2104,6 @@ public final class ProtocolBuffer {
     }
     
     // @@protoc_insertion_point(class_scope:PublicKey)
-  }
-  
-  public static final class ClientInfo extends
-      com.google.protobuf.GeneratedMessage {
-    // Use ClientInfo.newBuilder() to construct.
-    private ClientInfo() {
-      initFields();
-    }
-    private ClientInfo(boolean noInit) {}
-    
-    private static final ClientInfo defaultInstance;
-    public static ClientInfo getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public ClientInfo getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return fractus.net.ProtocolBuffer.internal_static_ClientInfo_descriptor;
-    }
-    
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return fractus.net.ProtocolBuffer.internal_static_ClientInfo_fieldAccessorTable;
-    }
-    
-    // optional string version = 1;
-    public static final int VERSION_FIELD_NUMBER = 1;
-    private boolean hasVersion;
-    private java.lang.String version_ = "";
-    public boolean hasVersion() { return hasVersion; }
-    public java.lang.String getVersion() { return version_; }
-    
-    // optional string location = 2;
-    public static final int LOCATION_FIELD_NUMBER = 2;
-    private boolean hasLocation;
-    private java.lang.String location_ = "";
-    public boolean hasLocation() { return hasLocation; }
-    public java.lang.String getLocation() { return location_; }
-    
-    private void initFields() {
-    }
-    public final boolean isInitialized() {
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (hasVersion()) {
-        output.writeString(1, getVersion());
-      }
-      if (hasLocation()) {
-        output.writeString(2, getLocation());
-      }
-      getUnknownFields().writeTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (hasVersion()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeStringSize(1, getVersion());
-      }
-      if (hasLocation()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeStringSize(2, getLocation());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static fractus.net.ProtocolBuffer.ClientInfo parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static fractus.net.ProtocolBuffer.ClientInfo parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static fractus.net.ProtocolBuffer.ClientInfo parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(fractus.net.ProtocolBuffer.ClientInfo prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> {
-      private fractus.net.ProtocolBuffer.ClientInfo result;
-      
-      // Construct using fractus.net.ProtocolBuffer.ClientInfo.newBuilder()
-      private Builder() {}
-      
-      private static Builder create() {
-        Builder builder = new Builder();
-        builder.result = new fractus.net.ProtocolBuffer.ClientInfo();
-        return builder;
-      }
-      
-      protected fractus.net.ProtocolBuffer.ClientInfo internalGetResult() {
-        return result;
-      }
-      
-      public Builder clear() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "Cannot call clear() after build().");
-        }
-        result = new fractus.net.ProtocolBuffer.ClientInfo();
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(result);
-      }
-      
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return fractus.net.ProtocolBuffer.ClientInfo.getDescriptor();
-      }
-      
-      public fractus.net.ProtocolBuffer.ClientInfo getDefaultInstanceForType() {
-        return fractus.net.ProtocolBuffer.ClientInfo.getDefaultInstance();
-      }
-      
-      public boolean isInitialized() {
-        return result.isInitialized();
-      }
-      public fractus.net.ProtocolBuffer.ClientInfo build() {
-        if (result != null && !isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return buildPartial();
-      }
-      
-      private fractus.net.ProtocolBuffer.ClientInfo buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        if (!isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return buildPartial();
-      }
-      
-      public fractus.net.ProtocolBuffer.ClientInfo buildPartial() {
-        if (result == null) {
-          throw new IllegalStateException(
-            "build() has already been called on this Builder.");
-        }
-        fractus.net.ProtocolBuffer.ClientInfo returnMe = result;
-        result = null;
-        return returnMe;
-      }
-      
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof fractus.net.ProtocolBuffer.ClientInfo) {
-          return mergeFrom((fractus.net.ProtocolBuffer.ClientInfo)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-      
-      public Builder mergeFrom(fractus.net.ProtocolBuffer.ClientInfo other) {
-        if (other == fractus.net.ProtocolBuffer.ClientInfo.getDefaultInstance()) return this;
-        if (other.hasVersion()) {
-          setVersion(other.getVersion());
-        }
-        if (other.hasLocation()) {
-          setLocation(other.getLocation());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
-                return this;
-              }
-              break;
-            }
-            case 10: {
-              setVersion(input.readString());
-              break;
-            }
-            case 18: {
-              setLocation(input.readString());
-              break;
-            }
-          }
-        }
-      }
-      
-      
-      // optional string version = 1;
-      public boolean hasVersion() {
-        return result.hasVersion();
-      }
-      public java.lang.String getVersion() {
-        return result.getVersion();
-      }
-      public Builder setVersion(java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasVersion = true;
-        result.version_ = value;
-        return this;
-      }
-      public Builder clearVersion() {
-        result.hasVersion = false;
-        result.version_ = getDefaultInstance().getVersion();
-        return this;
-      }
-      
-      // optional string location = 2;
-      public boolean hasLocation() {
-        return result.hasLocation();
-      }
-      public java.lang.String getLocation() {
-        return result.getLocation();
-      }
-      public Builder setLocation(java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  result.hasLocation = true;
-        result.location_ = value;
-        return this;
-      }
-      public Builder clearLocation() {
-        result.hasLocation = false;
-        result.location_ = getDefaultInstance().getLocation();
-        return this;
-      }
-      
-      // @@protoc_insertion_point(builder_scope:ClientInfo)
-    }
-    
-    static {
-      defaultInstance = new ClientInfo(true);
-      fractus.net.ProtocolBuffer.internalForceInit();
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:ClientInfo)
   }
   
   public static final class RegisterKeyReq extends
@@ -1984,6 +3134,1017 @@ public final class ProtocolBuffer {
     // @@protoc_insertion_point(class_scope:IdentifyKeyReq)
   }
   
+  public static final class IdentifyKeyRes extends
+      com.google.protobuf.GeneratedMessage {
+    // Use IdentifyKeyRes.newBuilder() to construct.
+    private IdentifyKeyRes() {
+      initFields();
+    }
+    private IdentifyKeyRes(boolean noInit) {}
+    
+    private static final IdentifyKeyRes defaultInstance;
+    public static IdentifyKeyRes getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public IdentifyKeyRes getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fractus.net.ProtocolBuffer.internal_static_IdentifyKeyRes_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fractus.net.ProtocolBuffer.internal_static_IdentifyKeyRes_fieldAccessorTable;
+    }
+    
+    public enum ResponseCode
+        implements com.google.protobuf.ProtocolMessageEnum {
+      SUCCESS(0, 0),
+      UNKNOWN_KEY(1, 1),
+      ;
+      
+      
+      public final int getNumber() { return value; }
+      
+      public static ResponseCode valueOf(int value) {
+        switch (value) {
+          case 0: return SUCCESS;
+          case 1: return UNKNOWN_KEY;
+          default: return null;
+        }
+      }
+      
+      public static com.google.protobuf.Internal.EnumLiteMap<ResponseCode>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<ResponseCode>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<ResponseCode>() {
+              public ResponseCode findValueByNumber(int number) {
+                return ResponseCode.valueOf(number)
+      ;        }
+            };
+      
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return fractus.net.ProtocolBuffer.IdentifyKeyRes.getDescriptor().getEnumTypes().get(0);
+      }
+      
+      private static final ResponseCode[] VALUES = {
+        SUCCESS, UNKNOWN_KEY, 
+      };
+      public static ResponseCode valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+      private final int index;
+      private final int value;
+      private ResponseCode(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+      
+      static {
+        fractus.net.ProtocolBuffer.getDescriptor();
+      }
+      
+      // @@protoc_insertion_point(enum_scope:IdentifyKeyRes.ResponseCode)
+    }
+    
+    // required .IdentifyKeyRes.ResponseCode code = 1;
+    public static final int CODE_FIELD_NUMBER = 1;
+    private boolean hasCode;
+    private fractus.net.ProtocolBuffer.IdentifyKeyRes.ResponseCode code_;
+    public boolean hasCode() { return hasCode; }
+    public fractus.net.ProtocolBuffer.IdentifyKeyRes.ResponseCode getCode() { return code_; }
+    
+    // optional string username = 2;
+    public static final int USERNAME_FIELD_NUMBER = 2;
+    private boolean hasUsername;
+    private java.lang.String username_ = "";
+    public boolean hasUsername() { return hasUsername; }
+    public java.lang.String getUsername() { return username_; }
+    
+    private void initFields() {
+      code_ = fractus.net.ProtocolBuffer.IdentifyKeyRes.ResponseCode.SUCCESS;
+    }
+    public final boolean isInitialized() {
+      if (!hasCode) return false;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasCode()) {
+        output.writeEnum(1, getCode().getNumber());
+      }
+      if (hasUsername()) {
+        output.writeString(2, getUsername());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasCode()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, getCode().getNumber());
+      }
+      if (hasUsername()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(2, getUsername());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static fractus.net.ProtocolBuffer.IdentifyKeyRes parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.IdentifyKeyRes parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.IdentifyKeyRes parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.IdentifyKeyRes parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.IdentifyKeyRes parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.IdentifyKeyRes parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.IdentifyKeyRes parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.IdentifyKeyRes parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.IdentifyKeyRes parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.IdentifyKeyRes parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fractus.net.ProtocolBuffer.IdentifyKeyRes prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private fractus.net.ProtocolBuffer.IdentifyKeyRes result;
+      
+      // Construct using fractus.net.ProtocolBuffer.IdentifyKeyRes.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new fractus.net.ProtocolBuffer.IdentifyKeyRes();
+        return builder;
+      }
+      
+      protected fractus.net.ProtocolBuffer.IdentifyKeyRes internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new fractus.net.ProtocolBuffer.IdentifyKeyRes();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fractus.net.ProtocolBuffer.IdentifyKeyRes.getDescriptor();
+      }
+      
+      public fractus.net.ProtocolBuffer.IdentifyKeyRes getDefaultInstanceForType() {
+        return fractus.net.ProtocolBuffer.IdentifyKeyRes.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public fractus.net.ProtocolBuffer.IdentifyKeyRes build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private fractus.net.ProtocolBuffer.IdentifyKeyRes buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public fractus.net.ProtocolBuffer.IdentifyKeyRes buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        fractus.net.ProtocolBuffer.IdentifyKeyRes returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fractus.net.ProtocolBuffer.IdentifyKeyRes) {
+          return mergeFrom((fractus.net.ProtocolBuffer.IdentifyKeyRes)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fractus.net.ProtocolBuffer.IdentifyKeyRes other) {
+        if (other == fractus.net.ProtocolBuffer.IdentifyKeyRes.getDefaultInstance()) return this;
+        if (other.hasCode()) {
+          setCode(other.getCode());
+        }
+        if (other.hasUsername()) {
+          setUsername(other.getUsername());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              fractus.net.ProtocolBuffer.IdentifyKeyRes.ResponseCode value = fractus.net.ProtocolBuffer.IdentifyKeyRes.ResponseCode.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                setCode(value);
+              }
+              break;
+            }
+            case 18: {
+              setUsername(input.readString());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required .IdentifyKeyRes.ResponseCode code = 1;
+      public boolean hasCode() {
+        return result.hasCode();
+      }
+      public fractus.net.ProtocolBuffer.IdentifyKeyRes.ResponseCode getCode() {
+        return result.getCode();
+      }
+      public Builder setCode(fractus.net.ProtocolBuffer.IdentifyKeyRes.ResponseCode value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasCode = true;
+        result.code_ = value;
+        return this;
+      }
+      public Builder clearCode() {
+        result.hasCode = false;
+        result.code_ = fractus.net.ProtocolBuffer.IdentifyKeyRes.ResponseCode.SUCCESS;
+        return this;
+      }
+      
+      // optional string username = 2;
+      public boolean hasUsername() {
+        return result.hasUsername();
+      }
+      public java.lang.String getUsername() {
+        return result.getUsername();
+      }
+      public Builder setUsername(java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasUsername = true;
+        result.username_ = value;
+        return this;
+      }
+      public Builder clearUsername() {
+        result.hasUsername = false;
+        result.username_ = getDefaultInstance().getUsername();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:IdentifyKeyRes)
+    }
+    
+    static {
+      defaultInstance = new IdentifyKeyRes(true);
+      fractus.net.ProtocolBuffer.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:IdentifyKeyRes)
+  }
+  
+  public static final class RevokeKeyReq extends
+      com.google.protobuf.GeneratedMessage {
+    // Use RevokeKeyReq.newBuilder() to construct.
+    private RevokeKeyReq() {
+      initFields();
+    }
+    private RevokeKeyReq(boolean noInit) {}
+    
+    private static final RevokeKeyReq defaultInstance;
+    public static RevokeKeyReq getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public RevokeKeyReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fractus.net.ProtocolBuffer.internal_static_RevokeKeyReq_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fractus.net.ProtocolBuffer.internal_static_RevokeKeyReq_fieldAccessorTable;
+    }
+    
+    private void initFields() {
+    }
+    public final boolean isInitialized() {
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static fractus.net.ProtocolBuffer.RevokeKeyReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fractus.net.ProtocolBuffer.RevokeKeyReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private fractus.net.ProtocolBuffer.RevokeKeyReq result;
+      
+      // Construct using fractus.net.ProtocolBuffer.RevokeKeyReq.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new fractus.net.ProtocolBuffer.RevokeKeyReq();
+        return builder;
+      }
+      
+      protected fractus.net.ProtocolBuffer.RevokeKeyReq internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new fractus.net.ProtocolBuffer.RevokeKeyReq();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fractus.net.ProtocolBuffer.RevokeKeyReq.getDescriptor();
+      }
+      
+      public fractus.net.ProtocolBuffer.RevokeKeyReq getDefaultInstanceForType() {
+        return fractus.net.ProtocolBuffer.RevokeKeyReq.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public fractus.net.ProtocolBuffer.RevokeKeyReq build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private fractus.net.ProtocolBuffer.RevokeKeyReq buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public fractus.net.ProtocolBuffer.RevokeKeyReq buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        fractus.net.ProtocolBuffer.RevokeKeyReq returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fractus.net.ProtocolBuffer.RevokeKeyReq) {
+          return mergeFrom((fractus.net.ProtocolBuffer.RevokeKeyReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fractus.net.ProtocolBuffer.RevokeKeyReq other) {
+        if (other == fractus.net.ProtocolBuffer.RevokeKeyReq.getDefaultInstance()) return this;
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // @@protoc_insertion_point(builder_scope:RevokeKeyReq)
+    }
+    
+    static {
+      defaultInstance = new RevokeKeyReq(true);
+      fractus.net.ProtocolBuffer.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:RevokeKeyReq)
+  }
+  
+  public static final class RevokeKeyRes extends
+      com.google.protobuf.GeneratedMessage {
+    // Use RevokeKeyRes.newBuilder() to construct.
+    private RevokeKeyRes() {
+      initFields();
+    }
+    private RevokeKeyRes(boolean noInit) {}
+    
+    private static final RevokeKeyRes defaultInstance;
+    public static RevokeKeyRes getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public RevokeKeyRes getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fractus.net.ProtocolBuffer.internal_static_RevokeKeyRes_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fractus.net.ProtocolBuffer.internal_static_RevokeKeyRes_fieldAccessorTable;
+    }
+    
+    public enum ResponseCode
+        implements com.google.protobuf.ProtocolMessageEnum {
+      SUCCESS(0, 0),
+      SERVER_ERROR(1, 1),
+      ;
+      
+      
+      public final int getNumber() { return value; }
+      
+      public static ResponseCode valueOf(int value) {
+        switch (value) {
+          case 0: return SUCCESS;
+          case 1: return SERVER_ERROR;
+          default: return null;
+        }
+      }
+      
+      public static com.google.protobuf.Internal.EnumLiteMap<ResponseCode>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<ResponseCode>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<ResponseCode>() {
+              public ResponseCode findValueByNumber(int number) {
+                return ResponseCode.valueOf(number)
+      ;        }
+            };
+      
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return fractus.net.ProtocolBuffer.RevokeKeyRes.getDescriptor().getEnumTypes().get(0);
+      }
+      
+      private static final ResponseCode[] VALUES = {
+        SUCCESS, SERVER_ERROR, 
+      };
+      public static ResponseCode valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+      private final int index;
+      private final int value;
+      private ResponseCode(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+      
+      static {
+        fractus.net.ProtocolBuffer.getDescriptor();
+      }
+      
+      // @@protoc_insertion_point(enum_scope:RevokeKeyRes.ResponseCode)
+    }
+    
+    // required .RevokeKeyRes.ResponseCode code = 1;
+    public static final int CODE_FIELD_NUMBER = 1;
+    private boolean hasCode;
+    private fractus.net.ProtocolBuffer.RevokeKeyRes.ResponseCode code_;
+    public boolean hasCode() { return hasCode; }
+    public fractus.net.ProtocolBuffer.RevokeKeyRes.ResponseCode getCode() { return code_; }
+    
+    private void initFields() {
+      code_ = fractus.net.ProtocolBuffer.RevokeKeyRes.ResponseCode.SUCCESS;
+    }
+    public final boolean isInitialized() {
+      if (!hasCode) return false;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasCode()) {
+        output.writeEnum(1, getCode().getNumber());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasCode()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, getCode().getNumber());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static fractus.net.ProtocolBuffer.RevokeKeyRes parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyRes parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyRes parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyRes parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyRes parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyRes parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyRes parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyRes parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyRes parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RevokeKeyRes parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fractus.net.ProtocolBuffer.RevokeKeyRes prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private fractus.net.ProtocolBuffer.RevokeKeyRes result;
+      
+      // Construct using fractus.net.ProtocolBuffer.RevokeKeyRes.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new fractus.net.ProtocolBuffer.RevokeKeyRes();
+        return builder;
+      }
+      
+      protected fractus.net.ProtocolBuffer.RevokeKeyRes internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new fractus.net.ProtocolBuffer.RevokeKeyRes();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fractus.net.ProtocolBuffer.RevokeKeyRes.getDescriptor();
+      }
+      
+      public fractus.net.ProtocolBuffer.RevokeKeyRes getDefaultInstanceForType() {
+        return fractus.net.ProtocolBuffer.RevokeKeyRes.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public fractus.net.ProtocolBuffer.RevokeKeyRes build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private fractus.net.ProtocolBuffer.RevokeKeyRes buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public fractus.net.ProtocolBuffer.RevokeKeyRes buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        fractus.net.ProtocolBuffer.RevokeKeyRes returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fractus.net.ProtocolBuffer.RevokeKeyRes) {
+          return mergeFrom((fractus.net.ProtocolBuffer.RevokeKeyRes)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fractus.net.ProtocolBuffer.RevokeKeyRes other) {
+        if (other == fractus.net.ProtocolBuffer.RevokeKeyRes.getDefaultInstance()) return this;
+        if (other.hasCode()) {
+          setCode(other.getCode());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              fractus.net.ProtocolBuffer.RevokeKeyRes.ResponseCode value = fractus.net.ProtocolBuffer.RevokeKeyRes.ResponseCode.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                setCode(value);
+              }
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required .RevokeKeyRes.ResponseCode code = 1;
+      public boolean hasCode() {
+        return result.hasCode();
+      }
+      public fractus.net.ProtocolBuffer.RevokeKeyRes.ResponseCode getCode() {
+        return result.getCode();
+      }
+      public Builder setCode(fractus.net.ProtocolBuffer.RevokeKeyRes.ResponseCode value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasCode = true;
+        result.code_ = value;
+        return this;
+      }
+      public Builder clearCode() {
+        result.hasCode = false;
+        result.code_ = fractus.net.ProtocolBuffer.RevokeKeyRes.ResponseCode.SUCCESS;
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:RevokeKeyRes)
+    }
+    
+    static {
+      defaultInstance = new RevokeKeyRes(true);
+      fractus.net.ProtocolBuffer.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:RevokeKeyRes)
+  }
+  
   public static final class Location extends
       com.google.protobuf.GeneratedMessage {
     // Use Location.newBuilder() to construct.
@@ -3007,21 +5168,1382 @@ public final class ProtocolBuffer {
     // @@protoc_insertion_point(class_scope:RegisterLocationRes)
   }
   
+  public static final class AddContactReq extends
+      com.google.protobuf.GeneratedMessage {
+    // Use AddContactReq.newBuilder() to construct.
+    private AddContactReq() {
+      initFields();
+    }
+    private AddContactReq(boolean noInit) {}
+    
+    private static final AddContactReq defaultInstance;
+    public static AddContactReq getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public AddContactReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fractus.net.ProtocolBuffer.internal_static_AddContactReq_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fractus.net.ProtocolBuffer.internal_static_AddContactReq_fieldAccessorTable;
+    }
+    
+    // optional string username = 1;
+    public static final int USERNAME_FIELD_NUMBER = 1;
+    private boolean hasUsername;
+    private java.lang.String username_ = "";
+    public boolean hasUsername() { return hasUsername; }
+    public java.lang.String getUsername() { return username_; }
+    
+    // optional string message = 2;
+    public static final int MESSAGE_FIELD_NUMBER = 2;
+    private boolean hasMessage;
+    private java.lang.String message_ = "";
+    public boolean hasMessage() { return hasMessage; }
+    public java.lang.String getMessage() { return message_; }
+    
+    private void initFields() {
+    }
+    public final boolean isInitialized() {
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasUsername()) {
+        output.writeString(1, getUsername());
+      }
+      if (hasMessage()) {
+        output.writeString(2, getMessage());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasUsername()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(1, getUsername());
+      }
+      if (hasMessage()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(2, getMessage());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static fractus.net.ProtocolBuffer.AddContactReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.AddContactReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.AddContactReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fractus.net.ProtocolBuffer.AddContactReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private fractus.net.ProtocolBuffer.AddContactReq result;
+      
+      // Construct using fractus.net.ProtocolBuffer.AddContactReq.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new fractus.net.ProtocolBuffer.AddContactReq();
+        return builder;
+      }
+      
+      protected fractus.net.ProtocolBuffer.AddContactReq internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new fractus.net.ProtocolBuffer.AddContactReq();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fractus.net.ProtocolBuffer.AddContactReq.getDescriptor();
+      }
+      
+      public fractus.net.ProtocolBuffer.AddContactReq getDefaultInstanceForType() {
+        return fractus.net.ProtocolBuffer.AddContactReq.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public fractus.net.ProtocolBuffer.AddContactReq build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private fractus.net.ProtocolBuffer.AddContactReq buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public fractus.net.ProtocolBuffer.AddContactReq buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        fractus.net.ProtocolBuffer.AddContactReq returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fractus.net.ProtocolBuffer.AddContactReq) {
+          return mergeFrom((fractus.net.ProtocolBuffer.AddContactReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fractus.net.ProtocolBuffer.AddContactReq other) {
+        if (other == fractus.net.ProtocolBuffer.AddContactReq.getDefaultInstance()) return this;
+        if (other.hasUsername()) {
+          setUsername(other.getUsername());
+        }
+        if (other.hasMessage()) {
+          setMessage(other.getMessage());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              setUsername(input.readString());
+              break;
+            }
+            case 18: {
+              setMessage(input.readString());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // optional string username = 1;
+      public boolean hasUsername() {
+        return result.hasUsername();
+      }
+      public java.lang.String getUsername() {
+        return result.getUsername();
+      }
+      public Builder setUsername(java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasUsername = true;
+        result.username_ = value;
+        return this;
+      }
+      public Builder clearUsername() {
+        result.hasUsername = false;
+        result.username_ = getDefaultInstance().getUsername();
+        return this;
+      }
+      
+      // optional string message = 2;
+      public boolean hasMessage() {
+        return result.hasMessage();
+      }
+      public java.lang.String getMessage() {
+        return result.getMessage();
+      }
+      public Builder setMessage(java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasMessage = true;
+        result.message_ = value;
+        return this;
+      }
+      public Builder clearMessage() {
+        result.hasMessage = false;
+        result.message_ = getDefaultInstance().getMessage();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:AddContactReq)
+    }
+    
+    static {
+      defaultInstance = new AddContactReq(true);
+      fractus.net.ProtocolBuffer.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:AddContactReq)
+  }
+  
+  public static final class AddContactRes extends
+      com.google.protobuf.GeneratedMessage {
+    // Use AddContactRes.newBuilder() to construct.
+    private AddContactRes() {
+      initFields();
+    }
+    private AddContactRes(boolean noInit) {}
+    
+    private static final AddContactRes defaultInstance;
+    public static AddContactRes getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public AddContactRes getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fractus.net.ProtocolBuffer.internal_static_AddContactRes_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fractus.net.ProtocolBuffer.internal_static_AddContactRes_fieldAccessorTable;
+    }
+    
+    public enum ResponseCode
+        implements com.google.protobuf.ProtocolMessageEnum {
+      SUCCESS(0, 0),
+      REDUNDANT(1, 1),
+      INVALID_USER(2, 2),
+      SERVER_ERROR(3, 3),
+      ;
+      
+      
+      public final int getNumber() { return value; }
+      
+      public static ResponseCode valueOf(int value) {
+        switch (value) {
+          case 0: return SUCCESS;
+          case 1: return REDUNDANT;
+          case 2: return INVALID_USER;
+          case 3: return SERVER_ERROR;
+          default: return null;
+        }
+      }
+      
+      public static com.google.protobuf.Internal.EnumLiteMap<ResponseCode>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<ResponseCode>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<ResponseCode>() {
+              public ResponseCode findValueByNumber(int number) {
+                return ResponseCode.valueOf(number)
+      ;        }
+            };
+      
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return fractus.net.ProtocolBuffer.AddContactRes.getDescriptor().getEnumTypes().get(0);
+      }
+      
+      private static final ResponseCode[] VALUES = {
+        SUCCESS, REDUNDANT, INVALID_USER, SERVER_ERROR, 
+      };
+      public static ResponseCode valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+      private final int index;
+      private final int value;
+      private ResponseCode(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+      
+      static {
+        fractus.net.ProtocolBuffer.getDescriptor();
+      }
+      
+      // @@protoc_insertion_point(enum_scope:AddContactRes.ResponseCode)
+    }
+    
+    // required .AddContactRes.ResponseCode code = 1;
+    public static final int CODE_FIELD_NUMBER = 1;
+    private boolean hasCode;
+    private fractus.net.ProtocolBuffer.AddContactRes.ResponseCode code_;
+    public boolean hasCode() { return hasCode; }
+    public fractus.net.ProtocolBuffer.AddContactRes.ResponseCode getCode() { return code_; }
+    
+    private void initFields() {
+      code_ = fractus.net.ProtocolBuffer.AddContactRes.ResponseCode.SUCCESS;
+    }
+    public final boolean isInitialized() {
+      if (!hasCode) return false;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasCode()) {
+        output.writeEnum(1, getCode().getNumber());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasCode()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, getCode().getNumber());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static fractus.net.ProtocolBuffer.AddContactRes parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactRes parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactRes parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactRes parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactRes parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactRes parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactRes parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.AddContactRes parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.AddContactRes parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.AddContactRes parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fractus.net.ProtocolBuffer.AddContactRes prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private fractus.net.ProtocolBuffer.AddContactRes result;
+      
+      // Construct using fractus.net.ProtocolBuffer.AddContactRes.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new fractus.net.ProtocolBuffer.AddContactRes();
+        return builder;
+      }
+      
+      protected fractus.net.ProtocolBuffer.AddContactRes internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new fractus.net.ProtocolBuffer.AddContactRes();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fractus.net.ProtocolBuffer.AddContactRes.getDescriptor();
+      }
+      
+      public fractus.net.ProtocolBuffer.AddContactRes getDefaultInstanceForType() {
+        return fractus.net.ProtocolBuffer.AddContactRes.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public fractus.net.ProtocolBuffer.AddContactRes build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private fractus.net.ProtocolBuffer.AddContactRes buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public fractus.net.ProtocolBuffer.AddContactRes buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        fractus.net.ProtocolBuffer.AddContactRes returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fractus.net.ProtocolBuffer.AddContactRes) {
+          return mergeFrom((fractus.net.ProtocolBuffer.AddContactRes)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fractus.net.ProtocolBuffer.AddContactRes other) {
+        if (other == fractus.net.ProtocolBuffer.AddContactRes.getDefaultInstance()) return this;
+        if (other.hasCode()) {
+          setCode(other.getCode());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              fractus.net.ProtocolBuffer.AddContactRes.ResponseCode value = fractus.net.ProtocolBuffer.AddContactRes.ResponseCode.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                setCode(value);
+              }
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required .AddContactRes.ResponseCode code = 1;
+      public boolean hasCode() {
+        return result.hasCode();
+      }
+      public fractus.net.ProtocolBuffer.AddContactRes.ResponseCode getCode() {
+        return result.getCode();
+      }
+      public Builder setCode(fractus.net.ProtocolBuffer.AddContactRes.ResponseCode value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasCode = true;
+        result.code_ = value;
+        return this;
+      }
+      public Builder clearCode() {
+        result.hasCode = false;
+        result.code_ = fractus.net.ProtocolBuffer.AddContactRes.ResponseCode.SUCCESS;
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:AddContactRes)
+    }
+    
+    static {
+      defaultInstance = new AddContactRes(true);
+      fractus.net.ProtocolBuffer.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:AddContactRes)
+  }
+  
+  public static final class RemoveContactReq extends
+      com.google.protobuf.GeneratedMessage {
+    // Use RemoveContactReq.newBuilder() to construct.
+    private RemoveContactReq() {
+      initFields();
+    }
+    private RemoveContactReq(boolean noInit) {}
+    
+    private static final RemoveContactReq defaultInstance;
+    public static RemoveContactReq getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public RemoveContactReq getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fractus.net.ProtocolBuffer.internal_static_RemoveContactReq_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fractus.net.ProtocolBuffer.internal_static_RemoveContactReq_fieldAccessorTable;
+    }
+    
+    // optional string username = 1;
+    public static final int USERNAME_FIELD_NUMBER = 1;
+    private boolean hasUsername;
+    private java.lang.String username_ = "";
+    public boolean hasUsername() { return hasUsername; }
+    public java.lang.String getUsername() { return username_; }
+    
+    private void initFields() {
+    }
+    public final boolean isInitialized() {
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasUsername()) {
+        output.writeString(1, getUsername());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasUsername()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(1, getUsername());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static fractus.net.ProtocolBuffer.RemoveContactReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fractus.net.ProtocolBuffer.RemoveContactReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private fractus.net.ProtocolBuffer.RemoveContactReq result;
+      
+      // Construct using fractus.net.ProtocolBuffer.RemoveContactReq.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new fractus.net.ProtocolBuffer.RemoveContactReq();
+        return builder;
+      }
+      
+      protected fractus.net.ProtocolBuffer.RemoveContactReq internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new fractus.net.ProtocolBuffer.RemoveContactReq();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fractus.net.ProtocolBuffer.RemoveContactReq.getDescriptor();
+      }
+      
+      public fractus.net.ProtocolBuffer.RemoveContactReq getDefaultInstanceForType() {
+        return fractus.net.ProtocolBuffer.RemoveContactReq.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public fractus.net.ProtocolBuffer.RemoveContactReq build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private fractus.net.ProtocolBuffer.RemoveContactReq buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public fractus.net.ProtocolBuffer.RemoveContactReq buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        fractus.net.ProtocolBuffer.RemoveContactReq returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fractus.net.ProtocolBuffer.RemoveContactReq) {
+          return mergeFrom((fractus.net.ProtocolBuffer.RemoveContactReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fractus.net.ProtocolBuffer.RemoveContactReq other) {
+        if (other == fractus.net.ProtocolBuffer.RemoveContactReq.getDefaultInstance()) return this;
+        if (other.hasUsername()) {
+          setUsername(other.getUsername());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              setUsername(input.readString());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // optional string username = 1;
+      public boolean hasUsername() {
+        return result.hasUsername();
+      }
+      public java.lang.String getUsername() {
+        return result.getUsername();
+      }
+      public Builder setUsername(java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasUsername = true;
+        result.username_ = value;
+        return this;
+      }
+      public Builder clearUsername() {
+        result.hasUsername = false;
+        result.username_ = getDefaultInstance().getUsername();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:RemoveContactReq)
+    }
+    
+    static {
+      defaultInstance = new RemoveContactReq(true);
+      fractus.net.ProtocolBuffer.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:RemoveContactReq)
+  }
+  
+  public static final class RemoveContactRes extends
+      com.google.protobuf.GeneratedMessage {
+    // Use RemoveContactRes.newBuilder() to construct.
+    private RemoveContactRes() {
+      initFields();
+    }
+    private RemoveContactRes(boolean noInit) {}
+    
+    private static final RemoveContactRes defaultInstance;
+    public static RemoveContactRes getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public RemoveContactRes getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fractus.net.ProtocolBuffer.internal_static_RemoveContactRes_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fractus.net.ProtocolBuffer.internal_static_RemoveContactRes_fieldAccessorTable;
+    }
+    
+    public enum ResponseCode
+        implements com.google.protobuf.ProtocolMessageEnum {
+      SUCCESS(0, 0),
+      INVALID(1, 1),
+      SERVER_ERROR(2, 2),
+      ;
+      
+      
+      public final int getNumber() { return value; }
+      
+      public static ResponseCode valueOf(int value) {
+        switch (value) {
+          case 0: return SUCCESS;
+          case 1: return INVALID;
+          case 2: return SERVER_ERROR;
+          default: return null;
+        }
+      }
+      
+      public static com.google.protobuf.Internal.EnumLiteMap<ResponseCode>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<ResponseCode>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<ResponseCode>() {
+              public ResponseCode findValueByNumber(int number) {
+                return ResponseCode.valueOf(number)
+      ;        }
+            };
+      
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return fractus.net.ProtocolBuffer.RemoveContactRes.getDescriptor().getEnumTypes().get(0);
+      }
+      
+      private static final ResponseCode[] VALUES = {
+        SUCCESS, INVALID, SERVER_ERROR, 
+      };
+      public static ResponseCode valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+      private final int index;
+      private final int value;
+      private ResponseCode(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+      
+      static {
+        fractus.net.ProtocolBuffer.getDescriptor();
+      }
+      
+      // @@protoc_insertion_point(enum_scope:RemoveContactRes.ResponseCode)
+    }
+    
+    // required .RemoveContactRes.ResponseCode code = 1;
+    public static final int CODE_FIELD_NUMBER = 1;
+    private boolean hasCode;
+    private fractus.net.ProtocolBuffer.RemoveContactRes.ResponseCode code_;
+    public boolean hasCode() { return hasCode; }
+    public fractus.net.ProtocolBuffer.RemoveContactRes.ResponseCode getCode() { return code_; }
+    
+    private void initFields() {
+      code_ = fractus.net.ProtocolBuffer.RemoveContactRes.ResponseCode.SUCCESS;
+    }
+    public final boolean isInitialized() {
+      if (!hasCode) return false;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasCode()) {
+        output.writeEnum(1, getCode().getNumber());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasCode()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, getCode().getNumber());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static fractus.net.ProtocolBuffer.RemoveContactRes parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactRes parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactRes parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactRes parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactRes parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactRes parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactRes parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactRes parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactRes parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fractus.net.ProtocolBuffer.RemoveContactRes parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fractus.net.ProtocolBuffer.RemoveContactRes prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private fractus.net.ProtocolBuffer.RemoveContactRes result;
+      
+      // Construct using fractus.net.ProtocolBuffer.RemoveContactRes.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new fractus.net.ProtocolBuffer.RemoveContactRes();
+        return builder;
+      }
+      
+      protected fractus.net.ProtocolBuffer.RemoveContactRes internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new fractus.net.ProtocolBuffer.RemoveContactRes();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fractus.net.ProtocolBuffer.RemoveContactRes.getDescriptor();
+      }
+      
+      public fractus.net.ProtocolBuffer.RemoveContactRes getDefaultInstanceForType() {
+        return fractus.net.ProtocolBuffer.RemoveContactRes.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public fractus.net.ProtocolBuffer.RemoveContactRes build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private fractus.net.ProtocolBuffer.RemoveContactRes buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public fractus.net.ProtocolBuffer.RemoveContactRes buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        fractus.net.ProtocolBuffer.RemoveContactRes returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fractus.net.ProtocolBuffer.RemoveContactRes) {
+          return mergeFrom((fractus.net.ProtocolBuffer.RemoveContactRes)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fractus.net.ProtocolBuffer.RemoveContactRes other) {
+        if (other == fractus.net.ProtocolBuffer.RemoveContactRes.getDefaultInstance()) return this;
+        if (other.hasCode()) {
+          setCode(other.getCode());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              fractus.net.ProtocolBuffer.RemoveContactRes.ResponseCode value = fractus.net.ProtocolBuffer.RemoveContactRes.ResponseCode.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                setCode(value);
+              }
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required .RemoveContactRes.ResponseCode code = 1;
+      public boolean hasCode() {
+        return result.hasCode();
+      }
+      public fractus.net.ProtocolBuffer.RemoveContactRes.ResponseCode getCode() {
+        return result.getCode();
+      }
+      public Builder setCode(fractus.net.ProtocolBuffer.RemoveContactRes.ResponseCode value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        result.hasCode = true;
+        result.code_ = value;
+        return this;
+      }
+      public Builder clearCode() {
+        result.hasCode = false;
+        result.code_ = fractus.net.ProtocolBuffer.RemoveContactRes.ResponseCode.SUCCESS;
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:RemoveContactRes)
+    }
+    
+    static {
+      defaultInstance = new RemoveContactRes(true);
+      fractus.net.ProtocolBuffer.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:RemoveContactRes)
+  }
+  
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_InstantMessage_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_InstantMessage_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_PublicKey_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_PublicKey_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ClientInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ClientInfo_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ContactDataReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ContactDataReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ContactData_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ContactData_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ContactDataRes_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ContactDataRes_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_PublicKey_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_PublicKey_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RegisterKeyReq_descriptor;
   private static
@@ -3038,6 +6560,21 @@ public final class ProtocolBuffer {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_IdentifyKeyReq_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_IdentifyKeyRes_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_IdentifyKeyRes_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RevokeKeyReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RevokeKeyReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RevokeKeyRes_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RevokeKeyRes_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_Location_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -3052,6 +6589,26 @@ public final class ProtocolBuffer {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RegisterLocationRes_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_AddContactReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_AddContactReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_AddContactRes_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_AddContactRes_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RemoveContactReq_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RemoveContactReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RemoveContactRes_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RemoveContactRes_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -3062,23 +6619,45 @@ public final class ProtocolBuffer {
   static {
     java.lang.String[] descriptorData = {
       "\n\024ProtocolBuffer.proto\"\"\n\016InstantMessage" +
-      "\022\020\n\010contents\030\001 \002(\t\"1\n\tPublicKey\022\020\n\010encod" +
-      "ing\030\001 \002(\t\022\022\n\npublic_key\030\002 \002(\014\"/\n\nClientI" +
-      "nfo\022\017\n\007version\030\001 \001(\t\022\020\n\010location\030\002 \001(\t\"4" +
-      "\n\016RegisterKeyReq\022\020\n\010username\030\001 \002(\t\022\020\n\010pa" +
-      "ssword\030\002 \002(\t\"\234\001\n\016RegisterKeyRes\022*\n\004code\030" +
-      "\001 \002(\0162\034.RegisterKeyRes.ResponseCode\"^\n\014R" +
-      "esponseCode\022\013\n\007SUCCESS\020\000\022\032\n\026AUTHENTICATI" +
-      "ON_FAILURE\020\001\022\021\n\rDUPLICATE_KEY\020\002\022\022\n\016INTER" +
-      "NAL_ERROR\020\003\"6\n\016IdentifyKeyReq\022\020\n\010encodin",
-      "g\030\001 \002(\t\022\022\n\npublic_key\030\002 \002(\014\")\n\010Location\022" +
+      "\022\020\n\010contents\030\001 \002(\t\"/\n\nClientInfo\022\017\n\007vers" +
+      "ion\030\001 \001(\t\022\020\n\010location\030\002 \001(\t\"#\n\016ContactDa" +
+      "taReq\022\021\n\tusernames\030\001 \003(\t\"<\n\013ContactData\022" +
+      "\020\n\010username\030\001 \002(\t\022\033\n\010location\030\002 \003(\0132\t.Lo" +
+      "cation\"\253\001\n\016ContactDataRes\022*\n\004code\030\001 \002(\0162" +
+      "\034.ContactDataRes.ResponseCode\022\"\n\014contact" +
+      "_data\030\002 \003(\0132\014.ContactData\"I\n\014ResponseCod" +
+      "e\022\013\n\007SUCCESS\020\000\022\020\n\014SERVER_ERROR\020\001\022\032\n\026AUTH" +
+      "ENTICATION_FAILURE\020\002\"1\n\tPublicKey\022\020\n\010enc",
+      "oding\030\001 \002(\t\022\022\n\npublic_key\030\002 \002(\014\"4\n\016Regis" +
+      "terKeyReq\022\020\n\010username\030\001 \002(\t\022\020\n\010password\030" +
+      "\002 \002(\t\"\234\001\n\016RegisterKeyRes\022*\n\004code\030\001 \002(\0162\034" +
+      ".RegisterKeyRes.ResponseCode\"^\n\014Response" +
+      "Code\022\013\n\007SUCCESS\020\000\022\032\n\026AUTHENTICATION_FAIL" +
+      "URE\020\001\022\021\n\rDUPLICATE_KEY\020\002\022\022\n\016INTERNAL_ERR" +
+      "OR\020\003\"6\n\016IdentifyKeyReq\022\020\n\010encoding\030\001 \002(\t" +
+      "\022\022\n\npublic_key\030\002 \002(\014\"|\n\016IdentifyKeyRes\022*" +
+      "\n\004code\030\001 \002(\0162\034.IdentifyKeyRes.ResponseCo" +
+      "de\022\020\n\010username\030\002 \001(\t\",\n\014ResponseCode\022\013\n\007",
+      "SUCCESS\020\000\022\017\n\013UNKNOWN_KEY\020\001\"\016\n\014RevokeKeyR" +
+      "eq\"g\n\014RevokeKeyRes\022(\n\004code\030\001 \002(\0162\032.Revok" +
+      "eKeyRes.ResponseCode\"-\n\014ResponseCode\022\013\n\007" +
+      "SUCCESS\020\000\022\020\n\014SERVER_ERROR\020\001\")\n\010Location\022" +
       "\017\n\007address\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\"7\n\023Regist" +
       "erLocationReq\022 \n\rlocation_list\030\001 \003(\0132\t.L" +
       "ocation\"\246\001\n\023RegisterLocationRes\022/\n\004code\030" +
       "\001 \002(\0162!.RegisterLocationRes.ResponseCode" +
       "\"^\n\014ResponseCode\022\013\n\007SUCCESS\020\000\022\032\n\026AUTHENT" +
-      "ICATION_FAILURE\020\001\022\021\n\rDUPLICATE_KEY\020\002\022\022\n\016" +
-      "INTERNAL_ERROR\020\003B\r\n\013fractus.net"
+      "ICATION_FAILURE\020\001\022\021\n\rDUPLICATE_KEY\020\002\022\022\n\016",
+      "INTERNAL_ERROR\020\003\"2\n\rAddContactReq\022\020\n\010use" +
+      "rname\030\001 \001(\t\022\017\n\007message\030\002 \001(\t\"\212\001\n\rAddCont" +
+      "actRes\022)\n\004code\030\001 \002(\0162\033.AddContactRes.Res" +
+      "ponseCode\"N\n\014ResponseCode\022\013\n\007SUCCESS\020\000\022\r" +
+      "\n\tREDUNDANT\020\001\022\020\n\014INVALID_USER\020\002\022\020\n\014SERVE" +
+      "R_ERROR\020\003\"$\n\020RemoveContactReq\022\020\n\010usernam" +
+      "e\030\001 \001(\t\"|\n\020RemoveContactRes\022,\n\004code\030\001 \002(" +
+      "\0162\036.RemoveContactRes.ResponseCode\":\n\014Res" +
+      "ponseCode\022\013\n\007SUCCESS\020\000\022\013\n\007INVALID\020\001\022\020\n\014S" +
+      "ERVER_ERROR\020\002B\r\n\013fractus.net"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -3093,24 +6672,48 @@ public final class ProtocolBuffer {
               new java.lang.String[] { "Contents", },
               fractus.net.ProtocolBuffer.InstantMessage.class,
               fractus.net.ProtocolBuffer.InstantMessage.Builder.class);
-          internal_static_PublicKey_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_PublicKey_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_PublicKey_descriptor,
-              new java.lang.String[] { "Encoding", "PublicKey", },
-              fractus.net.ProtocolBuffer.PublicKey.class,
-              fractus.net.ProtocolBuffer.PublicKey.Builder.class);
           internal_static_ClientInfo_descriptor =
-            getDescriptor().getMessageTypes().get(2);
+            getDescriptor().getMessageTypes().get(1);
           internal_static_ClientInfo_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_ClientInfo_descriptor,
               new java.lang.String[] { "Version", "Location", },
               fractus.net.ProtocolBuffer.ClientInfo.class,
               fractus.net.ProtocolBuffer.ClientInfo.Builder.class);
-          internal_static_RegisterKeyReq_descriptor =
+          internal_static_ContactDataReq_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+          internal_static_ContactDataReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ContactDataReq_descriptor,
+              new java.lang.String[] { "Usernames", },
+              fractus.net.ProtocolBuffer.ContactDataReq.class,
+              fractus.net.ProtocolBuffer.ContactDataReq.Builder.class);
+          internal_static_ContactData_descriptor =
             getDescriptor().getMessageTypes().get(3);
+          internal_static_ContactData_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ContactData_descriptor,
+              new java.lang.String[] { "Username", "Location", },
+              fractus.net.ProtocolBuffer.ContactData.class,
+              fractus.net.ProtocolBuffer.ContactData.Builder.class);
+          internal_static_ContactDataRes_descriptor =
+            getDescriptor().getMessageTypes().get(4);
+          internal_static_ContactDataRes_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ContactDataRes_descriptor,
+              new java.lang.String[] { "Code", "ContactData", },
+              fractus.net.ProtocolBuffer.ContactDataRes.class,
+              fractus.net.ProtocolBuffer.ContactDataRes.Builder.class);
+          internal_static_PublicKey_descriptor =
+            getDescriptor().getMessageTypes().get(5);
+          internal_static_PublicKey_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_PublicKey_descriptor,
+              new java.lang.String[] { "Encoding", "PublicKey", },
+              fractus.net.ProtocolBuffer.PublicKey.class,
+              fractus.net.ProtocolBuffer.PublicKey.Builder.class);
+          internal_static_RegisterKeyReq_descriptor =
+            getDescriptor().getMessageTypes().get(6);
           internal_static_RegisterKeyReq_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RegisterKeyReq_descriptor,
@@ -3118,7 +6721,7 @@ public final class ProtocolBuffer {
               fractus.net.ProtocolBuffer.RegisterKeyReq.class,
               fractus.net.ProtocolBuffer.RegisterKeyReq.Builder.class);
           internal_static_RegisterKeyRes_descriptor =
-            getDescriptor().getMessageTypes().get(4);
+            getDescriptor().getMessageTypes().get(7);
           internal_static_RegisterKeyRes_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RegisterKeyRes_descriptor,
@@ -3126,15 +6729,39 @@ public final class ProtocolBuffer {
               fractus.net.ProtocolBuffer.RegisterKeyRes.class,
               fractus.net.ProtocolBuffer.RegisterKeyRes.Builder.class);
           internal_static_IdentifyKeyReq_descriptor =
-            getDescriptor().getMessageTypes().get(5);
+            getDescriptor().getMessageTypes().get(8);
           internal_static_IdentifyKeyReq_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_IdentifyKeyReq_descriptor,
               new java.lang.String[] { "Encoding", "PublicKey", },
               fractus.net.ProtocolBuffer.IdentifyKeyReq.class,
               fractus.net.ProtocolBuffer.IdentifyKeyReq.Builder.class);
+          internal_static_IdentifyKeyRes_descriptor =
+            getDescriptor().getMessageTypes().get(9);
+          internal_static_IdentifyKeyRes_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_IdentifyKeyRes_descriptor,
+              new java.lang.String[] { "Code", "Username", },
+              fractus.net.ProtocolBuffer.IdentifyKeyRes.class,
+              fractus.net.ProtocolBuffer.IdentifyKeyRes.Builder.class);
+          internal_static_RevokeKeyReq_descriptor =
+            getDescriptor().getMessageTypes().get(10);
+          internal_static_RevokeKeyReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RevokeKeyReq_descriptor,
+              new java.lang.String[] { },
+              fractus.net.ProtocolBuffer.RevokeKeyReq.class,
+              fractus.net.ProtocolBuffer.RevokeKeyReq.Builder.class);
+          internal_static_RevokeKeyRes_descriptor =
+            getDescriptor().getMessageTypes().get(11);
+          internal_static_RevokeKeyRes_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RevokeKeyRes_descriptor,
+              new java.lang.String[] { "Code", },
+              fractus.net.ProtocolBuffer.RevokeKeyRes.class,
+              fractus.net.ProtocolBuffer.RevokeKeyRes.Builder.class);
           internal_static_Location_descriptor =
-            getDescriptor().getMessageTypes().get(6);
+            getDescriptor().getMessageTypes().get(12);
           internal_static_Location_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Location_descriptor,
@@ -3142,7 +6769,7 @@ public final class ProtocolBuffer {
               fractus.net.ProtocolBuffer.Location.class,
               fractus.net.ProtocolBuffer.Location.Builder.class);
           internal_static_RegisterLocationReq_descriptor =
-            getDescriptor().getMessageTypes().get(7);
+            getDescriptor().getMessageTypes().get(13);
           internal_static_RegisterLocationReq_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RegisterLocationReq_descriptor,
@@ -3150,13 +6777,45 @@ public final class ProtocolBuffer {
               fractus.net.ProtocolBuffer.RegisterLocationReq.class,
               fractus.net.ProtocolBuffer.RegisterLocationReq.Builder.class);
           internal_static_RegisterLocationRes_descriptor =
-            getDescriptor().getMessageTypes().get(8);
+            getDescriptor().getMessageTypes().get(14);
           internal_static_RegisterLocationRes_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RegisterLocationRes_descriptor,
               new java.lang.String[] { "Code", },
               fractus.net.ProtocolBuffer.RegisterLocationRes.class,
               fractus.net.ProtocolBuffer.RegisterLocationRes.Builder.class);
+          internal_static_AddContactReq_descriptor =
+            getDescriptor().getMessageTypes().get(15);
+          internal_static_AddContactReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_AddContactReq_descriptor,
+              new java.lang.String[] { "Username", "Message", },
+              fractus.net.ProtocolBuffer.AddContactReq.class,
+              fractus.net.ProtocolBuffer.AddContactReq.Builder.class);
+          internal_static_AddContactRes_descriptor =
+            getDescriptor().getMessageTypes().get(16);
+          internal_static_AddContactRes_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_AddContactRes_descriptor,
+              new java.lang.String[] { "Code", },
+              fractus.net.ProtocolBuffer.AddContactRes.class,
+              fractus.net.ProtocolBuffer.AddContactRes.Builder.class);
+          internal_static_RemoveContactReq_descriptor =
+            getDescriptor().getMessageTypes().get(17);
+          internal_static_RemoveContactReq_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RemoveContactReq_descriptor,
+              new java.lang.String[] { "Username", },
+              fractus.net.ProtocolBuffer.RemoveContactReq.class,
+              fractus.net.ProtocolBuffer.RemoveContactReq.Builder.class);
+          internal_static_RemoveContactRes_descriptor =
+            getDescriptor().getMessageTypes().get(18);
+          internal_static_RemoveContactRes_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RemoveContactRes_descriptor,
+              new java.lang.String[] { "Code", },
+              fractus.net.ProtocolBuffer.RemoveContactRes.class,
+              fractus.net.ProtocolBuffer.RemoveContactRes.Builder.class);
           return null;
         }
       };

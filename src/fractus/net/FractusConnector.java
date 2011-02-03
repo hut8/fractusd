@@ -1,7 +1,6 @@
 package fractus.net;
 
 import fractus.main.MessageDescriptor;
-import fractus.main.PacketHandler;
 import fractus.main.BinaryUtil;
 import fractus.main.FractusMessage;
 import fractus.main.EncryptionManager;
@@ -47,9 +46,7 @@ public class FractusConnector
         this.em = em;
         handler = new PacketHandler();
         queue = new ConcurrentLinkedQueue<FractusMessage>();
-        // Create new client cipher
         clientCipher = new ClientCipher(em);
-        //stateMachine = new StateMachine(handler, this);
         // Set up the handler to receive only public key messages and nothing else
         handler.register(new MessageDescriptor(MessageDescriptor.PUBLIC_KEY),
                 new PublicKeyStrategy(this, clientCipher));
