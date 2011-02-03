@@ -1,4 +1,4 @@
-package fractus.main;
+package fractus.domain;
 
 
 public class UserLocation {

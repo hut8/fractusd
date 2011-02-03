@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 
 import javax.crypto.NoSuchPaddingException;
 
+import fractus.domain.UserLocation;
+
 public class ClientNotifier
         implements Runnable {
 

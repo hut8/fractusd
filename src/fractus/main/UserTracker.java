@@ -26,132 +26,15 @@ public class UserTracker {
     }
 
     public void addContact(FractusMessage response, String sourceUser, String destUser, FractusConnector fc, EncryptionManager em) {
-        UserData su, du;
 
-        try {
-            su = new UserData(sourceUser);
-            du = new UserData(destUser);
-        } catch (UnknownUserException e) {
-            // TODO Create error response
-            return;
-        } catch (SQLException e) {
-            // TODO Create error response
-            return;
-        }
-
-        boolean validPair;
-        try {
-            validPair = su.addContact(du, fc);
-        } catch (DuplicateAddRequestException e) {
-            // TODO Create error response
-            return;
-        }
-
-// TODO Create correct response
-        if (validPair) {
-            // TODO: If reciprocal contact exists, send Contact Data as well
-            List<UserLocation> locations = du.locate();
-            // TODO Append Location Data
-        } else {
-            // Construct message to send to destination user
-
-
-            
-            
-
-            // Locate destination user
-            List<UserLocation> locations = du.locate();
-            for (UserLocation loc : locations) {
-                
-                
-            }
-
-        }
-        // TODO Create Response
     }
 
     public void removeContact(FractusMessage response, String sourceUser, String destUser, FractusConnector fc) {
-        UserData su, du;
-
-        try {
-            su = new UserData(sourceUser);
-            du = new UserData(destUser);
-        } catch (UnknownUserException e) {
-            
-            
-            return;
-        } catch (SQLException e) {
-            
-            
-            return;
-        }
-
-
-        if (su.removeContact(du, fc)) {
-            /* success */
-            
-            
-        } else {
-            /* failure */
-            
-            
-        }
+ 
     }
 
     public void sendContactData(FractusMessage response, String username, FractusConnector fc) {
-        // Get User Object
-        UserData user = null;
-        try {
-            user = new UserData(username);
-        } catch (UnknownUserException e) {
-            e.printStackTrace();
-            return;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        // Assemble data map
-        Map<String, List<UserLocation>> dataMap = new HashMap<String, List<UserLocation>>();
-        Connection db = null;
-        ResultSet rs;
-        CallableStatement sth;
-
-        // Retrieve contacts and empty location list
-        try {
-            db = Database.getConnection();
-            sth = db.prepareCall("CALL GetUserContacts_prc(?)");
-            sth.setInt(1, user.getUserId());
-            rs = sth.executeQuery();
-            while (rs.next()) {
-                dataMap.put(rs.getString(1), new ArrayList<UserLocation>());
-            }
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-            return;
-        }
-
-
-        // Get their locations
-        try {
-            sth = db.prepareCall("CALL SendContactData_prc(?)");
-            sth.setInt(1, user.getUserId());
-            rs = sth.executeQuery();
-            while (rs.next()) {
-                String contactUsername = rs.getString(1);
-                if (!dataMap.containsKey(contactUsername)) {
-                    // Should not happen
-                    dataMap.put(contactUsername, new ArrayList<UserLocation>());
-                }
-                List<UserLocation> locations = dataMap.get(contactUsername);
-                locations.add(new UserLocation(rs.getString(2), rs.getInt(3)));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        
+ 
     }
 
     public synchronized void registerKey(ECPoint key, String username)
@@ -198,39 +81,9 @@ public class UserTracker {
         }
 
         // Find user object
-        UserData ud;
-        try {
-            ud = new UserData(username);
-        } catch (UnknownUserException e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
-            return;
-        } catch (SQLException e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
-            return;
-        }
-
+ 
         // Store in database
-        
-        Connection c = null;
-        try {
-            c = Database.getConnection();
-            CallableStatement auStmt = c.prepareCall("call RecordUserLocation_prc(?,?,?)");
-            auStmt.setInt(1, ud.getUserId());
-            auStmt.setString(2, address);
-            auStmt.setInt(3, port);
-            auStmt.execute();
-            int uc = auStmt.getUpdateCount();
-            if (uc == 1) {
-                //res = new RegisterLocationResponse(new UserLocation(address, port));
-            } else {
-                throw new SQLException("Invalid results returned from server");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            //res = new RegisterLocationResponse("internal-error");
-        }
+ 
         
     }
 
@@ -254,37 +107,7 @@ public class UserTracker {
         }
 
         // Find user object
-        UserData ud;
-        try {
-            ud = new UserData(username);
-        } catch (UnknownUserException e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
-            return;
-        } catch (SQLException e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
-            return;
-        }
-
-        Connection c = null;
-        try {
-            c = Database.getConnection();
-            CallableStatement auStmt = c.prepareCall("CALL InvalidateUserLocation_prc(?,?,?)");
-            auStmt.setInt(1, ud.getUserId());
-            auStmt.setString(2, address);
-            auStmt.setInt(3, port);
-            auStmt.execute();
-            int uc = auStmt.getUpdateCount();
-            if (uc == 1) {
-                //res = new InvalidateLocationResponse();
-            } else {
-                throw new SQLException("Invalid results returned from server");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            //res = new InvalidateLocationResponse("internal-error");
-        }
+  
         // TODO: GIVE RESPONSE
     }
 }
