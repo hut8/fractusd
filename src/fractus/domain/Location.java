@@ -1,11 +1,16 @@
 package fractus.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-public class UserLocation {
+@Entity
+@Table(name="Location_tbl")
+public class Location {
+	private Integer locationId;
 	private String address;
 	private Integer port;
 	
-	public UserLocation(String address, Integer port) {
+	public Location(String address, Integer port) {
 		this.address = address;
 		this.port = port;
 	}

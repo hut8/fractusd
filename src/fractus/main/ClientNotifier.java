@@ -20,13 +20,13 @@ import java.util.logging.Logger;
 
 import javax.crypto.NoSuchPaddingException;
 
-import fractus.domain.UserLocation;
+import fractus.domain.Location;
 
 public class ClientNotifier
         implements Runnable {
 
     private FractusMessage message;
-    private UserLocation location;
+    private Location location;
     private EncryptionManager em;
     private Logger log;
 
@@ -36,7 +36,7 @@ public class ClientNotifier
      * warning on error (does not requeue failed messages).
      * @param message
      */
-    public ClientNotifier(FractusMessage message, UserLocation location, EncryptionManager em) {
+    public ClientNotifier(FractusMessage message, Location location, EncryptionManager em) {
         this.message = message;
         this.location = location;
         this.em = em;

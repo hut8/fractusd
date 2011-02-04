@@ -84,11 +84,12 @@ public class FractusServer {
         log.info("Available processors: " + runtime.availableProcessors());
         log.info("Max VM Memory: " + runtime.maxMemory());
 
-        Console cons = System.console();
-        if (cons == null) {
-            log.error("This application requires a real console.  Do not run from debugger.");
-            return;
-        }
+        // TODO: DO NOT FAKE PASSWORD
+//        Console cons = System.console();
+//        if (cons == null) {
+//            log.error("This application requires a real console.  Do not run from debugger.");
+//            return;
+//        }
 
         char[] passwd = null;
 
@@ -99,13 +100,13 @@ public class FractusServer {
                     System.out.println("Usage: FractusServer keygen <outfile>");
                     return;
                 }
-                if (cons != null) {
-                    System.out.println("===================================================");
-                    passwd = cons.readPassword("%s", "Enter passphrase for key encryption (will not echo)");
-                } else {
-                    log.error("Could not read from secure console");
-                    return;
-                }
+                //if (cons != null) {
+                //    System.out.println("===================================================");
+                passwd = "1337".toCharArray(); //cons.readPassword("%s", "Enter passphrase for key encryption (will not echo)");
+                //} else {
+                //    log.error("Could not read from secure console");
+                //    return;
+                //}
                 log.info("Generating key to " + args[1]);
                 try {
                     EncryptionManager.generateKey(args[1], passwd);
@@ -129,8 +130,8 @@ public class FractusServer {
 
         log.info("Processing cryptographic key");
         EncryptionManager em = null;
-
-        passwd = cons.readPassword("%s", "Enter private key passphrase:");
+        passwd = "1337".toCharArray();
+        //passwd = cons.readPassword("%s", "Enter private key passphrase:");
         try {
             em = new EncryptionManager(args[0], passwd);
         } catch (IOException e) {
