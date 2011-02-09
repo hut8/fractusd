@@ -7,31 +7,57 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
-public class Database {
+import com.jolbox.bonecp.BoneCP;
+import com.jolbox.bonecp.BoneCPConfig;
 
+/**
+ * Database connector.
+ * Pools connections like a boss.
+ * Use only subclasses directly.
+ * @author bowenl2
+ *
+ */
+public class Database {
     public static String url;
     private final static Logger log;
-
+    private static BoneCPConfig poolConfig;
+    private static BoneCP connectionPool;
+    
     static {
         log = Logger.getLogger(Database.class.getName());
         url = "jdbc:mysql://localhost:3306/fractus";
+        
+        log.info("Loading MySQL JDBC driver...");
+        
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
+            log.info("MySQL JDBC driver loaded");
         } catch (Exception e) {
             log.fatal("Fatal error: could not load Database driver", e);
             Runtime.getRuntime().exit(-1);
         }
+        
+        // Connection pool
+        poolConfig.setJdbcUrl(url);
+        poolConfig.setUsername("fractus"); 
+        poolConfig.setPassword("");
+        poolConfig.setMinConnectionsPerPartition(5);
+        poolConfig.setMaxConnectionsPerPartition(10);
+        poolConfig.setPartitionCount(1);
+        
+        log.info("Establishing connection pool...");
+    	try {
+			connectionPool = new BoneCP(poolConfig);
+		} catch (SQLException e) {
+			log.error("Could not create connection pool",e);
+		}
+		log.info("Connection pool established");
     }
-
-    public static Connection getConnection() throws
-            SQLException {
-        return DriverManager.getConnection(url, "fractus", "");
-    }
-
+    
     public static boolean authenticate(UserCredentials credentials)
             throws SQLException {
-        Connection db = null;
-            db = Database.getConnection();
+        	Connection db = null;
+            db = connectionPool.getConnection();
             PreparedStatement sth = db.prepareStatement("CALL AuthenticateUser_prc(?,?)");
             sth.setString(1, credentials.getUsername());
             sth.setString(2, credentials.getPassword());

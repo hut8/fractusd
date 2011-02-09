@@ -25,15 +25,15 @@ public class UserTracker {
         keyMap = new HashMap<ECPoint, String>();
     }
 
-    public void addContact(FractusMessage response, String sourceUser, String destUser, FractusConnector fc, EncryptionManager em) {
+    public void addContact(String sourceUser, String destUser) {
 
     }
 
-    public void removeContact(FractusMessage response, String sourceUser, String destUser, FractusConnector fc) {
+    public void removeContact(String sourceUser, String destUser) {
  
     }
 
-    public void sendContactData(FractusMessage response, String username, FractusConnector fc) {
+    public void sendContactData(String username) {
  
     }
 
