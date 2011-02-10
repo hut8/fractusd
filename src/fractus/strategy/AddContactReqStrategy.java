@@ -12,7 +12,7 @@ public class AddContactReqStrategy
 	implements PacketStrategy {
 	
     private final static Logger log =
-    	Logger.getLogger(PublicKeyStrategy.class.getName());	
+    	Logger.getLogger(AddContactReqStrategy.class.getName());	
 	private UserTracker userTracker;
 	private ConnectorContext connectorContext;
 	
@@ -24,6 +24,8 @@ public class AddContactReqStrategy
 	
 	@Override
 	public void dispatch(byte[] contents) {
+		log.debug("Received message to dispatch");
+		
 		// Deserialize packet contents
 		ProtocolBuffer.AddContactReq request;
 		try {

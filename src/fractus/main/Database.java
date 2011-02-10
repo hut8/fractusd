@@ -58,8 +58,9 @@ public class Database {
 		public static boolean authenticate(UserCredentials credentials)
 		throws SQLException {
 			Connection conn = connectionPool.getConnection();
+			PreparedStatement sth = null;
 			try {
-				PreparedStatement sth = conn.prepareStatement("CALL AuthenticateUser_prc(?,?)");
+				sth = conn.prepareStatement("CALL AuthenticateUser_prc(?,?)");
 				sth.setString(1, credentials.getUsername());
 				sth.setString(2, credentials.getPassword());
 				sth.execute();
@@ -73,7 +74,8 @@ public class Database {
 					return false;
 				}
 			} finally {
-				conn.close();
+				if (sth != null)
+					sth.close();
 			}
 		}
 	}
