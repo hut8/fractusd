@@ -14,6 +14,7 @@ import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
 import fractus.domain.User;
+import fractus.main.UserTracker.ModifyContactResponse;
 
 /**
  * Database connector.
@@ -89,8 +90,27 @@ public class Database {
 	
 	public static class UserTracker {
 		
-		public static void addContact(String sourceUsername, String destinationUsername) {
-			
+		public static fractus.main.UserTracker.ModifyContactResponse
+		addContact(String sourceUsername, String destinationUsername)
+		throws SQLException {
+			log.debug("Trying to add " + destinationUsername + " as a contact of " + sourceUsername);
+			Connection conn = connectionPool.getConnection();
+			PreparedStatement sth = null;
+			try {
+				sth = conn.prepareStatement("CALL AddContact_prc(?,?)");
+				sth.setString(1, sourceUsername);
+				sth.setString(2, destinationUsername);
+				sth.execute();
+				ResultSet authRes = sth.getResultSet();
+				if (!authRes.first()) {
+					throw new SQLException("Invalid result (nothing came back)");
+				}
+				return authRes.getBoolean("SUCCESS") ?
+						ModifyContactResponse.SUCCESS : ModifyContactResponse.REDUNDANT; 
+			} finally {
+				if (sth != null)
+					sth.close();
+			}
 		}
 		
 		public static void removeContact(String sourceUsername, String destinationUsername) {

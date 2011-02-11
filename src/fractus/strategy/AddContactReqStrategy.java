@@ -1,12 +1,22 @@
 package fractus.strategy;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.sql.SQLException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+
 import org.apache.log4j.Logger;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
+import fractus.main.FractusMessage;
 import fractus.main.UserTracker;
+import fractus.main.UserTracker.ModifyContactResponse;
 import fractus.net.ConnectorContext;
 import fractus.net.ProtocolBuffer;
+import fractus.net.ProtocolBuffer.AddContactRes.ResponseCode;
 
 public class AddContactReqStrategy
 	implements PacketStrategy {
@@ -21,6 +31,18 @@ public class AddContactReqStrategy
 		this.connectorContext = connectorContext;
 	}
 	
+	private void sendResponse(ProtocolBuffer.AddContactRes.ResponseCode responseCode) {
+		try {
+			connectorContext.getFractusConnector().sendMessage(
+					FractusMessage.build(
+							ProtocolBuffer.AddContactRes.newBuilder().setCode(responseCode).build()
+					)
+			);
+		} catch (GeneralSecurityException e) {
+			
+		} catch (IOException e) {
+		}
+	}
 	
 	@Override
 	public void dispatch(byte[] contents) {
@@ -40,7 +62,20 @@ public class AddContactReqStrategy
 		String sourceUsername = connectorContext.getUsername();
 		
 		// Make the request happen
+		ModifyContactResponse modifyContactResponse;
+		try {
+			 modifyContactResponse = userTracker.addContact(sourceUsername, targetUsername);
+		} catch (SQLException e) {
+			sendResponse(ResponseCode.SERVER_ERROR);
+			log.error("Could not add contact due to database error", e);
+			return;
+		}
 		
-		
+		if (modifyContactResponse == ModifyContactResponse.SUCCESS) {
+			// TODO: Spawn Client Notifier
+			sendResponse(ResponseCode.SUCCESS);
+		} else {
+			sendResponse(ResponseCode.REDUNDANT);
+		}
 	}
 }

@@ -25,8 +25,11 @@ public class UserTracker {
         keyMap = new HashMap<ECPoint, String>();
     }
 
-    public void addContact(String sourceUser, String destUser) {
-
+    public static enum ModifyContactResponse { SUCCESS, REDUNDANT }
+    
+    public ModifyContactResponse addContact(String sourceUser, String destUser)
+    throws SQLException {
+    	return Database.UserTracker.addContact(sourceUser, destUser);
     }
 
     public void removeContact(String sourceUser, String destUser) {
