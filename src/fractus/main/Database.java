@@ -5,10 +5,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
+
+import fractus.domain.User;
 
 /**
  * Database connector.
@@ -48,10 +53,12 @@ public class Database {
 		log.info("Establishing connection pool...");
 		try {
 			connectionPool = new BoneCP(poolConfig);
+			log.info("Connection pool established");
 		} catch (SQLException e) {
 			log.error("Could not create connection pool",e);
+			throw new RuntimeException("Fatal error: connection pool broken");
 		}
-		log.info("Connection pool established");
+		
 	}
 
 	public static class Authenticator {
@@ -77,6 +84,42 @@ public class Database {
 				if (sth != null)
 					sth.close();
 			}
+		}
+	}
+	
+	public static class UserTracker {
+		
+		public static void addContact(String sourceUsername, String destinationUsername) {
+			
+		}
+		
+		public static void removeContact(String sourceUsername, String destinationUsername) {
+			
+		}
+		
+		public static boolean confirmContact(String sourceUsername, String destinationUsername)
+		throws SQLException {
+			log.debug("Confirming that " + destinationUsername + " is a contact of " + sourceUsername);
+			Connection conn = connectionPool.getConnection();
+			PreparedStatement sth = null;
+			try {
+				sth = conn.prepareStatement("CALL ConfirmContact_prc(?,?)");
+				sth.setString(1, sourceUsername);
+				sth.setString(2, destinationUsername);
+				sth.execute();
+				ResultSet authRes = sth.getResultSet();
+				if (!authRes.first()) {
+					throw new SQLException("Invalid result (nothing came back)");
+				}
+				return authRes.getBoolean("CONTACT");
+			} finally {
+				if (sth != null)
+					sth.close();
+			}
+		}
+		
+		public static List<User> listNonreciprocalContacts(String username) {
+			return new ArrayList<User>();
 		}
 	}
 }

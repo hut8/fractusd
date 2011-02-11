@@ -51,7 +51,7 @@ implements PacketStrategy {
 		} catch (InvalidProtocolBufferException e) {
 			// Invalid request received.  Disconnect and abort.
 			log.warn("Invalid protocol buffer from " + connectorContext.toString(), e);
-
+			connector.disconnect();
 			return;
 		}
 

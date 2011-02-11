@@ -35,6 +35,7 @@ import org.bouncycastle.jce.interfaces.ECPublicKey;
 
 public class EncryptionManager {
 
+	public final static String ELLIPTIC_CURVE = "secp521r1";
     private static Logger log;
     private KeyPair keyPair;
     private String encodingType;

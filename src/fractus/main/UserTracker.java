@@ -32,6 +32,10 @@ public class UserTracker {
     public void removeContact(String sourceUser, String destUser) {
  
     }
+    
+    public void confirmContact(String sourceUser, String destUser) {
+    	
+    }
 
     public void sendContactData(String username) {
  
@@ -45,22 +49,10 @@ public class UserTracker {
         keyMap.put(key, username);
     }
 
-    public String identifyKey(String encodedKey) {
-        return keyMap.get(encodedKey);
+    public String identifyKey(ECPoint point) {
+        return keyMap.get(point);
     }
 
-    public void identifyKey(FractusMessage response, String encodedKey, FractusConnector fc) {
-        String username = keyMap.get(encodedKey);
-        if (username == null) {
-            log.info("Identified [" + encodedKey + "]: [" + keyMap.get(encodedKey) + "]");
-            
-            
-        } else {
-            log.info("Could not identify key [" + encodedKey + "]");
-            
-            
-        }
-    }
 
     public void registerLocation(FractusMessage response, String username, String address, String portString, FractusConnector fc) {
         // Parse parameters
