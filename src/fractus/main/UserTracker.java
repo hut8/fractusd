@@ -33,8 +33,9 @@ public class UserTracker {
  
     }
     
-    public void confirmContact(String sourceUser, String destUser) {
-    	
+    public boolean confirmContact(String sourceUser, String destUser)
+    throws SQLException {
+    	return Database.UserTracker.confirmContact(sourceUser, destUser);
     }
 
     public void sendContactData(String username) {

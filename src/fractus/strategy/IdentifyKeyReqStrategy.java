@@ -6,6 +6,7 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+import java.sql.SQLException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -113,9 +114,29 @@ public class IdentifyKeyReqStrategy implements PacketStrategy {
 			return;
 		}
 
+		log.info("Identified key owner as" + keyOwner);
+		
 		// Verify that remote user should know about this key
+		boolean authorized = false;
+		try {
+			authorized = userTracker.confirmContact(connectorContext.getUsername(), keyOwner);
+		} catch (SQLException e) {
+			log.error("Encountered database error while confirming contacts", e);
+			// TODO: Send error to client
+			return;
+		}
 		
+		if (!authorized) {
+			log.warn("Unauthorized attempt to identify key owner by ["
+					+connectorContext.getUsername()+"] - owner is [" + keyOwner + "]");
+			sendResponse(ResponseCode.UNKNOWN_KEY);
+			return;
+		}
 		
+		// Owner identified, client authorized.  Send answer.
+		log.info("Key requested by " + connectorContext.getUsername() +
+				" identified as " + keyOwner + " (Success)");
+		sendResponse(ResponseCode.SUCCESS, keyOwner);
 	}
 
 }
