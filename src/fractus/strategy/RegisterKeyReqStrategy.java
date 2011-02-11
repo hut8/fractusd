@@ -16,11 +16,13 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import fractus.net.ConnectorContext;
 import fractus.net.FractusConnector;
 import fractus.net.ProtocolBuffer;
+import fractus.net.ProtocolBuffer.RegisterKeyRes;
 import fractus.net.ProtocolBuffer.RegisterKeyRes.ResponseCode;
 import fractus.main.Database;
 import fractus.main.FractusMessage;
 import fractus.main.FractusPacket;
 import fractus.main.UserCredentials;
+import fractus.main.UserTracker;
 
 /**
  * @author bowenl2
@@ -32,11 +34,28 @@ implements PacketStrategy {
 	private final static Logger log =
 		Logger.getLogger(RegisterKeyReqStrategy.class.getName());
 	private ConnectorContext connectorContext;
+	private UserTracker userTracker;
 
-	public RegisterKeyReqStrategy(ConnectorContext connectorContext) {
+	public RegisterKeyReqStrategy(ConnectorContext connectorContext, UserTracker userTracker) {
 		this.connectorContext = connectorContext;
+		this.userTracker = userTracker;
 	}
 
+	private void sendResponse(RegisterKeyRes.ResponseCode responseCode) {
+		// Serialize response
+		ProtocolBuffer.RegisterKeyRes response = 
+			ProtocolBuffer.RegisterKeyRes.newBuilder()
+			.setCode(responseCode).build();
+
+		// Send response
+		FractusMessage responseMessage = FractusMessage.build(response);
+		try {
+			connectorContext.getFractusConnector().sendMessage(responseMessage);
+		} catch (Throwable t) {
+			log.warn("Unable to send message via connector", t);
+		}
+	}
+	
 	@Override
 	public void dispatch(byte[] contents) {
 		log.debug("Received message to dispatch");
@@ -55,36 +74,36 @@ implements PacketStrategy {
 			return;
 		}
 
-		// Response code
-		ResponseCode responseCode;
-
 		// Authenticate user
 		String username = request.getUsername();
 		String password = request.getPassword();
 
 		UserCredentials credentials = new UserCredentials(username, password);
+		boolean authSuccess = false;
 		try { 
-			responseCode = Database.Authenticator.authenticate(credentials) ?
-					ResponseCode.SUCCESS : ResponseCode.AUTHENTICATION_FAILURE;
+			authSuccess = Database.Authenticator.authenticate(credentials);
 		} catch (SQLException e) {
 			log.error("Could not authenticate user due to database error", e);
-			responseCode = ResponseCode.INTERNAL_ERROR;
+			sendResponse(ResponseCode.INTERNAL_ERROR);
+			return;
 		}
 
-		// TODO: Register key
-
-
-		// Serialize response
-		ProtocolBuffer.RegisterKeyRes response = 
-			ProtocolBuffer.RegisterKeyRes.newBuilder()
-			.setCode(responseCode).build();
-
-		// Send response
-		FractusMessage responseMessage = FractusMessage.build(response);
+		if (!authSuccess) {
+			log.info("Authentication failure for " + username);
+			sendResponse(ResponseCode.AUTHENTICATION_FAILURE);
+			return;
+		}
+		
+		// Register key
 		try {
-			connector.sendMessage(responseMessage);
-		} catch (Throwable t) {
-			log.warn("Unable to send message via connector", t);
+			userTracker.registerKey(connectorContext.getClientCipher().getRemotePoint(), username);
+			connectorContext.setUsername(username);
+			sendResponse(ResponseCode.SUCCESS);
+			return;
+		} catch (IllegalStateException e) {
+			log.warn("User " + username + " tried to register existing key");
+			sendResponse(ResponseCode.DUPLICATE_KEY);
+			return;
 		}
 	}
 }

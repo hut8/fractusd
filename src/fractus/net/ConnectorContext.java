@@ -1,10 +1,13 @@
 package fractus.net;
 
+import fractus.main.ClientCipher;
+
 public class ConnectorContext {
 
 	private String username;
 	private PacketHandler packetHandler;
 	private FractusConnector fractusConnector;
+	private ClientCipher clientCipher;
 	
 	public ConnectorContext(PacketHandler packetHandler,
 			FractusConnector fractusConnector) {
@@ -28,6 +31,14 @@ public class ConnectorContext {
 		this.username = username;
 	}
 
+	public ClientCipher getClientCipher() {
+		return clientCipher;
+	}
+
+	public void setClientCipher(ClientCipher clientCipher) {
+		this.clientCipher = clientCipher;
+	}
+	
 	@Override
 	public String toString() {
 		return "[Context for: " + fractusConnector.toString() + "]";

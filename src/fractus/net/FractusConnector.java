@@ -29,7 +29,6 @@ public class FractusConnector
         log = Logger.getLogger(FractusConnector.class.getName());
     }
     
-    //private Delegate<DelegateMethod<ClientConnectionEventData>, ClientConnectionEventData> connectionStateChangeDelegate;
     private InetSocketAddress address;
     private EncryptionManager em;
     private InputStream input;
@@ -39,7 +38,6 @@ public class FractusConnector
     private final ConcurrentLinkedQueue<FractusMessage> queue;
     private Thread consumer;
     private ClientCipher clientCipher;
-    //private StateMachine stateMachine;
 
     public FractusConnector(Socket socket, EncryptionManager em) {
         this.socket = socket;
