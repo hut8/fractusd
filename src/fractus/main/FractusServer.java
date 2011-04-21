@@ -20,7 +20,6 @@ import org.apache.log4j.PropertyConfigurator;
 import org.w3c.dom.Element;
 
 public class FractusServer {
-
     ServerSocket serverSock;
     InetSocketAddress bindAddr;
     EncryptionManager em;

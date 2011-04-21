@@ -33,6 +33,8 @@ import org.bouncycastle.util.encoders.*;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
 
+import fractus.crypto.KeyGenerator;
+
 public class EncryptionManager {
 
 	public final static String ELLIPTIC_CURVE = "secp521r1";
@@ -176,26 +178,11 @@ public class EncryptionManager {
         return new SecretKeySpec(hash, 0, hash.length, "AES");
     }
 
-    private static KeyPair generateKeyPair()
-            throws GeneralSecurityException {
-        log.info("Initializing keypair generator for EC secp521r1");
-        ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec("secp521r1");
-        log.info("EC Spec: " + ecSpec.toString());
-
-        KeyPairGenerator g = KeyPairGenerator.getInstance("ECDH", "BC");
-        g.initialize(ecSpec, new SecureRandom());
-
-        log.info("Generating EC secp521r1 Key Pair");
-        KeyPair pair = g.generateKeyPair();
-        log.info("ECDC KeyPair generated with public key:" + pair.getPublic().getEncoded());
-        return pair;
-    }
-
     public static void generateKey(String filename, char[] passwd)
             throws IOException,
             GeneralSecurityException {
         log.info("Generating EC Key Pair and exporting to [" + filename + "]");
-        KeyPair pair = generateKeyPair();
+        KeyPair pair = KeyGenerator.generateKeyPair();
         encryptKey(pair, filename, passwd);
     }
 
