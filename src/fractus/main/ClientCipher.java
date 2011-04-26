@@ -14,6 +14,8 @@ import org.apache.log4j.Logger;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
 import org.bouncycastle.math.ec.ECPoint;
 
+import fractus.crypto.EncryptionManager;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.

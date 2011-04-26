@@ -1,9 +1,9 @@
 package fractus.net;
 
+import fractus.crypto.EncryptionManager;
 import fractus.main.MessageDescriptor;
 import fractus.main.BinaryUtil;
 import fractus.main.FractusMessage;
-import fractus.main.EncryptionManager;
 import fractus.main.FractusPacket;
 import fractus.main.ClientCipher;
 import com.google.protobuf.ByteString;
