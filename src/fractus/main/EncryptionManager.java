@@ -33,7 +33,7 @@ import org.bouncycastle.util.encoders.*;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
 
-import fractus.crypto.KeyGenerator;
+import fractus.crypto.ServerKeyManager;
 
 public class EncryptionManager {
 
@@ -182,7 +182,7 @@ public class EncryptionManager {
             throws IOException,
             GeneralSecurityException {
         log.info("Generating EC Key Pair and exporting to [" + filename + "]");
-        KeyPair pair = KeyGenerator.generateKeyPair();
+        KeyPair pair = ServerKeyManager.generateKey();
         encryptKey(pair, filename, passwd);
     }
 

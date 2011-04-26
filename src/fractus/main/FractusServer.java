@@ -101,7 +101,8 @@ public class FractusServer {
                 }
                 //if (cons != null) {
                 //    System.out.println("===================================================");
-                passwd = "1337".toCharArray(); //cons.readPassword("%s", "Enter passphrase for key encryption (will not echo)");
+                passwd = "1337".toCharArray(); 
+                //cons.readPassword("%s", "Enter passphrase for key encryption (will not echo)");
                 //} else {
                 //    log.error("Could not read from secure console");
                 //    return;
@@ -162,59 +163,4 @@ public class FractusServer {
         }
         server.serve();
     }
-
-//    private HashMap<String, Callback> generateCallbackMap() {
-//        HashMap<String, Callback> map = new HashMap<String, Callback>();
-//
-//        map.put("register-location", new Callback() {
-//
-//            public void dispatch(FractusMessage response, String sender, Element message, ClientConnector fc, UserTracker tracker) {
-//                String clientAddress = message.getAttribute("address");
-//                String clientPort = message.getAttribute("port");
-//                tracker.registerLocation(response, sender, clientAddress, clientPort, fc);
-//            }
-//        });
-//
-//        map.put("invalidate-location", new Callback() {
-//
-//            public void dispatch(FractusMessage response, String sender, Element message, ClientConnector fc, UserTracker tracker) {
-//                String clientAddress = message.getAttribute("address");
-//                String clientPort = message.getAttribute("port");
-//                tracker.invalidateLocation(response, sender, clientAddress, clientPort);
-//            }
-//        });
-//
-//        map.put("send-contact-data", new Callback() {
-//
-//            public void dispatch(FractusMessage response, String sender, Element message, ClientConnector fc, UserTracker tracker) {
-//                tracker.sendContactData(response, sender, fc);
-//            }
-//        });
-//
-//        map.put("add-contact", new Callback() {
-//
-//            public void dispatch(FractusMessage response, String sender, Element message, ClientConnector fc, UserTracker tracker) {
-//                String targetUser = message.getAttribute("target");
-//                tracker.addContact(response, sender, targetUser, fc, em);
-//            }
-//        });
-//
-//        map.put("remove-contact", new Callback() {
-//
-//            public void dispatch(FractusMessage response, String sender, Element message, ClientConnector fc, UserTracker tracker) {
-//                String targetUser = message.getAttribute("target");
-//                tracker.removeContact(response, sender, targetUser, fc);
-//            }
-//        });
-//
-//        map.put("identify-key", new Callback() {
-//
-//            public void dispatch(FractusMessage response, String sender, Element message, ClientConnector fc, UserTracker tracker) {
-//                String encodedKey = message.getAttribute("key");
-//                tracker.identifyKey(response, encodedKey, fc);
-//            }
-//        });
-
-//        return null;
-//    }
 }
