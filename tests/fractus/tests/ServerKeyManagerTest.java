@@ -7,12 +7,9 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.Security;
-
-import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
@@ -40,7 +37,7 @@ public class ServerKeyManagerTest {
 	}
 
 	@Test
-	public void testStoreKey() {
+	public void testEncryptKey() {
 		try {
 			ServerKeyManager.encryptKey(ecdhKeyPair.getPrivate(),
 					testPassword, keyFile.getAbsolutePath());
@@ -50,8 +47,16 @@ public class ServerKeyManagerTest {
 	}
 
 	@Test
-	public void testReadKey() {
-		fail("Not yet implemented");
+	public void testDecryptKey()
+	throws Exception {
+		KeyPair testKeyPair = 
+			ServerKeyManager.decryptKey(testPassword, keyFile.getAbsolutePath());
+		assertEquals("Private keys do not match", ecdhKeyPair.getPrivate(), testKeyPair.getPrivate());
+		assertEquals("Public keys do not match", ecdhKeyPair.getPublic(), testKeyPair.getPublic());
 	}
 
+	@AfterClass
+	public static void tearDown() {
+		keyFile.delete();
+	}
 }
