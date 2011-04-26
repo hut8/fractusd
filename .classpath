@@ -2,10 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="res"/>
-	<classpathentry kind="lib" path="lib/bcprov-jdk16-145.jar"/>
+	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="lib" path="lib/bcprov-jdk16-145.jar" sourcepath="C:/Users/14581/Projects/bcprov-jdk16-146/src.zip"/>
 	<classpathentry kind="lib" path="lib/jdbc-mysql.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="lib/protobuf-java-2.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.9b2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/bonecp-0.7.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
