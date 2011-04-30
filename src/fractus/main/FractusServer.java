@@ -40,7 +40,7 @@ public class FractusServer {
     }
 
     public void serve() {
-        log.info("Binding socket...");
+        log.info("Binding socket");
         try {
             serverSock.bind(bindAddr);
         } catch (IOException e) {
@@ -54,8 +54,7 @@ public class FractusServer {
                 Socket clientSocket = serverSock.accept();
                 log.info("Accepted connection from " + clientSocket.getInetAddress().getHostAddress());
                 FractusConnector newconnection =
-                        new FractusConnector(clientSocket,
-                        em);
+                        new FractusConnector(clientSocket, em);
                 new Thread(newconnection).start();
             } catch (IOException e) {
                 log.warn("Could not accept client connection", e);
@@ -140,8 +139,9 @@ public class FractusServer {
         }
 
         FractusServer server = new FractusServer(port, em);
-        server.serve();
-        
-        log.info("FractusServer Exiting");
+        while(true) {
+        	log.info("Calling serve routine");
+        	server.serve();
+        }
     }
 }

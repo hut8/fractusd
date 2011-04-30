@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
@@ -28,6 +27,7 @@ import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.provider.JCEECPrivateKey;
 import org.bouncycastle.jce.spec.ECParameterSpec;
 import org.bouncycastle.jce.spec.ECPublicKeySpec;
+import org.bouncycastle.jce.provider.asymmetric.ec.KeyPairGenerator;
 
 import fractus.main.BinaryUtil;
 
@@ -38,13 +38,13 @@ public class ServerKeyManager {
 	}
 
 	public static final byte[] SALT = "ycgT4QT7ZZCFAR51m500C4AiCqkVMnhKRdq2Nte2QKictVvqFhC03oHEu2Lw".getBytes();
-	public static final int ITERATION_COUNT = 100000;
+	public static final int ITERATION_COUNT = 1000000;
 
 	public static KeyPair generateKey()
 	throws GeneralSecurityException {
 		log.info("Initializing keypair generator for EC secp521r1");
 		ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec("secp521r1");
-		KeyPairGenerator g = KeyPairGenerator.getInstance("ECDH", "BC");
+		KeyPairGenerator g = new org.bouncycastle.jce.provider.asymmetric.ec.KeyPairGenerator.ECDH();
 		g.initialize(ecSpec, new SecureRandom());
 		log.info("Generating EC secp521r1 Key Pair");
 		KeyPair pair = g.generateKeyPair();

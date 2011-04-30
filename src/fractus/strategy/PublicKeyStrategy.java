@@ -51,11 +51,11 @@ implements PacketStrategy {
         }
         String remotePKEncoding = remotePKPB.getEncoding();
         byte[] remotePKData = remotePKPB.getPublicKey().toByteArray();
-        try {
-            clientCipher.negotiate(remotePKEncoding, remotePKData);
-        } catch (GeneralSecurityException ex) {
-            log.warn("Strategy failed; unable to negotiate AES key.", ex);
-        }
+//        try {
+//            clientCipher.negotiate(remotePKEncoding, remotePKData);
+//        } catch (GeneralSecurityException ex) {
+//            log.warn("Strategy failed; unable to negotiate AES key.", ex);
+//        }
         
         // TODO: Is this public key already registered?
         
