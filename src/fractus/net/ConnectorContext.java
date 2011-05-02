@@ -1,6 +1,6 @@
 package fractus.net;
 
-import fractus.main.ClientCipher;
+import fractus.crypto.ClientCipher;
 
 public class ConnectorContext {
 

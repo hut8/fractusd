@@ -2,14 +2,12 @@ package fractus.tests;
 
 import static org.junit.Assert.*;
 
-import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.provider.asymmetric.ec.KeyPairGenerator;
-import org.bouncycastle.jce.spec.ECNamedCurveSpec;
 import org.junit.Before;
 import org.junit.Test;
 

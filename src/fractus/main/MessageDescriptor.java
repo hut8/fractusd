@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fractus.main;
 
 import com.google.protobuf.Message;
@@ -19,8 +14,11 @@ import org.apache.log4j.Logger;
  * @author bowenl2
  */
 public class MessageDescriptor {
+	
+	// Statics
         // Key Management
-    public final static short PUBLIC_KEY = 0x01a4;
+    public final static short HANDSHAKE_DATA = 0x01a4;
+    public final static short CIPHER_CAPABILITIES = 0x01b8;
     public final static short REGISTER_KEY_REQ = 0x0bbb;
     public final static short REGISTER_KEY_RES = 0x18d9;
     public final static short REVOKE_KEY_REQ = 0x6a3c;
@@ -47,19 +45,14 @@ public class MessageDescriptor {
     // Error
     public final static short PACKET_ERROR = 0x6baa;
     
-
-
-    public static boolean validateDescriptor(short type) {
-        return descriptorMap.containsKey(type);
-    }
     private final static Logger log = Logger.getLogger(MessageDescriptor.class);
     private final static HashMap<Short, String> descriptorMap;
-    private final static HashMap<Class, Short> typeDescriptorMap;
+    private final static HashMap<Class<? extends com.google.protobuf.GeneratedMessage>, Short> typeDescriptorMap;
 
     static {
         log.debug("Populating descriptor map");
         descriptorMap = new HashMap<Short, String>();
-        typeDescriptorMap = new HashMap<Class, Short>();
+        typeDescriptorMap = new HashMap<Class<? extends com.google.protobuf.GeneratedMessage>, Short>();
         Field[] fields = MessageDescriptor.class.getDeclaredFields();
         log.debug("Found" + fields.length + " fields");
         for (Field f : fields) {
@@ -83,7 +76,8 @@ public class MessageDescriptor {
             }
         }
 
-        typeDescriptorMap.put(ProtocolBuffer.PublicKey.class, PUBLIC_KEY);
+        typeDescriptorMap.put(ProtocolBuffer.HandshakeData.class, HANDSHAKE_DATA);
+        typeDescriptorMap.put(ProtocolBuffer.CipherCapabilities.class, CIPHER_CAPABILITIES);
         typeDescriptorMap.put(ProtocolBuffer.RegisterKeyReq.class, REGISTER_KEY_REQ);
         typeDescriptorMap.put(ProtocolBuffer.RegisterLocationReq.class, REGISTER_LOCATION_REQ);
     }
@@ -97,6 +91,10 @@ public class MessageDescriptor {
         return descriptorMap.get(fractusMessage.getDescriptor());
     }
 
+    public static boolean validateDescriptor(short type) {
+        return descriptorMap.containsKey(type);
+    }
+    
     public static String getDescriptorName(Short descriptor) {
         if (!descriptorMap.containsKey(descriptor)) {
             log.warn("Could not find descriptor name for descriptor: " + descriptor);
@@ -109,24 +107,30 @@ public class MessageDescriptor {
         return typeDescriptorMap.get(message.getClass());
     }
 
+    // Instance
     private Short descriptor;
+    
     public MessageDescriptor(Short descriptor) {
         if (!validateDescriptor(descriptor)) {
             throw new IllegalArgumentException("Not a valid descriptor");
         }
         this.descriptor = descriptor;
     }
+    
     public String getName() {
         return getDescriptorName(descriptor);
     }
+    
+    // Overridden -- compares only Message Descriptor shorts
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
         if (!(obj instanceof MessageDescriptor)) return false;
         return ((MessageDescriptor)obj).descriptor.equals(descriptor);
     }
+    
     @Override
     public int hashCode() {
-        return descriptor;
+        return (int)descriptor;
     }
 }

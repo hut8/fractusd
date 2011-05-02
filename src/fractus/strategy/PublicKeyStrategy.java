@@ -8,7 +8,9 @@ package fractus.strategy;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.security.GeneralSecurityException;
 import org.apache.log4j.Logger;
-import fractus.main.ClientCipher;
+
+import fractus.crypto.ClientCipher;
+import fractus.crypto.Nonce;
 import fractus.net.FractusConnector;
 import fractus.net.ProtocolBuffer;
 
@@ -35,42 +37,45 @@ implements PacketStrategy {
         
         // If the public key is established, DO NOT renegotiate -- disconnect!
         if (clientCipher.isInitialized()) {
-            log.warn("***RENEGOTIATION REQUESTED - DISCONNECTING***");
+            log.warn("Renegotiation Requested - Disconnecting");
             fractusConnector.disconnect();
             return;
         }
 
-        // Construct public key message
-        ProtocolBuffer.PublicKey remotePKPB;
+        // Construct handshake message object
+        ProtocolBuffer.HandshakeData remotePKPB;
         try {
-            remotePKPB = ProtocolBuffer.PublicKey.parseFrom(contents);
+            remotePKPB = ProtocolBuffer.HandshakeData.parseFrom(contents);
         } catch (InvalidProtocolBufferException ex) {
             log.warn("Received unparseable message", ex);
-            // This is severe, so we should disconnect
+            fractusConnector.disconnect();
             return;
         }
-        String remotePKEncoding = remotePKPB.getEncoding();
+        
+        // Initial validation
+        if (!(
+        		remotePKPB.hasNonce() &&
+        		remotePKPB.hasPublicKey() &&
+        		remotePKPB.hasPublicKeyEncoding())) {
+        	// TODO: Protocol Error, required fields not sent
+        	log.warn("Received invalid handshake packet (fields missing)");
+        	fractusConnector.disconnect();
+        	return;
+        }
+        byte[] remoteNonce = remotePKPB.getNonce().toByteArray();
+        String remotePKEncoding = remotePKPB.getPublicKeyEncoding();
         byte[] remotePKData = remotePKPB.getPublicKey().toByteArray();
-//        try {
-//            clientCipher.negotiate(remotePKEncoding, remotePKData);
-//        } catch (GeneralSecurityException ex) {
-//            log.warn("Strategy failed; unable to negotiate AES key.", ex);
-//        }
-        
-        // TODO: Is this public key already registered?
-        
+
+        // Negotiate cryptographic parameters with ClientCipher object
+        try {
+			clientCipher.negotiate(remotePKEncoding, remotePKData, new Nonce(remoteNonce));
+		} catch (GeneralSecurityException e) {
+			log.warn("Could not negotiate client cipher",e);
+			// TODO: Protocol error
+			fractusConnector.disconnect();
+			return;
+		}
+		
         log.debug("Strategy successfully deployed");
     }
-
-    /**
-     * Generates strategies after shared key negotiated
-     */
-    private void generateStrategies() {
-    	// Add Contact
-    	
-    	// Remove Contact
-    	// Contact Data
-    	// Identify Key
-    }
-    
 }
