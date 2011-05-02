@@ -1,6 +1,5 @@
 package fractus.net;
 
-import fractus.main.FractusPacket;
 import fractus.main.MessageDescriptor;
 import fractus.strategy.PacketStrategy;
 import java.io.ByteArrayInputStream;
@@ -19,13 +18,22 @@ public class PacketHandler {
         strategyMap = new HashMap<MessageDescriptor, PacketStrategy>();
     }
 
-    public synchronized void register(MessageDescriptor md, PacketStrategy s) {
-        log.debug("Registering descriptor strategy: " + md.getName() + " to: " + s.toString());
-        strategyMap.put(md, s);
+    public synchronized void register(MessageDescriptor messageDescriptor, PacketStrategy s) {
+        log.debug("Registering descriptor strategy: " + messageDescriptor.getName() + " to: " + s.toString());
+        strategyMap.put(messageDescriptor, s);
     }
 
-    public synchronized void handle(FractusPacket packet) {
-        ByteArrayInputStream bais = new ByteArrayInputStream(packet.getContents());
+    public synchronized void unregister(MessageDescriptor messageDescriptor) {
+    	strategyMap.remove(messageDescriptor);
+    }
+    
+    
+    /**
+     * Handles contents of packet once decrypted
+     * @param packetContents
+     */
+    public synchronized void handle(byte[] packetContents) {
+        ByteArrayInputStream bais = new ByteArrayInputStream(packetContents);
 
         // Determine MessageDescriptor
         DataInputStream dis = new DataInputStream(bais);

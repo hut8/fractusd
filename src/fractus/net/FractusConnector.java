@@ -2,29 +2,16 @@ package fractus.net;
 
 import fractus.crypto.ClientCipher;
 import fractus.crypto.EncryptionManager;
-import fractus.main.MessageDescriptor;
 import fractus.main.BinaryUtil;
 import fractus.main.FractusMessage;
 import fractus.main.FractusPacket;
-import com.google.protobuf.ByteString;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.logging.Level;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-
 import org.apache.log4j.Logger;
 import org.bouncycastle.crypto.InvalidCipherTextException;
-
-import fractus.strategy.PublicKeyStrategy;
 
 public class FractusConnector
 implements Runnable {
@@ -37,6 +24,7 @@ implements Runnable {
 	private InputStream input;
 	private OutputStream output;
 	private PacketHandler handler;
+	public PacketHandler getPacketHandler() { return handler; }
 	private Socket socket;
 	private final ConcurrentLinkedQueue<FractusMessage> queue;
 	private Thread consumerThread;
@@ -49,19 +37,18 @@ implements Runnable {
 		this.handler = new PacketHandler();
 		this.queue = new ConcurrentLinkedQueue<FractusMessage>();
 		this.clientCipher = new ClientCipher(em);
-		
-		// Set up the handler to receive only CipherCapabilities messages
-		
-		// Set up the handler to receive only public key messages and nothing else
-		handler.register(new MessageDescriptor(MessageDescriptor.HANDSHAKE_DATA),
-				new PublicKeyStrategy(this, clientCipher));
 	}
 
 	public void disconnect() {
 		log.info("Disconnecting");
+		if (messageConsumer != null) {
+			log.debug("Shutting down message consumer");
+			messageConsumer.shutdown();
+		}
 		try {
 			socket.close();
 		} catch (IOException e) { }
+
 	}
 
 	private void connectStreams() {
@@ -73,116 +60,121 @@ implements Runnable {
 			disconnect();
 		}
 	}
-	
-	private void publishCipherData() throws IOException {
-		log.debug("Constructing Handshake Data");
 
-		// Make Message
-		ProtocolBuffer.HandshakeData pk =
-			ProtocolBuffer.HandshakeData.newBuilder()
-			.setPublicKeyEncoding(encryptionManager.getEncodingFormat())
-			.setPublicKey(ByteString.copyFrom(encryptionManager.getEncodedPublicKey()))
-			.setNonce(ByteString.copyFrom(clientCipher.getLocalNonce().getData()))
-			.build();
-
-//		ByteArrayOutputStream os = new ByteArrayOutputStream();
-//		pk.writeTo(os);
-//		log.debug("Serialized Public Key Message: " + BinaryUtil.encodeData(pk.toByteArray()));
-
-		// Make FractusMessage
-		FractusMessage fm = FractusMessage.build(pk);
-		byte[] sm = fm.getSerialized();
-		log.debug("FractusMessage, serialized, is: " + BinaryUtil.encodeData(sm));
-		log.debug("Publishing Key: FractusMessage has tag: " + fm.getDescriptorName());
-		log.debug("Publishing Key: FractusMessage is: " + sm.length + " bytes");
-		FractusPacket fp = new FractusPacket(sm);
-
-		// Write serialized cipher data to client
-		byte[] sp = fp.serialize();
-		log.debug("Sending via socket: " + BinaryUtil.encodeData(sp));
-		output.write(sp);
-	}
 
 	@Override
 	public void run() {
-		log.info("ClientConnector alive");
+		log.info("FractusConnector alive");
 		connectStreams();
+
+		// Initializer deals soley with synchronous socket communication
+		FractusConnectorInitializer initializer =
+			new FractusConnectorInitializer(this, this.encryptionManager, this.clientCipher,
+					this.output, this.input);
 		try {
-			publishHeader();
-			receiveHeader();
-			publishCipherData();
-		} catch (IOException ex) {
-			log.warn("Could not publish header / cipher data to remote client", ex);
+			initializer.initialize();
+		} catch (IOException e) {
+			log.warn("Could not publish header / cipher data to remote client", e);
 			disconnect();
 			return;
 		}
 
+		// [Enter asynchronous mode]
 		// Create consumer of locally enqueued messages
 		createConsumer();
 		// Enter infinite service loop
 		serveConnection();
 	}
 
-	private void publishHeader()
-	throws UnsupportedEncodingException, IOException {
-		output.write("FRACTUS 0".getBytes("UTF-8"));
-	}
-
-	private void receiveHeader() {
-		Scanner headerScanner = new Scanner(input);
-		try {
-			String protocolName = headerScanner.next();
-			if (!"FRACTUS".equals(protocolName)) {
-				log.warn("Remote client sent invalid protocol name: " + protocolName);
-				disconnect();
-				return;
-			}
-			headerScanner.skip("\\s+"); // Skip whitespace
-			int protocolVersion = headerScanner.nextInt();    // Protocol Version
-			if (protocolVersion > 0) {
-				log.info("");
-			}
-			log.debug("Using FRACTUS protocol version " + protocolVersion);
-		} catch (Exception e) {
-			log.warn("Protocol error while receiving headers");
-			disconnect();
-			return;
-		}
-	}
-
 	private void serveConnection() {
 		log.debug("Entering main client service loop");
 		while (socket.isConnected()) {
 			log.debug("Waiting for packet from remote side");
-			FractusPacket fp;
-			try {
-				fp = FractusPacket.read(input);
-			} catch (IOException ex) {
-				log.info("Remote host disconnected", ex);
-				disconnect(); return;
-			}
-
-			if (fp == null) {
-				log.info("Received null packet.  Disconnecting.");
-				disconnect(); return;
-			}
-
-			log.debug("Received packet [" + fp.getContents().length + " B]:" +
-					BinaryUtil.encodeData(fp.getContents()));
-
-			log.debug("Dispatching to handler");
-			handler.handle(fp);
+			syncReceiveMessage();
 		}
 		messageConsumer.shutdown();
 	}
 
-	public void sendMessage(FractusMessage message) throws
-	IllegalBlockSizeException, BadPaddingException, IOException {
+	// Synchronous Send Methods
+	public void syncSendPlaintext(FractusMessage fractusMessage)
+	throws IOException {
+		FractusPacket sendPacket = new FractusPacket(fractusMessage.getSerialized());
+		syncSendPlaintext(sendPacket);
+	}
+
+	public void syncSendPlaintext(FractusPacket fractusPacket)
+	throws IOException {
+		output.write(fractusPacket.serialize());
+	}
+
+	public void syncSendMessage(FractusMessage message)
+	throws IOException {
+		log.debug("Sending message synchronously: " + message.getDescriptorName());
+		byte[] plainText = message.getSerialized();
+		byte[] cipherText = null;
+		try {
+			cipherText = clientCipher.encrypt(plainText);
+		} catch (IllegalStateException e1) {
+			log.warn("Could not encrypt cipher (not initialized)",e1);
+			// TODO: Protocol Error
+			disconnect();
+		} catch (InvalidCipherTextException e1) {
+			log.warn("Could not encrypt cipher (illegal ciphertext)",e1);
+			// TODO: Protocol Error
+			disconnect();
+		}
+		syncSendPlaintext(new FractusPacket(cipherText));
+	}
+
+	// Asynchronous send
+	public void sendMessage(FractusMessage message) {
 		log.debug("Adding to queue: " + message.getDescriptorName());
 		queue.add(message);
 		synchronized(queue) {
 			queue.notifyAll();
 		}
+	}
+
+	// Synchronous receive
+	public void syncReceiveMessage() {
+		FractusPacket fp;
+		try {
+			fp = FractusPacket.read(input);
+		} catch (IOException ex) {
+			log.info("Remote host disconnected", ex);
+			disconnect(); return;
+		}
+		
+		if (fp == null) {
+			log.info("Received null packet.  Disconnecting.");
+			disconnect(); return;
+		}
+
+		log.debug("Received packet [" + fp.getContents().length + " B]:" +
+				BinaryUtil.encodeData(fp.getContents()));
+		
+		byte[] contents;
+		if (clientCipher.isInitialized()) {
+			log.debug("Decrypting ciphertext");
+			try {
+				contents = clientCipher.decrypt(fp.getContents());
+			} catch (IllegalStateException e) {
+				log.warn("Unable to receive packet: invalid cipher state",e);
+				this.disconnect(); return;
+			} catch (InvalidCipherTextException e) {
+				log.warn("Unable to receive packet: failed GMAC",e);
+				this.disconnect(); return;
+			}
+		} else {
+			log.debug("Interpreting packet as plaintext");
+			contents = fp.getContents();
+		}
+
+		log.debug("Dispatching to handler");
+		handler.handle(contents);	
+		
+		
+		
 	}
 
 	private void createConsumer() {
@@ -194,18 +186,19 @@ implements Runnable {
 	private class MessageConsumer
 	implements Runnable {
 		boolean active;
-		
+
 		public MessageConsumer() {
 			this.active = true;
 		}
+
 		public void shutdown() {
 			log.debug("Received request to shut down");
 			active = false;
-			synchronized (consumerThread) {
-				consumerThread.notifyAll();	
+			synchronized (queue) {
+				queue.notifyAll();	
 			}
 		}
-		
+
 		@Override
 		public void run() {
 			while (active) {
@@ -225,26 +218,11 @@ implements Runnable {
 				synchronized (queue) {
 					while (!FractusConnector.this.queue.isEmpty()) {
 						FractusMessage fm = FractusConnector.this.queue.remove();
-						byte[] plainText = fm.getSerialized();
-						byte[] cipherText;
-							try {
-								cipherText = clientCipher.encrypt(plainText);
-							} catch (IllegalStateException e1) {
-								log.warn("",e1);
-								disconnect();
-								break;
-							} catch (InvalidCipherTextException e1) {
-								log.warn("[run]",e1);
-								disconnect();
-								break;
-							}
-						FractusPacket sendPacket = new FractusPacket(cipherText);
-
 						try {
-							output.write(sendPacket.serialize());
+							syncSendMessage(fm);
 						} catch (IOException e) {
-							FractusConnector.this.queue.add(fm);
-							e.printStackTrace();
+							log.warn("Consumer: could not send message.",e);
+							disconnect();
 						}
 					}
 				}

@@ -47,15 +47,7 @@ public class IdentifyKeyReqStrategy implements PacketStrategy {
 		ProtocolBuffer.IdentifyKeyRes response = responseBuilder.build();
 		FractusMessage message = FractusMessage.build(response);
 		FractusConnector connector = connectorContext.getFractusConnector();
-		try {
-			connector.sendMessage(message);
-		} catch (GeneralSecurityException e) {
-			log.warn("Encountered security exception while sending response",e);
-			connector.disconnect();
-		} catch (IOException e) {
-			log.warn("Encountered IO exception while sending response",e);
-			connector.disconnect();
-		}
+		connector.sendMessage(message);
 	}
 	
 	private void sendResponse(ProtocolBuffer.IdentifyKeyRes.ResponseCode responseCode) {

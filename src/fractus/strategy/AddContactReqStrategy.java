@@ -32,16 +32,10 @@ public class AddContactReqStrategy
 	}
 	
 	private void sendResponse(ProtocolBuffer.AddContactRes.ResponseCode responseCode) {
-		try {
 			connectorContext.getFractusConnector().sendMessage(
 					FractusMessage.build(
 							ProtocolBuffer.AddContactRes.newBuilder().setCode(responseCode).build()
-					)
-			);
-		} catch (GeneralSecurityException e) {
-			
-		} catch (IOException e) {
-		}
+					));
 	}
 	
 	@Override
@@ -75,7 +69,7 @@ public class AddContactReqStrategy
 			// TODO: Spawn Client Notifier
 			sendResponse(ResponseCode.SUCCESS);
 		} else {
-			sendResponse(ResponseCode.REDUNDANT);
+			sendResponse(ResponseCode.INVALID);
 		}
 	}
 }

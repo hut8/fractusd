@@ -50,6 +50,7 @@ public class ClientCipher {
 		this.encryptCipher = new GCMBlockCipher(new AESFastEngine());
 		this.decryptCipher = new GCMBlockCipher(new AESFastEngine());
 		this.encryptNonce = Nonce.generate(); // Automatically adds Nonce to used pool
+		log.debug("ClientCipher constructed (Cipher engines, KDE, Nonce)");
 	}
 
 	public Nonce getLocalNonce() {
@@ -76,10 +77,10 @@ public class ClientCipher {
 			this.remotePublicKey = (ECPublicKey)keyFactory.generatePublic(ks);
 		} catch (ClassCastException ex) {
 			log.warn("Not given a valid EC Public Key!", ex);
-			return;
+			throw new GeneralSecurityException(ex);
 		} catch (InvalidKeySpecException ex) {
 			log.warn("Not given a valid EC Public Key!", ex);
-			return;
+			throw new GeneralSecurityException(ex);
 		}
 		this.remotePublicPoint = this.remotePublicKey.getQ();
 

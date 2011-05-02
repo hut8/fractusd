@@ -18,17 +18,23 @@ import fractus.net.ProtocolBuffer;
  *
  * @author bowenl2
  */
-public class PublicKeyStrategy
+public class HandshakeDataStrategy
 implements PacketStrategy {
     private ClientCipher clientCipher;
     private FractusConnector fractusConnector;
+    private boolean agreedCipherSuite;
     private final static Logger log =
-    	Logger.getLogger(PublicKeyStrategy.class.getName());
+    	Logger.getLogger(HandshakeDataStrategy.class.getName());
 
-    public PublicKeyStrategy(FractusConnector connector, ClientCipher clientCipher) {
+    public HandshakeDataStrategy(FractusConnector connector, ClientCipher clientCipher) {
         log.debug("Creating new Public Key Strategy with client cipher: " + clientCipher.toString());
         this.clientCipher = clientCipher;
         this.fractusConnector = connector;
+        this.agreedCipherSuite = false;
+    }
+    
+    public void agreedCipherSuite() {
+    	this.agreedCipherSuite = true;
     }
 
     @Override
@@ -40,6 +46,13 @@ implements PacketStrategy {
             log.warn("Renegotiation Requested - Disconnecting");
             fractusConnector.disconnect();
             return;
+        }
+        
+        if (!this.agreedCipherSuite) {
+        	log.warn("Protocol error: agreed cipher suite not established");
+        	// TODO: Protocol Error
+        	fractusConnector.disconnect();
+        	return;
         }
 
         // Construct handshake message object
