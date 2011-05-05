@@ -2,7 +2,6 @@ package fractus.tests;
 
 import static org.junit.Assert.*;
 
-import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.Security;
 
@@ -14,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fractus.crypto.Nonce;
-import fractus.main.BinaryUtil;
 
 public class NonceTest {
 	
@@ -48,7 +46,8 @@ public class NonceTest {
 			Nonce n = Nonce.generate();
 			assertTrue(Nonce.record(n));
 			assertTrue(Nonce.isUsed(n));
-			assertEquals(n.getData().length, Nonce.NONCE_BITS/8);
+			assertEquals("Expected " + Nonce.NONCE_BITS/8 + " bytes of data, got " +
+					n.getData().length, n.getData().length, Nonce.NONCE_BITS/8);
 		}
 	}
 	

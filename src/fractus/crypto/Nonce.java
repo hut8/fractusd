@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import javax.crypto.SecretKey;
-
 import org.apache.log4j.Logger;
 import org.bouncycastle.crypto.RuntimeCryptoException;
 
