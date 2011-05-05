@@ -55,7 +55,7 @@ extends Random {
 
 	@Override
 	public synchronized void setSeed(long seed) {
-		throw new UnsupportedOperationException();
+		
 	}
 
 	@Override

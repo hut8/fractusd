@@ -2,39 +2,58 @@ package fractus.tests;
 
 import static org.junit.Assert.*;
 
+import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
 import java.security.Security;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-
+import org.bouncycastle.crypto.RuntimeCryptoException;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.util.encoders.Hex;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import fractus.crypto.Nonce;
+import fractus.main.BinaryUtil;
 
 public class NonceTest {
-	private SecretKey secretKey;
 	
 	@Before
 	public void setUp() throws Exception {
 		Security.addProvider(new BouncyCastleProvider());
-		Nonce.setGenerator(new InsecureRandom());
-//		KeyGenerator kg = KeyGenerator.getInstance("AES", "BC");
-//		kg.init(256);
-//		secretKey = kg.generateKey();
 	}
 
+	@Test(expected = RuntimeCryptoException.class)
+	public void testGenerateWeakRNG() {
+		Nonce.setGenerator(new InsecureRandom());
+		// Generate 1000 nonces.
+		for (int i=0; i < 1000; i++) {
+			Nonce n = Nonce.generate();
+			assertEquals(n.getData().length, Nonce.NONCE_BITS/8);
+		}
+	}
+	
+	@Test
+	public void testAddAndCheckDuplicate() {
+		Nonce n = new Nonce(Hex.decode("5C23AC9A7162E177FDF2602C"));
+		assertTrue(Nonce.record(n));
+		assertTrue(Nonce.isUsed(n));
+	}
+	
 	@Test
 	public void testGenerate() {
-		// Generate 100 nonces.  This should fail.
-		for (int i=0; i < 100; i++) {
+		Nonce.setGenerator(new SecureRandom());
+		// Generate 1000 nonces.
+		for (int i=0; i < 1000; i++) {
 			Nonce n = Nonce.generate();
-			if (Nonce.isUsed(n)) {
-				fail("Generated used nonce");
-			}
+			assertTrue(Nonce.record(n));
+			assertTrue(Nonce.isUsed(n));
+			assertEquals(n.getData().length, Nonce.NONCE_BITS/8);
 		}
+	}
+	
+	@After
+	public void tearDown() {
+		Nonce.setGenerator(new SecureRandom());
 	}
 }

@@ -103,6 +103,8 @@ public class ClientCipher {
 		this.encryptCipher.init(true, encryptParams);
 		this.decryptCipher.init(false, decryptParams);
 
+		Nonce.record(decryptNonce);
+		
 		initialized = true;
 	}
 

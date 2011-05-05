@@ -47,10 +47,14 @@ public class Nonce {
 			throw new RuntimeCryptoException(
 					"Cannot generate unused Nonce: Random Number Generator is broken!");
 		}
-		Nonce.usedNonces.add(nonce);
 		return nonce;
 	}
 	
+	/**
+	 * Records that a nonce has been used
+	 * @param nonce
+	 * @return True if nonce was not in the record.  False otherwise.
+	 */
 	public synchronized static boolean record(Nonce nonce) {
 		return usedNonces.add(nonce);
 	}
@@ -64,12 +68,11 @@ public class Nonce {
 	public byte[] getData() {
 		return data;
 	}
-	private SecretKey secretKey;
 	private Integer hashCode;
 
 	public Nonce(byte[] data) {
-		if (data == null || secretKey == null || secretKey.getEncoded() == null) {
-			throw new UnsupportedOperationException("Null secret or data cannot be used");
+		if (data == null) {
+			throw new UnsupportedOperationException("Null data cannot be used");
 		}
 		if (data.length != Nonce.NONCE_BITS/8) {
 			throw new IllegalArgumentException(
