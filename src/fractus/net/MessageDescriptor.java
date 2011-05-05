@@ -1,8 +1,8 @@
-package fractus.main;
+package fractus.net;
 
 import com.google.protobuf.Message;
 
-import fractus.net.ProtocolBuffer;
+import fractus.main.FractusMessage;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -14,6 +14,29 @@ import org.apache.log4j.Logger;
  * @author bowenl2
  */
 public class MessageDescriptor {
+	
+//	AddContactReq
+//	AddContactRes
+//	CipherCapabilities
+//	-- CipherSuite (only used in CipherCapabilities)
+//	ClientInfo
+//	ContactData
+//	ContactDataReq
+//	ContactDataRes
+//	HandshakeData
+//	IdentifyKeyReq
+//	IdentifyKeyRes
+//	InstantMessage
+//	Location
+//	ProtocolError
+//	RegisterKeyReq
+//	RegisterKeyRes
+//	RegisterLocationReq
+//	RegisterLocationRes
+//	RemoveContactReq
+//	RemoveContactRes
+//	RevokeKeyReq
+//	RevokeKeyRes
 	
 	// Statics
         // Key Management

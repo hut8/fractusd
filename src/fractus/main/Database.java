@@ -1,7 +1,6 @@
 package fractus.main;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,6 +23,7 @@ import fractus.main.UserTracker.ModifyContactResponse;
  *
  */
 public class Database {
+	// Statics and Initializer
 	public static String url;
 	private final static Logger log;
 	private static BoneCPConfig poolConfig;
@@ -36,11 +36,11 @@ public class Database {
 		log.info("Loading MySQL JDBC driver...");
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			Class.forName("com.mysql.jdbc.Driver");
 			log.info("MySQL JDBC driver loaded");
 		} catch (Exception e) {
 			log.fatal("Fatal error: could not load Database driver", e);
-			Runtime.getRuntime().exit(-1);
+			throw new RuntimeException("Database driver could not be loaded.");
 		}
 
 		// Connection pool
@@ -62,7 +62,7 @@ public class Database {
 		
 	}
 
-	public static class Authenticator {
+	public static class Authentication {
 		public static boolean authenticate(UserCredentials credentials)
 		throws SQLException {
 			Connection conn = connectionPool.getConnection();
@@ -86,10 +86,11 @@ public class Database {
 					sth.close();
 			}
 		}
+		
+		
 	}
 	
 	public static class UserTracker {
-		
 		public static fractus.main.UserTracker.ModifyContactResponse
 		addContact(String sourceUsername, String destinationUsername)
 		throws SQLException {
@@ -113,8 +114,22 @@ public class Database {
 			}
 		}
 		
-		public static void removeContact(String sourceUsername, String destinationUsername) {
-			
+		public static ModifyContactResponse removeContact(String sourceUsername, String destinationUsername)
+		throws SQLException {
+			log.debug("Trying to add " + destinationUsername + " as a contact of " + sourceUsername);
+			Connection conn = connectionPool.getConnection();
+			PreparedStatement sth = null;
+			try {
+				sth = conn.prepareStatement("CALL DeleteContact_prc(?,?)");
+				sth.setString(1, sourceUsername);
+				sth.setString(2, destinationUsername);
+				int rowcount = sth.executeUpdate();
+				return rowcount > 0 ?
+						ModifyContactResponse.SUCCESS : ModifyContactResponse.REDUNDANT; 
+			} finally {
+				if (sth != null)
+					sth.close();
+			}
 		}
 		
 		public static boolean confirmContact(String sourceUsername, String destinationUsername)
@@ -123,7 +138,7 @@ public class Database {
 			Connection conn = connectionPool.getConnection();
 			PreparedStatement sth = null;
 			try {
-				sth = conn.prepareStatement("CALL ConfirmContact_prc(?,?)");
+				sth = conn.prepareStatement("CALL VerifyContact_prc(?,?)");
 				sth.setString(1, sourceUsername);
 				sth.setString(2, destinationUsername);
 				sth.execute();

@@ -17,7 +17,6 @@ import com.sun.org.apache.xml.internal.security.encryption.AgreementMethod;
 import fractus.crypto.ClientCipher;
 import fractus.crypto.EncryptionManager;
 import fractus.main.FractusMessage;
-import fractus.main.MessageDescriptor;
 import fractus.net.ProtocolBuffer.CipherSuite;
 import fractus.strategy.CipherCapabilitiesStrategy;
 import fractus.strategy.HandshakeDataStrategy;
@@ -89,7 +88,8 @@ public class FractusConnectorInitializer {
 		if (!"FRACTUS 1".equals(this.remoteVersion)) {
 			log.warn("Received different protocol version: " + this.remoteVersion);
 		}
-		while (reader.readLine() != "") { }
+		// Advance past header
+		while (!"".equals(reader.readLine())) { }
 	}
 
 	private void publishCipherCapabilities()

@@ -20,23 +20,27 @@ implements Runnable {
 		log = Logger.getLogger(FractusConnector.class.getName());
 	}
 
+	// Crypto
 	private EncryptionManager encryptionManager;
+	private ClientCipher clientCipher;
+	
+	// IO
+	private Socket socket;
 	private InputStream input;
 	private OutputStream output;
 	private PacketHandler handler;
+	
 	public PacketHandler getPacketHandler() { return handler; }
-	private Socket socket;
 	private final ConcurrentLinkedQueue<FractusMessage> queue;
 	private Thread consumerThread;
 	private MessageConsumer messageConsumer;
-	private ClientCipher clientCipher;
 
-	public FractusConnector(Socket socket, EncryptionManager em) {
+	public FractusConnector(Socket socket, EncryptionManager encryptionManager) {
 		this.socket = socket;
-		this.encryptionManager = em;
+		this.encryptionManager = encryptionManager;
 		this.handler = new PacketHandler();
 		this.queue = new ConcurrentLinkedQueue<FractusMessage>();
-		this.clientCipher = new ClientCipher(em);
+		this.clientCipher = new ClientCipher(encryptionManager);
 	}
 
 	public void disconnect() {
@@ -48,7 +52,6 @@ implements Runnable {
 		try {
 			socket.close();
 		} catch (IOException e) { }
-
 	}
 
 	private void connectStreams() {

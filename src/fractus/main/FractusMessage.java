@@ -4,6 +4,9 @@ package fractus.main;
 
 
 import com.google.protobuf.Message;
+
+import fractus.net.MessageDescriptor;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;

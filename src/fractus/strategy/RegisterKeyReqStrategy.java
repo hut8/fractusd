@@ -81,7 +81,7 @@ implements PacketStrategy {
 		UserCredentials credentials = new UserCredentials(username, password);
 		boolean authSuccess = false;
 		try { 
-			authSuccess = Database.Authenticator.authenticate(credentials);
+			authSuccess = Database.Authentication.authenticate(credentials);
 		} catch (SQLException e) {
 			log.error("Could not authenticate user due to database error", e);
 			sendResponse(ResponseCode.SERVER_ERROR);

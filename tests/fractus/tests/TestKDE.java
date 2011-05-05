@@ -25,7 +25,6 @@ import org.bouncycastle.jce.provider.asymmetric.ec.KeyPairGenerator;
 import org.bouncycastle.jce.spec.ECParameterSpec;
 
 import fractus.crypto.KeyDerivationEngine;
-import fractus.main.BinaryUtil;
 
 public class TestKDE
 implements KeyDerivationEngine {

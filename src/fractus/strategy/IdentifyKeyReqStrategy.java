@@ -99,7 +99,13 @@ public class IdentifyKeyReqStrategy implements PacketStrategy {
 		log.debug("Computed target Q point from given ECPK");
 		
 		// Attempt to identify key
-		String keyOwner = userTracker.identifyKey(remotePoint);
+		String keyOwner = null;
+		try {
+			keyOwner = userTracker.identifyKey(remotePoint, connectorContext.getUsername());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			log.warn("[dispatch]",e1);
+		}
 		if (keyOwner == null) {
 			log.info("Tried to identify unregistered Q: " + BinaryUtil.encodeData(remotePoint.getEncoded()));
 			sendResponse(ResponseCode.UNKNOWN_KEY);

@@ -1,112 +1,123 @@
 package fractus.main;
 
-
-import fractus.net.FractusConnector;
-import java.security.interfaces.ECPublicKey;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.log4j.Logger;
 import org.bouncycastle.math.ec.ECPoint;
 
+import fractus.net.FractusConnector;
+
 public class UserTracker {
-    private Map<ECPoint, String> keyMap;
-    private static Logger log;
-    static {
-        log = Logger.getLogger(UserTracker.class.getName());
-    }
+	private Map<ECPoint, String> keyUserMap;
+	private Map<String, Set<ECPoint>> userKeyMap;
 
-    public UserTracker() {
-        keyMap = new HashMap<ECPoint, String>();
-    }
+	private static Logger log;
+	static {
+		log = Logger.getLogger(UserTracker.class.getName());
+	}
 
-    public static enum ModifyContactResponse { 
-    	SUCCESS,
-    	REDUNDANT,
-    	SECURITY_ERROR }
-    
-    public ModifyContactResponse addContact(String sourceUser, String destUser)
-    throws SQLException {
-    	return Database.UserTracker.addContact(sourceUser, destUser);
-    }
+	public UserTracker() {
+		keyUserMap = new HashMap<ECPoint, String>();
+		userKeyMap = new HashMap<String, Set<ECPoint>>();
+	}
 
-    public void removeContact(String sourceUser, String destUser) {
- 
-    }
-    
-    public boolean confirmContact(String sourceUser, String destUser)
-    throws SQLException {
-    	return Database.UserTracker.confirmContact(sourceUser, destUser);
-    }
+	public static enum ModifyContactResponse { 
+		SUCCESS,
+		REDUNDANT,
+		SECURITY_ERROR,
+		DATABASE_ERROR
+	}
 
-    public void sendContactData(String username) {
- 
-    }
+	// Key Operations
 
-    public synchronized void registerKey(ECPoint key, String username)
-    throws IllegalStateException {
-        if (keyMap.containsKey(key)) {
-            throw new IllegalStateException("Key already registered");
-        }
-        keyMap.put(key, username);
-    }
+	/**
+	 * Registers key as belonging to specified username
+	 * returns True if key successfully registered, False if duplicate
+	 */
+	public synchronized boolean registerKey(ECPoint key, String username) {
+		if (keyUserMap.containsKey(key)) {
+			return false;
+		}
+		keyUserMap.put(key, username);
+		if (!userKeyMap.containsKey(username)) {
+			userKeyMap.put(username, new HashSet<ECPoint>());
+		}
+		userKeyMap.get(username).add(key);
+		return true;
+	}
 
-    public String identifyKey(ECPoint point) {
-        return keyMap.get(point);
-    }
+	/**
+	 * Revokes association between given key and username
+	 * @param key - public EC point belonging to key
+	 * @param username
+	 * @return True if invalidated successfully, false if key not present
+	 */
+	public synchronized boolean invalidateKey(ECPoint key, String username) {
+		// Make sure that the key is present in the map
+		// and that it belongs to the requestor, then remove it. 
+		if (username.equalsIgnoreCase(this.keyUserMap.get(key))) {
+			keyUserMap.remove(key);
+		} else {
+			log.info("Tried to invalidate association between username: [" +
+					username + "] and EC PP: [" + BinaryUtil.encodeData(key.getEncoded()) +
+			"] but key not present or not owned by that username");
+			return false;
+		}
+		// No longer associate the user with the key.
+		Set<ECPoint> userKeys = this.userKeyMap.get(username);
+		if (userKeys == null || !userKeys.contains(key)) {
+			log.warn("Username present in KeyUserMap but its key not in UserKeyMap!");
+			return false;
+		}
+		userKeys.remove(key);
+		log.info("Invalidated association between username: [" + username + "] and EC PP: "
+				+ BinaryUtil.encodeData(key.getEncoded()));
+		return true;
+	}
 
+	/**
+	 * Identifies owner of given key
+	 * @param point
+	 * @param username
+	 * @return Username of owner of key, or null if key not present or not contacts
+	 * @throws SQLException
+	 */
+	public synchronized String identifyKey(ECPoint point, String username)
+	throws SQLException {
+		// Make sure that the remote user is authorized to get this (i.e. that they are contacts) 
+		String keyOwner = keyUserMap.get(point);
+		
+		return verifyContact(username, keyOwner) ? keyOwner : null;
+	}
 
-    public void registerLocation(FractusMessage response, String username, String address, String portString, FractusConnector fc) {
-        // Parse parameters
-        if (address == null || portString == null) {
-            // Create error packet and send back to fc
-            
-            
-            return;
-        }
+	// Location Operations
 
-        int port = 0;
-        try {
-            port = Integer.parseInt(portString);
-        } catch (NumberFormatException nfe) {
+	public void registerLocation(String username, String address, String portString) {
+		// Validate and parse parameters
+		if (address == null || portString == null) {           
+			throw new IllegalArgumentException("Address or port null");
+		}
+		int port;
+		port = Integer.parseInt(portString);
 
-            
-            return;
-        }
+		// TODO: Database stuff
+	}
 
-        // Find user object
- 
-        // Store in database
- 
-        
-    }
+	public void invalidateLocation(String username, String address, String portString) {
+		// Parse and validate parameter
+		if (address == null || portString == null) {
+			throw new IllegalArgumentException("Null address or port");
+		}
 
-    public void invalidateLocation(FractusMessage response, String username, String address, String portString) {
-        // Parse parameters
-        
-        if (address == null || portString == null) {
-            // Create error packet and send back to fc
-        
-            
-            return;
-        }
+		int port = 0;
+		port = Integer.parseInt(portString);
 
-        int port = 0;
-        try {
-            port = Integer.parseInt(portString);
-        } catch (NumberFormatException nfe) {
-            
-            
-            return;
-        }
-
-        // Find user object
-  
-        // TODO: GIVE RESPONSE
-    }
+		// TODO
+	}
 }

@@ -40,7 +40,7 @@ public class FractusServer {
     }
 
     public void serve() {
-        log.info("Binding socket");
+        log.info("Binding to port " + bindAddr.getPort());
         try {
             serverSock.bind(bindAddr);
         } catch (IOException e) {
@@ -48,7 +48,7 @@ public class FractusServer {
             System.exit(-1);
         }
         log.info("Waiting for connections");
-
+        
         while (serverSock.isBound()) {
             try {
                 Socket clientSocket = serverSock.accept();
