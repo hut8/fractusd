@@ -57,7 +57,7 @@ implements KeyDerivationEngine {
 		g.initialize(ecSpec, new SecureRandom());
 		log.info("Generating EC secp521r1 Key Pair");
 		KeyPair pair = g.generateKeyPair();
-		log.info("ECDH KeyPair generated with public key:" + BinaryUtil.encodeData(pair.getPublic().getEncoded()));
+		// log.info("ECDH KeyPair generated with public key:" + BinaryUtil.encodeData(pair.getPublic().getEncoded()));
 		return pair;
 	}
 

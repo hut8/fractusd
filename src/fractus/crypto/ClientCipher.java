@@ -1,8 +1,5 @@
 package fractus.crypto;
 
-
-
-
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.spec.InvalidKeySpecException;
@@ -16,8 +13,6 @@ import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
 import org.bouncycastle.math.ec.ECPoint;
-
-import fractus.main.BinaryUtil;
 
 public class ClientCipher {
 
@@ -49,8 +44,12 @@ public class ClientCipher {
 		this.keyDerivationEngine = keyDerivationEngine;
 		this.encryptCipher = new GCMBlockCipher(new AESFastEngine());
 		this.decryptCipher = new GCMBlockCipher(new AESFastEngine());
-		this.encryptNonce = Nonce.generate(); // Automatically adds Nonce to used pool
+		this.encryptNonce = Nonce.generate();
 		log.debug("ClientCipher constructed (Cipher engines, KDE, Nonce)");
+	}
+	
+	public SecretKeySpec getSecret() {
+		return this.secretKeySpec;
 	}
 
 	public Nonce getLocalNonce() {
@@ -67,8 +66,7 @@ public class ClientCipher {
 			log.warn("Could not recognize that key encoding [Not X.509]: " + keyEncoding);
 			throw new GeneralSecurityException("Key not X.509 (Unsupported)");
 		}
-
-		log.debug("Trying to derive secret key from ours and " + BinaryUtil.encodeData(remotePublicKey));
+		// log.debug("Trying to derive secret key from ours and " + BinaryUtil.encodeData(remotePublicKey));
 
 		// Create their public key, public point object for ECDH
 		X509EncodedKeySpec ks = new X509EncodedKeySpec(remotePublicKey);
@@ -86,9 +84,10 @@ public class ClientCipher {
 
 		// Perform DH
 		this.secretKeySpec = keyDerivationEngine.deriveKey(this.remotePublicKey);
-
+		
 		// Deal with remote/decrypt nonce
 		this.decryptNonce = decryptNonce;
+		
 		if (Nonce.isUsed(this.decryptNonce)) {
 			GeneralSecurityException gse = new GeneralSecurityException("Received duplicate Nonce");
 			log.warn("Remotely supplied (decryption) Nonce is duplicate!", gse);
@@ -96,12 +95,12 @@ public class ClientCipher {
 		}
 
 		KeyParameter baseParameter = new KeyParameter(this.secretKeySpec.getEncoded());
-		ParametersWithIV encryptParams = new ParametersWithIV(baseParameter, this.encryptNonce.getData());
 		ParametersWithIV decryptParams = new ParametersWithIV(baseParameter, this.decryptNonce.getData());
-
+		ParametersWithIV encryptParams = new ParametersWithIV(baseParameter, this.encryptNonce.getData());
+		
 		// Initialize ciphers
-		this.encryptCipher.init(true, encryptParams);
-		this.decryptCipher.init(false, decryptParams);
+		this.encryptCipher.init(true, decryptParams);
+		this.decryptCipher.init(false, encryptParams);
 
 		Nonce.record(decryptNonce);
 		
@@ -114,7 +113,7 @@ public class ClientCipher {
 		byte[] cipherTextBuffer = new byte[outsize];
 		int offset = encryptCipher.processBytes(plaintext, 0, plaintext.length, cipherTextBuffer, 0);
 		offset += encryptCipher.doFinal(cipherTextBuffer, offset);
-		log.debug("Processed " + plaintext.length + " PT bytes into " + offset + " CT bytes");
+		log.debug("Encrypted " + plaintext.length + " PT bytes into " + offset + " CT bytes");
 		return cipherTextBuffer;
 	}
 
@@ -123,8 +122,8 @@ public class ClientCipher {
 		int outsize = this.decryptCipher.getOutputSize(ciphertext.length);
 		byte[] plainTextBuffer = new byte[outsize];
 		int offset = decryptCipher.processBytes(ciphertext, 0, ciphertext.length, plainTextBuffer, 0);
-		offset += encryptCipher.doFinal(plainTextBuffer, offset);
-		log.debug("Processed " + ciphertext.length + " CT bytes into " + offset + " PT bytes");
+		offset += decryptCipher.doFinal(plainTextBuffer, offset);
+		log.debug("Decrypted " + ciphertext.length + " CT bytes into " + offset + " PT bytes");
 		return plainTextBuffer;
 	}
 }

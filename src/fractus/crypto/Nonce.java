@@ -60,6 +60,10 @@ public class Nonce {
 	public synchronized static boolean isUsed(Nonce nonce) {
 		return usedNonces.contains(nonce);
 	}
+	
+	public synchronized static void resetPool() {
+		usedNonces.clear();
+	}
 
 	// Instance
 	private byte[] data;
