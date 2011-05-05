@@ -13,7 +13,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import fractus.main.FractusMessage;
 import fractus.main.UserTracker;
-import fractus.main.UserTracker.ModifyContactResponse;
+import fractus.main.UserTracker.ContactOperationResponse;
 import fractus.net.ConnectorContext;
 import fractus.net.ProtocolBuffer;
 import fractus.net.ProtocolBuffer.AddContactRes.ResponseCode;
@@ -56,7 +56,7 @@ public class AddContactReqStrategy
 		String sourceUsername = connectorContext.getUsername();
 		
 		// Make the request happen
-		ModifyContactResponse modifyContactResponse;
+		ContactOperationResponse modifyContactResponse;
 		try {
 			 modifyContactResponse = userTracker.addContact(sourceUsername, targetUsername);
 		} catch (SQLException e) {
@@ -65,7 +65,7 @@ public class AddContactReqStrategy
 			return;
 		}
 		
-		if (modifyContactResponse == ModifyContactResponse.SUCCESS) {
+		if (modifyContactResponse == ContactOperationResponse.SUCCESS) {
 			// TODO: Spawn Client Notifier
 			sendResponse(ResponseCode.SUCCESS);
 		} else {

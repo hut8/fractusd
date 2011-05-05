@@ -1,17 +1,15 @@
 package fractus.main;
 
-import java.net.Socket;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.apache.log4j.Logger;
 import org.bouncycastle.math.ec.ECPoint;
-
-import fractus.net.FractusConnector;
 
 public class UserTracker {
 	private Map<ECPoint, String> keyUserMap;
@@ -27,15 +25,23 @@ public class UserTracker {
 		userKeyMap = new HashMap<String, Set<ECPoint>>();
 	}
 
-	public static enum ModifyContactResponse { 
+	public static enum LocationOperationResponse {
 		SUCCESS,
 		REDUNDANT,
+		INVALID_REQUEST,
 		SECURITY_ERROR,
 		DATABASE_ERROR
 	}
 
+	public static enum ContactOperationResponse { 
+		SUCCESS,
+		REDUNDANT,
+		INVALID_REQUEST,
+		SECURITY_ERROR,
+		DATABASE_ERROR
+	}
+	
 	// Key Operations
-
 	/**
 	 * Registers key as belonging to specified username
 	 * returns True if key successfully registered, False if duplicate
@@ -92,32 +98,112 @@ public class UserTracker {
 	throws SQLException {
 		// Make sure that the remote user is authorized to get this (i.e. that they are contacts) 
 		String keyOwner = keyUserMap.get(point);
-		
+
 		return verifyContact(username, keyOwner) ? keyOwner : null;
 	}
 
-	// Location Operations
+	// Contact Operations
+	
+	public boolean verifyContact(String username1, String username2)
+	throws SQLException {
+		return Database.verifyContact(username1, username2);
+	}
 
-	public void registerLocation(String username, String address, String portString) {
+	public Set<String> listNonreciprocalContacts(String username) {
+		try {
+			return Database.listNonreciprocalContacts(username);
+		} catch (SQLException e) {
+			log.warn("[listNonreciprocalContacts]",e);
+			return null;
+		}
+	}
+
+	public ContactOperationResponse addContact(String sourceUsername, String destinationUsername)
+	throws IOException {
+		try {
+			return Database.addContact(sourceUsername, destinationUsername);
+		} catch (SQLException e) {
+			log.warn("[addContact]",e);
+			return ContactOperationResponse.DATABASE_ERROR;
+		}
+	}
+
+	public ContactOperationResponse removeContact(String sourceUsername, String destinationUsername)
+	throws IOException {
+		try {
+			return Database.removeContact(sourceUsername, destinationUsername);
+		} catch (SQLException e) {
+			log.warn("[removeContact]",e);
+			return ContactOperationResponse.DATABASE_ERROR;
+		}
+	}
+
+	// Location Operations
+	
+	public LocationOperationResponse registerLocation(String username, String address, String portString) {
 		// Validate and parse parameters
 		if (address == null || portString == null) {           
-			throw new IllegalArgumentException("Address or port null");
-		}
-		int port;
-		port = Integer.parseInt(portString);
-
-		// TODO: Database stuff
-	}
-
-	public void invalidateLocation(String username, String address, String portString) {
-		// Parse and validate parameter
-		if (address == null || portString == null) {
-			throw new IllegalArgumentException("Null address or port");
+			return LocationOperationResponse.INVALID_REQUEST;
 		}
 
-		int port = 0;
-		port = Integer.parseInt(portString);
+		short port;
+		try {
+			port = Short.parseShort(portString);
+		} catch (NumberFormatException e) {
+			return LocationOperationResponse.INVALID_REQUEST;
+		}
+		if (port > 65535) {
+			return LocationOperationResponse.INVALID_REQUEST;
+		}
 
-		// TODO
+		boolean success = false;
+		InetAddress a;
+		try {
+			a = InetAddress.getByName(address);
+		} catch (UnknownHostException e1) {
+			log.warn("[registerLocation]",e1);
+			return LocationOperationResponse.INVALID_REQUEST;
+		}
+		
+		try {
+			success = Database.registerLocation(username, a, port);
+		} catch (SQLException e) {
+			return LocationOperationResponse.DATABASE_ERROR;
+		}
+		
+		return success ? LocationOperationResponse.SUCCESS : LocationOperationResponse.REDUNDANT;
 	}
+
+	public LocationOperationResponse invalidateLocation(String username, String address, String portString) {
+		// Validate and parse parameters
+		if (address == null || portString == null) {           
+			return LocationOperationResponse.INVALID_REQUEST;
+		}
+
+		Short port;
+		try {
+			port = Short.parseShort(portString);
+		} catch (NumberFormatException e) {
+			return LocationOperationResponse.INVALID_REQUEST;
+		}
+
+		InetAddress ipAddress;
+		try {
+			ipAddress = (InetAddress)InetAddress.getByName(address);
+		} catch (UnknownHostException e1) {
+			log.warn("[invalidateLocation]",e1);
+			return LocationOperationResponse.INVALID_REQUEST;
+		}
+		
+		boolean success = false;
+		try {
+			success = Database.registerLocation(username, ipAddress, port);
+		} catch (SQLException e) {
+			return LocationOperationResponse.DATABASE_ERROR;
+		}
+		return success ? LocationOperationResponse.SUCCESS : LocationOperationResponse.REDUNDANT;
+
+	}
+
+	// Contact/Location Data
 }

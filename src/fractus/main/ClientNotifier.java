@@ -50,21 +50,21 @@ public class ClientNotifier
                 + " port: " + location.getPort().toString());
 
         // Connect
-        InetAddress addr;
-        try {
-            addr = InetAddress.getByName(location.getAddress());
-        } catch (UnknownHostException e) {
-            log.warning("Unable to notify client of message: could not resolve user location host: " + location.getAddress());
-            return;
-        }
-        InetSocketAddress buddyaddr = new InetSocketAddress(addr, location.getPort());
-        Socket s = new Socket();
-        try {
-            s.connect(buddyaddr);
-        } catch (IOException e) {
-            log.warning("Unable to notify client: could not connect to host: "
-                    + location.getAddress() + " port: " + location.getPort().toString());
-            return;
-        }
+//        InetAddress addr;
+//        try {
+//            addr = InetAddress.getByName(location.getAddress());
+//        } catch (UnknownHostException e) {
+//            log.warning("Unable to notify client of message: could not resolve user location host: " + location.getAddress());
+//            return;
+//        }
+//        InetSocketAddress buddyaddr = new InetSocketAddress(addr, location.getPort());
+//        Socket s = new Socket();
+//        try {
+//            s.connect(buddyaddr);
+//        } catch (IOException e) {
+//            log.warning("Unable to notify client: could not connect to host: "
+//                    + location.getAddress() + " port: " + location.getPort().toString());
+//            return;
+//        }
     }
 }
