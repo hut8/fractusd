@@ -64,6 +64,7 @@ public class Database {
 		
 	}
 
+	
 	// Contact DB methods
 	
 	public static ContactOperationResponse	addContact(String sourceUsername, String destinationUsername)
@@ -144,7 +145,7 @@ public class Database {
 		return contacts;
 	}
 
-	// Authentication
+	// Authentication / User Management
 
 	public static boolean authenticate(UserCredentials credentials)
 	throws SQLException {
@@ -167,6 +168,52 @@ public class Database {
 				sth.close();
 		}
 	}
+		
+//	public static boolean registerAccount(String username, byte[] password,
+//			String emailAddress, String confirmationToken)
+//	throws SQLException {
+//		Connection conn = connectionPool.getConnection();
+//		PreparedStatement sth = null;
+//		try {
+//			sth = conn.prepareStatement("CALL RegisterAccount_prc(?,?)");
+//			sth.setString(1, credentials.getUsername());
+//			sth.setString(2, credentials.getPassword());
+//			ResultSet authRes = sth.executeQuery();
+//			if (authRes.first()) {
+//				log.debug("User authenticated passed: " + credentials.getUsername());
+//				return true;
+//			} else {
+//				log.debug("User authenticated failed: " + credentials.getUsername());
+//				return false;
+//			}
+//		} finally {
+//			if (sth != null)
+//				sth.close();
+//		}
+//	}
+//	
+//	public static boolean deleteAccount(UserCredentials credentials)
+//	throws SQLException {
+//		Connection conn = connectionPool.getConnection();
+//		PreparedStatement sth = null;
+//		try {
+//			sth = conn.prepareStatement("CALL DeleteAccount_prc(?,?)");
+//			sth.setString(1, credentials.getUsername());
+//			sth.setString(2, credentials.getPassword());
+//			ResultSet authRes = sth.executeQuery();
+//			if (authRes.first()) {
+//				log.debug("User authenticated passed: " + credentials.getUsername());
+//				return true;
+//			} else {
+//				log.debug("User authenticated failed: " + credentials.getUsername());
+//				return false;
+//			}
+//		} finally {
+//			if (sth != null)
+//				sth.close();
+//		}
+//	}
+		
 	
 	// Location
 	

@@ -7,6 +7,10 @@ public class UserData {
 	private Set<UserData> contacts;
 	private Set<Location> locations;
 	
+	public UserData() {
+		
+	}
+	
 	public Set<UserData> getContacts() {
 		return contacts;
 	}

@@ -57,13 +57,7 @@ public class AddContactReqStrategy
 		
 		// Make the request happen
 		ContactOperationResponse modifyContactResponse;
-		try {
-			 modifyContactResponse = userTracker.addContact(sourceUsername, targetUsername);
-		} catch (SQLException e) {
-			sendResponse(ResponseCode.SERVER_ERROR);
-			log.error("Could not add contact due to database error", e);
-			return;
-		}
+		modifyContactResponse = userTracker.addContact(sourceUsername, targetUsername);
 		
 		if (modifyContactResponse == ContactOperationResponse.SUCCESS) {
 			// TODO: Spawn Client Notifier

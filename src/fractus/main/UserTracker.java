@@ -1,6 +1,5 @@
 package fractus.main;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
@@ -8,21 +7,22 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.bouncycastle.math.ec.ECPoint;
 
 public class UserTracker {
 	private Map<ECPoint, String> keyUserMap;
 	private Map<String, Set<ECPoint>> userKeyMap;
-
+	
 	private static Logger log;
 	static {
 		log = Logger.getLogger(UserTracker.class.getName());
 	}
 
 	public UserTracker() {
-		keyUserMap = new HashMap<ECPoint, String>();
-		userKeyMap = new HashMap<String, Set<ECPoint>>();
+		this.keyUserMap = new HashMap<ECPoint, String>();
+		this.userKeyMap = new HashMap<String, Set<ECPoint>>();
 	}
 
 	public static enum LocationOperationResponse {
@@ -40,7 +40,7 @@ public class UserTracker {
 		SECURITY_ERROR,
 		DATABASE_ERROR
 	}
-	
+		
 	// Key Operations
 	/**
 	 * Registers key as belonging to specified username
@@ -118,8 +118,7 @@ public class UserTracker {
 		}
 	}
 
-	public ContactOperationResponse addContact(String sourceUsername, String destinationUsername)
-	throws IOException {
+	public ContactOperationResponse addContact(String sourceUsername, String destinationUsername) {
 		try {
 			return Database.addContact(sourceUsername, destinationUsername);
 		} catch (SQLException e) {
@@ -128,8 +127,7 @@ public class UserTracker {
 		}
 	}
 
-	public ContactOperationResponse removeContact(String sourceUsername, String destinationUsername)
-	throws IOException {
+	public ContactOperationResponse removeContact(String sourceUsername, String destinationUsername) {
 		try {
 			return Database.removeContact(sourceUsername, destinationUsername);
 		} catch (SQLException e) {
