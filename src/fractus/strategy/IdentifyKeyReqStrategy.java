@@ -1,15 +1,10 @@
 package fractus.strategy;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.sql.SQLException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
 
 import org.apache.log4j.Logger;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
@@ -103,7 +98,6 @@ public class IdentifyKeyReqStrategy implements PacketStrategy {
 		try {
 			keyOwner = userTracker.identifyKey(remotePoint, connectorContext.getUsername());
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			log.warn("[dispatch]",e1);
 		}
 		if (keyOwner == null) {
@@ -117,7 +111,7 @@ public class IdentifyKeyReqStrategy implements PacketStrategy {
 		// Verify that remote user should know about this key
 		boolean authorized = false;
 		try {
-			authorized = userTracker.confirmContact(connectorContext.getUsername(), keyOwner);
+			authorized = userTracker.verifyContact(connectorContext.getUsername(), keyOwner);
 		} catch (SQLException e) {
 			log.error("Encountered database error while confirming contacts", e);
 			// TODO: Send error to client

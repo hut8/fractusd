@@ -6029,8 +6029,9 @@ public final class ProtocolBuffer {
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 0),
       AUTHORIZATION_FAILURE(1, 1),
-      DUPLICATE_KEY(2, 2),
-      INTERNAL_ERROR(3, 3),
+      REDUNDANT_REQUEST(2, 2),
+      INVALID_REQUEST(3, 3),
+      INTERNAL_ERROR(4, 4),
       ;
       
       
@@ -6040,8 +6041,9 @@ public final class ProtocolBuffer {
         switch (value) {
           case 0: return SUCCESS;
           case 1: return AUTHORIZATION_FAILURE;
-          case 2: return DUPLICATE_KEY;
-          case 3: return INTERNAL_ERROR;
+          case 2: return REDUNDANT_REQUEST;
+          case 3: return INVALID_REQUEST;
+          case 4: return INTERNAL_ERROR;
           default: return null;
         }
       }
@@ -6072,7 +6074,7 @@ public final class ProtocolBuffer {
       }
       
       private static final ResponseCode[] VALUES = {
-        SUCCESS, AUTHORIZATION_FAILURE, DUPLICATE_KEY, INTERNAL_ERROR, 
+        SUCCESS, AUTHORIZATION_FAILURE, REDUNDANT_REQUEST, INVALID_REQUEST, INTERNAL_ERROR, 
       };
       public static ResponseCode valueOf(
           com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
@@ -6096,26 +6098,392 @@ public final class ProtocolBuffer {
       // @@protoc_insertion_point(enum_scope:RegisterLocationRes.ResponseCode)
     }
     
-    // required .RegisterLocationRes.ResponseCode code = 1;
-    public static final int CODE_FIELD_NUMBER = 1;
-    private boolean hasCode;
-    private fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode code_;
-    public boolean hasCode() { return hasCode; }
-    public fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode getCode() { return code_; }
+    public static final class ResponseMessage extends
+        com.google.protobuf.GeneratedMessage {
+      // Use ResponseMessage.newBuilder() to construct.
+      private ResponseMessage() {
+        initFields();
+      }
+      private ResponseMessage(boolean noInit) {}
+      
+      private static final ResponseMessage defaultInstance;
+      public static ResponseMessage getDefaultInstance() {
+        return defaultInstance;
+      }
+      
+      public ResponseMessage getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+      
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return fractus.net.ProtocolBuffer.internal_static_RegisterLocationRes_ResponseMessage_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return fractus.net.ProtocolBuffer.internal_static_RegisterLocationRes_ResponseMessage_fieldAccessorTable;
+      }
+      
+      // required .RegisterLocationRes.ResponseCode code = 1;
+      public static final int CODE_FIELD_NUMBER = 1;
+      private boolean hasCode;
+      private fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode code_;
+      public boolean hasCode() { return hasCode; }
+      public fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode getCode() { return code_; }
+      
+      // required .Location location = 2;
+      public static final int LOCATION_FIELD_NUMBER = 2;
+      private boolean hasLocation;
+      private fractus.net.ProtocolBuffer.Location location_;
+      public boolean hasLocation() { return hasLocation; }
+      public fractus.net.ProtocolBuffer.Location getLocation() { return location_; }
+      
+      private void initFields() {
+        code_ = fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode.SUCCESS;
+        location_ = fractus.net.ProtocolBuffer.Location.getDefaultInstance();
+      }
+      public final boolean isInitialized() {
+        if (!hasCode) return false;
+        if (!hasLocation) return false;
+        return true;
+      }
+      
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (hasCode()) {
+          output.writeEnum(1, getCode().getNumber());
+        }
+        if (hasLocation()) {
+          output.writeMessage(2, getLocation());
+        }
+        getUnknownFields().writeTo(output);
+      }
+      
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+      
+        size = 0;
+        if (hasCode()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeEnumSize(1, getCode().getNumber());
+        }
+        if (hasLocation()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(2, getLocation());
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSerializedSize = size;
+        return size;
+      }
+      
+      public static fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data).buildParsed();
+      }
+      public static fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return newBuilder().mergeFrom(data, extensionRegistry)
+                 .buildParsed();
+      }
+      public static fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      public static fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Builder builder = newBuilder();
+        if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+          return builder.buildParsed();
+        } else {
+          return null;
+        }
+      }
+      public static fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input).buildParsed();
+      }
+      public static fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return newBuilder().mergeFrom(input, extensionRegistry)
+                 .buildParsed();
+      }
+      
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+      
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessage.Builder<Builder> {
+        private fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage result;
+        
+        // Construct using fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage.newBuilder()
+        private Builder() {}
+        
+        private static Builder create() {
+          Builder builder = new Builder();
+          builder.result = new fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage();
+          return builder;
+        }
+        
+        protected fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage internalGetResult() {
+          return result;
+        }
+        
+        public Builder clear() {
+          if (result == null) {
+            throw new IllegalStateException(
+              "Cannot call clear() after build().");
+          }
+          result = new fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage();
+          return this;
+        }
+        
+        public Builder clone() {
+          return create().mergeFrom(result);
+        }
+        
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage.getDescriptor();
+        }
+        
+        public fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage getDefaultInstanceForType() {
+          return fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage.getDefaultInstance();
+        }
+        
+        public boolean isInitialized() {
+          return result.isInitialized();
+        }
+        public fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage build() {
+          if (result != null && !isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return buildPartial();
+        }
+        
+        private fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage buildParsed()
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          if (!isInitialized()) {
+            throw newUninitializedMessageException(
+              result).asInvalidProtocolBufferException();
+          }
+          return buildPartial();
+        }
+        
+        public fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage buildPartial() {
+          if (result == null) {
+            throw new IllegalStateException(
+              "build() has already been called on this Builder.");
+          }
+          fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage returnMe = result;
+          result = null;
+          return returnMe;
+        }
+        
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage) {
+            return mergeFrom((fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+        
+        public Builder mergeFrom(fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage other) {
+          if (other == fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage.getDefaultInstance()) return this;
+          if (other.hasCode()) {
+            setCode(other.getCode());
+          }
+          if (other.hasLocation()) {
+            mergeLocation(other.getLocation());
+          }
+          this.mergeUnknownFields(other.getUnknownFields());
+          return this;
+        }
+        
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder(
+              this.getUnknownFields());
+          while (true) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              default: {
+                if (!parseUnknownField(input, unknownFields,
+                                       extensionRegistry, tag)) {
+                  this.setUnknownFields(unknownFields.build());
+                  return this;
+                }
+                break;
+              }
+              case 8: {
+                int rawValue = input.readEnum();
+                fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode value = fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode.valueOf(rawValue);
+                if (value == null) {
+                  unknownFields.mergeVarintField(1, rawValue);
+                } else {
+                  setCode(value);
+                }
+                break;
+              }
+              case 18: {
+                fractus.net.ProtocolBuffer.Location.Builder subBuilder = fractus.net.ProtocolBuffer.Location.newBuilder();
+                if (hasLocation()) {
+                  subBuilder.mergeFrom(getLocation());
+                }
+                input.readMessage(subBuilder, extensionRegistry);
+                setLocation(subBuilder.buildPartial());
+                break;
+              }
+            }
+          }
+        }
+        
+        
+        // required .RegisterLocationRes.ResponseCode code = 1;
+        public boolean hasCode() {
+          return result.hasCode();
+        }
+        public fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode getCode() {
+          return result.getCode();
+        }
+        public Builder setCode(fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode value) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          result.hasCode = true;
+          result.code_ = value;
+          return this;
+        }
+        public Builder clearCode() {
+          result.hasCode = false;
+          result.code_ = fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode.SUCCESS;
+          return this;
+        }
+        
+        // required .Location location = 2;
+        public boolean hasLocation() {
+          return result.hasLocation();
+        }
+        public fractus.net.ProtocolBuffer.Location getLocation() {
+          return result.getLocation();
+        }
+        public Builder setLocation(fractus.net.ProtocolBuffer.Location value) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          result.hasLocation = true;
+          result.location_ = value;
+          return this;
+        }
+        public Builder setLocation(fractus.net.ProtocolBuffer.Location.Builder builderForValue) {
+          result.hasLocation = true;
+          result.location_ = builderForValue.build();
+          return this;
+        }
+        public Builder mergeLocation(fractus.net.ProtocolBuffer.Location value) {
+          if (result.hasLocation() &&
+              result.location_ != fractus.net.ProtocolBuffer.Location.getDefaultInstance()) {
+            result.location_ =
+              fractus.net.ProtocolBuffer.Location.newBuilder(result.location_).mergeFrom(value).buildPartial();
+          } else {
+            result.location_ = value;
+          }
+          result.hasLocation = true;
+          return this;
+        }
+        public Builder clearLocation() {
+          result.hasLocation = false;
+          result.location_ = fractus.net.ProtocolBuffer.Location.getDefaultInstance();
+          return this;
+        }
+        
+        // @@protoc_insertion_point(builder_scope:RegisterLocationRes.ResponseMessage)
+      }
+      
+      static {
+        defaultInstance = new ResponseMessage(true);
+        fractus.net.ProtocolBuffer.internalForceInit();
+        defaultInstance.initFields();
+      }
+      
+      // @@protoc_insertion_point(class_scope:RegisterLocationRes.ResponseMessage)
+    }
+    
+    // repeated .RegisterLocationRes.ResponseMessage response_list = 1;
+    public static final int RESPONSE_LIST_FIELD_NUMBER = 1;
+    private java.util.List<fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage> responseList_ =
+      java.util.Collections.emptyList();
+    public java.util.List<fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage> getResponseListList() {
+      return responseList_;
+    }
+    public int getResponseListCount() { return responseList_.size(); }
+    public fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage getResponseList(int index) {
+      return responseList_.get(index);
+    }
     
     private void initFields() {
-      code_ = fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode.SUCCESS;
     }
     public final boolean isInitialized() {
-      if (!hasCode) return false;
+      for (fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage element : getResponseListList()) {
+        if (!element.isInitialized()) return false;
+      }
       return true;
     }
     
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (hasCode()) {
-        output.writeEnum(1, getCode().getNumber());
+      for (fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage element : getResponseListList()) {
+        output.writeMessage(1, element);
       }
       getUnknownFields().writeTo(output);
     }
@@ -6126,9 +6494,9 @@ public final class ProtocolBuffer {
       if (size != -1) return size;
     
       size = 0;
-      if (hasCode()) {
+      for (fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage element : getResponseListList()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(1, getCode().getNumber());
+          .computeMessageSize(1, element);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -6272,6 +6640,10 @@ public final class ProtocolBuffer {
           throw new IllegalStateException(
             "build() has already been called on this Builder.");
         }
+        if (result.responseList_ != java.util.Collections.EMPTY_LIST) {
+          result.responseList_ =
+            java.util.Collections.unmodifiableList(result.responseList_);
+        }
         fractus.net.ProtocolBuffer.RegisterLocationRes returnMe = result;
         result = null;
         return returnMe;
@@ -6288,8 +6660,11 @@ public final class ProtocolBuffer {
       
       public Builder mergeFrom(fractus.net.ProtocolBuffer.RegisterLocationRes other) {
         if (other == fractus.net.ProtocolBuffer.RegisterLocationRes.getDefaultInstance()) return this;
-        if (other.hasCode()) {
-          setCode(other.getCode());
+        if (!other.responseList_.isEmpty()) {
+          if (result.responseList_.isEmpty()) {
+            result.responseList_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage>();
+          }
+          result.responseList_.addAll(other.responseList_);
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -6316,14 +6691,10 @@ public final class ProtocolBuffer {
               }
               break;
             }
-            case 8: {
-              int rawValue = input.readEnum();
-              fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode value = fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(1, rawValue);
-              } else {
-                setCode(value);
-              }
+            case 10: {
+              fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage.Builder subBuilder = fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage.newBuilder();
+              input.readMessage(subBuilder, extensionRegistry);
+              addResponseList(subBuilder.buildPartial());
               break;
             }
           }
@@ -6331,24 +6702,54 @@ public final class ProtocolBuffer {
       }
       
       
-      // required .RegisterLocationRes.ResponseCode code = 1;
-      public boolean hasCode() {
-        return result.hasCode();
+      // repeated .RegisterLocationRes.ResponseMessage response_list = 1;
+      public java.util.List<fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage> getResponseListList() {
+        return java.util.Collections.unmodifiableList(result.responseList_);
       }
-      public fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode getCode() {
-        return result.getCode();
+      public int getResponseListCount() {
+        return result.getResponseListCount();
       }
-      public Builder setCode(fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode value) {
+      public fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage getResponseList(int index) {
+        return result.getResponseList(index);
+      }
+      public Builder setResponseList(int index, fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage value) {
         if (value == null) {
           throw new NullPointerException();
         }
-        result.hasCode = true;
-        result.code_ = value;
+        result.responseList_.set(index, value);
         return this;
       }
-      public Builder clearCode() {
-        result.hasCode = false;
-        result.code_ = fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseCode.SUCCESS;
+      public Builder setResponseList(int index, fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage.Builder builderForValue) {
+        result.responseList_.set(index, builderForValue.build());
+        return this;
+      }
+      public Builder addResponseList(fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        if (result.responseList_.isEmpty()) {
+          result.responseList_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage>();
+        }
+        result.responseList_.add(value);
+        return this;
+      }
+      public Builder addResponseList(fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage.Builder builderForValue) {
+        if (result.responseList_.isEmpty()) {
+          result.responseList_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage>();
+        }
+        result.responseList_.add(builderForValue.build());
+        return this;
+      }
+      public Builder addAllResponseList(
+          java.lang.Iterable<? extends fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage> values) {
+        if (result.responseList_.isEmpty()) {
+          result.responseList_ = new java.util.ArrayList<fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage>();
+        }
+        super.addAll(values, result.responseList_);
+        return this;
+      }
+      public Builder clearResponseList() {
+        result.responseList_ = java.util.Collections.emptyList();
         return this;
       }
       
@@ -7803,6 +8204,11 @@ public final class ProtocolBuffer {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RegisterLocationRes_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RegisterLocationRes_ResponseMessage_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RegisterLocationRes_ResponseMessage_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_AddContactReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -7867,21 +8273,24 @@ public final class ProtocolBuffer {
       "AUTHORIZATION_FAILURE\020\002\")\n\010Location\022\017\n\007a" +
       "ddress\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\"7\n\023RegisterLo" +
       "cationReq\022 \n\rlocation_list\030\001 \003(\0132\t.Locat" +
-      "ion\"\245\001\n\023RegisterLocationRes\022/\n\004code\030\001 \002(" +
-      "\0162!.RegisterLocationRes.ResponseCode\"]\n\014" +
-      "ResponseCode\022\013\n\007SUCCESS\020\000\022\031\n\025AUTHORIZATI" +
-      "ON_FAILURE\020\001\022\021\n\rDUPLICATE_KEY\020\002\022\022\n\016INTER",
-      "NAL_ERROR\020\003\"2\n\rAddContactReq\022\020\n\010username" +
-      "\030\001 \001(\t\022\017\n\007message\030\002 \001(\t\"\221\001\n\rAddContactRe" +
-      "s\022)\n\004code\030\001 \002(\0162\033.AddContactRes.Response" +
-      "Code\"U\n\014ResponseCode\022\013\n\007SUCCESS\020\000\022\013\n\007INV" +
-      "ALID\020\001\022\020\n\014SERVER_ERROR\020\002\022\031\n\025AUTHORIZATIO" +
-      "N_FAILURE\020\003\"$\n\020RemoveContactReq\022\020\n\010usern" +
-      "ame\030\001 \001(\t\"\227\001\n\020RemoveContactRes\022,\n\004code\030\001" +
-      " \002(\0162\036.RemoveContactRes.ResponseCode\"U\n\014" +
-      "ResponseCode\022\013\n\007SUCCESS\020\000\022\013\n\007INVALID\020\001\022\020" +
-      "\n\014SERVER_ERROR\020\002\022\031\n\025AUTHORIZATION_FAILUR",
-      "E\020\003B\r\n\013fractus.net"
+      "ion\"\253\002\n\023RegisterLocationRes\022;\n\rresponse_" +
+      "list\030\001 \003(\0132$.RegisterLocationRes.Respons" +
+      "eMessage\032_\n\017ResponseMessage\022/\n\004code\030\001 \002(" +
+      "\0162!.RegisterLocationRes.ResponseCode\022\033\n\010",
+      "location\030\002 \002(\0132\t.Location\"v\n\014ResponseCod" +
+      "e\022\013\n\007SUCCESS\020\000\022\031\n\025AUTHORIZATION_FAILURE\020" +
+      "\001\022\025\n\021REDUNDANT_REQUEST\020\002\022\023\n\017INVALID_REQU" +
+      "EST\020\003\022\022\n\016INTERNAL_ERROR\020\004\"2\n\rAddContactR" +
+      "eq\022\020\n\010username\030\001 \001(\t\022\017\n\007message\030\002 \001(\t\"\221\001" +
+      "\n\rAddContactRes\022)\n\004code\030\001 \002(\0162\033.AddConta" +
+      "ctRes.ResponseCode\"U\n\014ResponseCode\022\013\n\007SU" +
+      "CCESS\020\000\022\013\n\007INVALID\020\001\022\020\n\014SERVER_ERROR\020\002\022\031" +
+      "\n\025AUTHORIZATION_FAILURE\020\003\"$\n\020RemoveConta" +
+      "ctReq\022\020\n\010username\030\001 \001(\t\"\227\001\n\020RemoveContac",
+      "tRes\022,\n\004code\030\001 \002(\0162\036.RemoveContactRes.Re" +
+      "sponseCode\"U\n\014ResponseCode\022\013\n\007SUCCESS\020\000\022" +
+      "\013\n\007INVALID\020\001\022\020\n\014SERVER_ERROR\020\002\022\031\n\025AUTHOR" +
+      "IZATION_FAILURE\020\003B\r\n\013fractus.net"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -8029,9 +8438,17 @@ public final class ProtocolBuffer {
           internal_static_RegisterLocationRes_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RegisterLocationRes_descriptor,
-              new java.lang.String[] { "Code", },
+              new java.lang.String[] { "ResponseList", },
               fractus.net.ProtocolBuffer.RegisterLocationRes.class,
               fractus.net.ProtocolBuffer.RegisterLocationRes.Builder.class);
+          internal_static_RegisterLocationRes_ResponseMessage_descriptor =
+            internal_static_RegisterLocationRes_descriptor.getNestedTypes().get(0);
+          internal_static_RegisterLocationRes_ResponseMessage_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RegisterLocationRes_ResponseMessage_descriptor,
+              new java.lang.String[] { "Code", "Location", },
+              fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage.class,
+              fractus.net.ProtocolBuffer.RegisterLocationRes.ResponseMessage.Builder.class);
           internal_static_AddContactReq_descriptor =
             getDescriptor().getMessageTypes().get(18);
           internal_static_AddContactReq_fieldAccessorTable = new

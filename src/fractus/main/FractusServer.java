@@ -16,16 +16,14 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 public class FractusServer {
-    ServerSocket serverSock;
-    InetSocketAddress bindAddr;
-    EncryptionManager em;
-    UserTracker tracker;
+    private ServerSocket serverSock;
+    private InetSocketAddress bindAddr;
+    private EncryptionManager em;
     private static Logger log;
 
     public FractusServer(int port, EncryptionManager em)
             throws IOException {
         this.em = em;
-        this.tracker = new UserTracker();
         log.debug("Creating server socket");
         this.serverSock = new ServerSocket();
         log.info("Server socket created");

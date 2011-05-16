@@ -3,11 +3,7 @@
  */
 package fractus.strategy;
 
-import java.io.IOException;
 import java.sql.SQLException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
 
 import org.apache.log4j.Logger;
 
@@ -18,10 +14,8 @@ import fractus.net.FractusConnector;
 import fractus.net.ProtocolBuffer;
 import fractus.net.ProtocolBuffer.RegisterKeyRes;
 import fractus.net.ProtocolBuffer.RegisterKeyRes.ResponseCode;
-import fractus.main.Database;
+import fractus.main.AccountManager;
 import fractus.main.FractusMessage;
-import fractus.main.FractusPacket;
-import fractus.main.UserCredentials;
 import fractus.main.UserTracker;
 
 /**
@@ -34,11 +28,9 @@ implements PacketStrategy {
 	private final static Logger log =
 		Logger.getLogger(RegisterKeyReqStrategy.class.getName());
 	private ConnectorContext connectorContext;
-	private UserTracker userTracker;
 
-	public RegisterKeyReqStrategy(ConnectorContext connectorContext, UserTracker userTracker) {
+	public RegisterKeyReqStrategy(ConnectorContext connectorContext) {
 		this.connectorContext = connectorContext;
-		this.userTracker = userTracker;
 	}
 
 	private void sendResponse(RegisterKeyRes.ResponseCode responseCode) {
@@ -78,10 +70,9 @@ implements PacketStrategy {
 		String username = request.getUsername();
 		String password = request.getPassword();
 
-		UserCredentials credentials = new UserCredentials(username, password);
 		boolean authSuccess = false;
 		try { 
-			authSuccess = Database.Authentication.authenticate(credentials);
+			authSuccess = AccountManager.getInstance().authenticate(username, password);
 		} catch (SQLException e) {
 			log.error("Could not authenticate user due to database error", e);
 			sendResponse(ResponseCode.SERVER_ERROR);
@@ -96,7 +87,7 @@ implements PacketStrategy {
 		
 		// Register key
 		try {
-			userTracker.registerKey(connectorContext.getClientCipher().getRemotePoint(), username);
+			UserTracker.getInstance().registerKey(connectorContext.getClientCipher().getRemotePoint(), username);
 			connectorContext.setUsername(username);
 			sendResponse(ResponseCode.SUCCESS);
 			return;

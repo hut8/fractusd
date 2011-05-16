@@ -12,15 +12,21 @@ import org.apache.log4j.Logger;
 import org.bouncycastle.math.ec.ECPoint;
 
 public class UserTracker {
+	private final static UserTracker instance;
+	public static UserTracker getInstance() {
+		return instance;
+	}
+	
 	private Map<ECPoint, String> keyUserMap;
 	private Map<String, Set<ECPoint>> userKeyMap;
 	
 	private static Logger log;
 	static {
 		log = Logger.getLogger(UserTracker.class.getName());
+		instance = new UserTracker();
 	}
 
-	public UserTracker() {
+	private UserTracker() {
 		this.keyUserMap = new HashMap<ECPoint, String>();
 		this.userKeyMap = new HashMap<String, Set<ECPoint>>();
 	}
@@ -29,7 +35,6 @@ public class UserTracker {
 		SUCCESS,
 		REDUNDANT,
 		INVALID_REQUEST,
-		SECURITY_ERROR,
 		DATABASE_ERROR
 	}
 
@@ -64,7 +69,7 @@ public class UserTracker {
 	 * @param username
 	 * @return True if invalidated successfully, false if key not present
 	 */
-	public synchronized boolean invalidateKey(ECPoint key, String username) {
+	public synchronized boolean unregisterKey(ECPoint key, String username) {
 		// Make sure that the key is present in the map
 		// and that it belongs to the requestor, then remove it. 
 		if (username.equalsIgnoreCase(this.keyUserMap.get(key))) {
@@ -106,12 +111,12 @@ public class UserTracker {
 	
 	public boolean verifyContact(String username1, String username2)
 	throws SQLException {
-		return Database.verifyContact(username1, username2);
+		return Database.getInstance().verifyContact(username1, username2);
 	}
 
 	public Set<String> listNonreciprocalContacts(String username) {
 		try {
-			return Database.listNonreciprocalContacts(username);
+			return Database.getInstance().listNonreciprocalContacts(username);
 		} catch (SQLException e) {
 			log.warn("[listNonreciprocalContacts]",e);
 			return null;
@@ -120,7 +125,7 @@ public class UserTracker {
 
 	public ContactOperationResponse addContact(String sourceUsername, String destinationUsername) {
 		try {
-			return Database.addContact(sourceUsername, destinationUsername);
+			return Database.getInstance().addContact(sourceUsername, destinationUsername);
 		} catch (SQLException e) {
 			log.warn("[addContact]",e);
 			return ContactOperationResponse.DATABASE_ERROR;
@@ -129,7 +134,7 @@ public class UserTracker {
 
 	public ContactOperationResponse removeContact(String sourceUsername, String destinationUsername) {
 		try {
-			return Database.removeContact(sourceUsername, destinationUsername);
+			return Database.getInstance().removeContact(sourceUsername, destinationUsername);
 		} catch (SQLException e) {
 			log.warn("[removeContact]",e);
 			return ContactOperationResponse.DATABASE_ERROR;
@@ -138,22 +143,16 @@ public class UserTracker {
 
 	// Location Operations
 	
-	public LocationOperationResponse registerLocation(String username, String address, String portString) {
+	public LocationOperationResponse registerLocation(String username, String address, Integer port) {
 		// Validate and parse parameters
-		if (address == null || portString == null) {           
+		if (address == null || port == null) {           
 			return LocationOperationResponse.INVALID_REQUEST;
 		}
 
-		short port;
-		try {
-			port = Short.parseShort(portString);
-		} catch (NumberFormatException e) {
-			return LocationOperationResponse.INVALID_REQUEST;
-		}
 		if (port > 65535) {
 			return LocationOperationResponse.INVALID_REQUEST;
 		}
-
+		
 		boolean success = false;
 		InetAddress a;
 		try {
@@ -164,7 +163,7 @@ public class UserTracker {
 		}
 		
 		try {
-			success = Database.registerLocation(username, a, port);
+			success = Database.getInstance().registerLocation(username, a, port.shortValue());
 		} catch (SQLException e) {
 			return LocationOperationResponse.DATABASE_ERROR;
 		}
@@ -172,7 +171,7 @@ public class UserTracker {
 		return success ? LocationOperationResponse.SUCCESS : LocationOperationResponse.REDUNDANT;
 	}
 
-	public LocationOperationResponse invalidateLocation(String username, String address, String portString) {
+	public LocationOperationResponse unregisterLocation(String username, String address, String portString) {
 		// Validate and parse parameters
 		if (address == null || portString == null) {           
 			return LocationOperationResponse.INVALID_REQUEST;
@@ -195,13 +194,12 @@ public class UserTracker {
 		
 		boolean success = false;
 		try {
-			success = Database.registerLocation(username, ipAddress, port);
+			success = Database.getInstance().registerLocation(username, ipAddress, port);
 		} catch (SQLException e) {
 			return LocationOperationResponse.DATABASE_ERROR;
 		}
 		return success ? LocationOperationResponse.SUCCESS : LocationOperationResponse.REDUNDANT;
 
 	}
-
 	// Contact/Location Data
 }

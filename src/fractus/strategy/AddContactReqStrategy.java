@@ -1,12 +1,5 @@
 package fractus.strategy;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.sql.SQLException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-
 import org.apache.log4j.Logger;
 
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -22,12 +15,10 @@ public class AddContactReqStrategy
 	implements PacketStrategy {
 	
     private final static Logger log =
-    	Logger.getLogger(AddContactReqStrategy.class.getName());	
-	private UserTracker userTracker;
+    	Logger.getLogger(AddContactReqStrategy.class.getName());
 	private ConnectorContext connectorContext;
 	
-	public AddContactReqStrategy(ConnectorContext connectorContext, UserTracker userTracker) {
-		this.userTracker = userTracker;
+	public AddContactReqStrategy(ConnectorContext connectorContext) {
 		this.connectorContext = connectorContext;
 	}
 	
@@ -57,7 +48,7 @@ public class AddContactReqStrategy
 		
 		// Make the request happen
 		ContactOperationResponse modifyContactResponse;
-		modifyContactResponse = userTracker.addContact(sourceUsername, targetUsername);
+		modifyContactResponse = UserTracker.getInstance().addContact(sourceUsername, targetUsername);
 		
 		if (modifyContactResponse == ContactOperationResponse.SUCCESS) {
 			// TODO: Spawn Client Notifier

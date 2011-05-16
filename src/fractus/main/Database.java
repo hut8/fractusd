@@ -17,6 +17,7 @@ import com.jolbox.bonecp.BoneCPConfig;
 import fractus.domain.Location;
 import fractus.domain.Location.InvalidLocationException;
 import fractus.main.UserTracker.ContactOperationResponse;
+import fractus.domain.AccountData;
 
 /**
  * Database connector.
@@ -25,16 +26,24 @@ import fractus.main.UserTracker.ContactOperationResponse;
  *
  */
 public class Database {
-	// Statics and Initializer
-	public static String url;
+	private final static Database instance;
+	private Database() { }
+	public static Database getInstance() {
+		return instance;
+	}
+	
+	private final static String url;
 	private final static Logger log;
-	private static BoneCPConfig poolConfig;
-	private static BoneCP connectionPool;
-
 	static {
 		log = Logger.getLogger(Database.class.getName());
 		url = "jdbc:mysql://localhost:3306/fractus";
+		instance = new Database();
+	}
+	
+	private BoneCPConfig poolConfig;
+	private BoneCP connectionPool;
 
+	public void initialize() {
 		log.info("Loading MySQL JDBC driver...");
 
 		try {
@@ -48,7 +57,7 @@ public class Database {
 		// Connection pool
 		poolConfig.setJdbcUrl(url);
 		poolConfig.setUsername("fractus"); 
-		poolConfig.setPassword("");
+		poolConfig.setPassword("fractus");
 		poolConfig.setMinConnectionsPerPartition(5);
 		poolConfig.setMaxConnectionsPerPartition(10);
 		poolConfig.setPartitionCount(1);
@@ -61,13 +70,14 @@ public class Database {
 			log.error("Could not create connection pool",e);
 			throw new RuntimeException("Fatal error: connection pool broken");
 		}
-		
 	}
-
+	
+	public void shutdown() {
+		connectionPool.close();
+	}
 	
 	// Contact DB methods
-	
-	public static ContactOperationResponse	addContact(String sourceUsername, String destinationUsername)
+	public ContactOperationResponse	addContact(String sourceUsername, String destinationUsername)
 	throws SQLException {
 		log.debug("Trying to add " + destinationUsername + " as a contact of " + sourceUsername);
 		Connection conn = connectionPool.getConnection();
@@ -85,7 +95,7 @@ public class Database {
 		}
 	}
 
-	public static ContactOperationResponse removeContact(String sourceUsername, String destinationUsername)
+	public ContactOperationResponse removeContact(String sourceUsername, String destinationUsername)
 	throws SQLException {
 		log.debug("Trying to remove " + destinationUsername + " as a contact of " + sourceUsername);
 		Connection conn = connectionPool.getConnection();
@@ -103,7 +113,7 @@ public class Database {
 		}
 	}
 
-	public static boolean verifyContact(String sourceUsername, String destinationUsername)
+	public boolean verifyContact(String sourceUsername, String destinationUsername)
 	throws SQLException {
 		log.debug("Confirming that " + destinationUsername + " is a contact of " + sourceUsername);
 		Connection conn = connectionPool.getConnection();
@@ -124,7 +134,7 @@ public class Database {
 		}
 	}
 
-	public static Set<String> listNonreciprocalContacts(String username)
+	public Set<String> listNonreciprocalContacts(String username)
 	throws SQLException {
 		log.debug("Finding nonreciprocal contacts of " + username);
 		Set<String> contacts = new HashSet<String>();
@@ -146,78 +156,39 @@ public class Database {
 	}
 
 	// Authentication / User Management
-
-	public static boolean authenticate(UserCredentials credentials)
+	public AccountData getAccountData(String username)
 	throws SQLException {
+		log.debug("Trying to retrieve account data for " + username);
 		Connection conn = connectionPool.getConnection();
 		PreparedStatement sth = null;
 		try {
-			sth = conn.prepareStatement("CALL AuthenticateUser_prc(?,?)");
-			sth.setString(1, credentials.getUsername());
-			sth.setString(2, credentials.getPassword());
-			ResultSet authRes = sth.executeQuery();
-			if (authRes.first()) {
-				log.debug("User authenticated passed: " + credentials.getUsername());
-				return true;
-			} else {
-				log.debug("User authenticated failed: " + credentials.getUsername());
-				return false;
+			sth = conn.prepareStatement("CALL GetAccountData_prc(?)");
+			sth.setString(1, username);
+			ResultSet accountDataRS = sth.executeQuery();
+			if (!accountDataRS.next()) {
+				log.debug("Username " + username + " does not exist");
+				return null;
 			}
+			AccountData accountData = new AccountData();
+			accountData.setUsername(username);
+			accountData.setEmail(accountDataRS.getString("EMAIL"));
+			accountData.setCreationDate(accountDataRS.getDate("REGISTEREDTIME"));
+			accountData.setPassword(accountDataRS.getBytes("PASSWORD"));
+			accountData.setSalt(accountDataRS.getBytes("SALT"));
+			return accountData;
 		} finally {
 			if (sth != null)
 				sth.close();
+			conn.close();
 		}
-	}
-		
-//	public static boolean registerAccount(String username, byte[] password,
-//			String emailAddress, String confirmationToken)
-//	throws SQLException {
-//		Connection conn = connectionPool.getConnection();
-//		PreparedStatement sth = null;
-//		try {
-//			sth = conn.prepareStatement("CALL RegisterAccount_prc(?,?)");
-//			sth.setString(1, credentials.getUsername());
-//			sth.setString(2, credentials.getPassword());
-//			ResultSet authRes = sth.executeQuery();
-//			if (authRes.first()) {
-//				log.debug("User authenticated passed: " + credentials.getUsername());
-//				return true;
-//			} else {
-//				log.debug("User authenticated failed: " + credentials.getUsername());
-//				return false;
-//			}
-//		} finally {
-//			if (sth != null)
-//				sth.close();
-//		}
-//	}
-//	
-//	public static boolean deleteAccount(UserCredentials credentials)
-//	throws SQLException {
-//		Connection conn = connectionPool.getConnection();
-//		PreparedStatement sth = null;
-//		try {
-//			sth = conn.prepareStatement("CALL DeleteAccount_prc(?,?)");
-//			sth.setString(1, credentials.getUsername());
-//			sth.setString(2, credentials.getPassword());
-//			ResultSet authRes = sth.executeQuery();
-//			if (authRes.first()) {
-//				log.debug("User authenticated passed: " + credentials.getUsername());
-//				return true;
-//			} else {
-//				log.debug("User authenticated failed: " + credentials.getUsername());
-//				return false;
-//			}
-//		} finally {
-//			if (sth != null)
-//				sth.close();
-//		}
-//	}
-		
+	}	
 	
+	
+	
+
 	// Location
 	
-	public static boolean registerLocation(String username, InetAddress address, short port)
+	public boolean registerLocation(String username, InetAddress address, short port)
 	throws SQLException {
 		// (Username VARCHAR(32), Address BINARY(4), Port SMALLINT)
 		log.debug("Registering location " + address.getHostAddress()
@@ -237,7 +208,7 @@ public class Database {
 		}		
 	}
 	
-	public static boolean invalidateLocation(String username, InetAddress address, short port)
+	public boolean invalidateLocation(String username, InetAddress address, short port)
 	throws SQLException {
 		log.debug("Invalidating location" + address.getHostAddress() +
 				":" + port + " from " + username);
@@ -257,7 +228,7 @@ public class Database {
 
 	}
 	
-	public static Set<Location> locateUser(String username)
+	public Set<Location> locateUser(String username)
 	throws SQLException {
 		Set<Location> locations = new HashSet<Location>();
 		log.debug("Trying to locate " + username);
