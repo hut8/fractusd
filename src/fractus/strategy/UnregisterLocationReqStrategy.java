@@ -14,17 +14,17 @@ import fractus.net.FractusConnector;
 import fractus.net.ProtocolBuffer;
 import fractus.net.ProtocolBuffer.Location;
 
-public class RegisterLocationReqStrategy
+public class UnregisterLocationReqStrategy
 implements PacketStrategy {
 
 	private final static Logger log =
 		Logger.getLogger(RegisterLocationReqStrategy.class.getName());
 	private ConnectorContext connectorContext;
 
-	public RegisterLocationReqStrategy(ConnectorContext connectorContext) {
+	public UnregisterLocationReqStrategy(ConnectorContext connectorContext) {
 		this.connectorContext = connectorContext;
 	}
-
+	
 	@Override
 	public void dispatch(byte[] contents) {
 		log.debug("Received message to dispatch");
@@ -33,9 +33,9 @@ implements PacketStrategy {
 		FractusConnector connector = connectorContext.getFractusConnector();
 
 		// Deserialize packet
-		ProtocolBuffer.RegisterLocationReq request;
+		ProtocolBuffer.UnregisterLocationReq request = null;
 		try {
-			request = ProtocolBuffer.RegisterLocationReq.parseFrom(contents);
+			request = ProtocolBuffer.UnregisterLocationReq.parseFrom(contents);
 		} catch (InvalidProtocolBufferException e) {
 			log.warn("Invalid protocol buffer from " + connectorContext.toString(), e);
 			connector.disconnect();
@@ -44,34 +44,34 @@ implements PacketStrategy {
 
 		UserTracker userTracker = UserTracker.getInstance();
 		List<Location> locationList = request.getLocationListList();
-		ProtocolBuffer.RegisterLocationRes.Builder builder =
-			ProtocolBuffer.RegisterLocationRes.newBuilder();
+		ProtocolBuffer.UnregisterLocationRes.Builder builder =
+			ProtocolBuffer.UnregisterLocationRes.newBuilder();
 
 		for (Location location : locationList) {
-			ProtocolBuffer.RegisterLocationRes.ResponseCode protoBufRC = null;
+			ProtocolBuffer.UnregisterLocationRes.ResponseCode protoBufRC = null;
 			if (connectorContext.getUsername() != null) {
 				LocationOperationResponse res =
-					userTracker.registerLocation(
+					userTracker.unregisterLocation(
 							connectorContext.getUsername(), location.getAddress(), location.getPort());
 				switch (res) {
 				case DATABASE_ERROR:
-					protoBufRC = ProtocolBuffer.RegisterLocationRes.ResponseCode.INTERNAL_ERROR;
+					protoBufRC = ProtocolBuffer.UnregisterLocationRes.ResponseCode.INTERNAL_ERROR;
 					break;
 				case INVALID_REQUEST:
-					protoBufRC = ProtocolBuffer.RegisterLocationRes.ResponseCode.INVALID_REQUEST;
+					protoBufRC = ProtocolBuffer.UnregisterLocationRes.ResponseCode.INVALID_REQUEST;
 					break;
 				case REDUNDANT:
-					protoBufRC = ProtocolBuffer.RegisterLocationRes.ResponseCode.REDUNDANT_REQUEST;
+					protoBufRC = ProtocolBuffer.UnregisterLocationRes.ResponseCode.REDUNDANT_REQUEST;
 					break;
 				case SUCCESS:
-					protoBufRC = ProtocolBuffer.RegisterLocationRes.ResponseCode.SUCCESS;
+					protoBufRC = ProtocolBuffer.UnregisterLocationRes.ResponseCode.SUCCESS;
 					break;
 				}
 			} else {
-				protoBufRC = ProtocolBuffer.RegisterLocationRes.ResponseCode.AUTHORIZATION_FAILURE;
+				protoBufRC = ProtocolBuffer.UnregisterLocationRes.ResponseCode.AUTHORIZATION_FAILURE;
 			}
 			builder.addResponseList(
-					ProtocolBuffer.RegisterLocationRes.ResponseMessage.newBuilder()
+					ProtocolBuffer.UnregisterLocationRes.ResponseMessage.newBuilder()
 					.setCode(protoBufRC)
 					.setLocation(location));
 		}

@@ -171,19 +171,16 @@ public class UserTracker {
 		return success ? LocationOperationResponse.SUCCESS : LocationOperationResponse.REDUNDANT;
 	}
 
-	public LocationOperationResponse unregisterLocation(String username, String address, String portString) {
+	public LocationOperationResponse unregisterLocation(String username, String address, Integer port) {
 		// Validate and parse parameters
-		if (address == null || portString == null) {           
+		if (address == null || port == null) {           
 			return LocationOperationResponse.INVALID_REQUEST;
 		}
 
-		Short port;
-		try {
-			port = Short.parseShort(portString);
-		} catch (NumberFormatException e) {
+		if (port > 65535) {
 			return LocationOperationResponse.INVALID_REQUEST;
 		}
-
+		
 		InetAddress ipAddress;
 		try {
 			ipAddress = (InetAddress)InetAddress.getByName(address);
@@ -194,7 +191,7 @@ public class UserTracker {
 		
 		boolean success = false;
 		try {
-			success = Database.getInstance().registerLocation(username, ipAddress, port);
+			success = Database.getInstance().invalidateLocation(username, ipAddress, port.shortValue());
 		} catch (SQLException e) {
 			return LocationOperationResponse.DATABASE_ERROR;
 		}
