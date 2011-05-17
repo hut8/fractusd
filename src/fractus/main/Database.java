@@ -3,10 +3,14 @@ package fractus.main;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -16,6 +20,7 @@ import com.jolbox.bonecp.BoneCPConfig;
 
 import fractus.domain.Location;
 import fractus.domain.Location.InvalidLocationException;
+import fractus.domain.UserData;
 import fractus.main.UserTracker.ContactOperationResponse;
 import fractus.domain.AccountData;
 
@@ -92,6 +97,7 @@ public class Database {
 		} finally {
 			if (sth != null)
 				sth.close();
+			conn.close();
 		}
 	}
 
@@ -183,11 +189,47 @@ public class Database {
 		}
 	}	
 	
+	public boolean registerAccount(AccountData accountData)
+	throws SQLException {
+		log.debug("Trying to register " + accountData.getUsername());
+		Connection conn = connectionPool.getConnection();
+		PreparedStatement sth = null;
+		try {
+			sth = conn.prepareStatement("CALL RegisterAccount_prc(?,?,?,?,?)");
+			sth.setString(1, accountData.getUsername());
+			sth.setBytes(2, accountData.getPassword());
+			sth.setString(3, accountData.getEmail());
+			Calendar c = Calendar.getInstance();
+			c.setTime(accountData.getCreationDate());
+			sth.setDate(4, new Date(c.getTimeInMillis()));
+			sth.setBytes(5, accountData.getSalt());
+			int rowAffected = sth.executeUpdate();
+			return rowAffected > 0;
+		} finally {
+			if (sth != null)
+				sth.close();
+			conn.close();
+		}
+	}
 	
-	
+	public boolean deactivateAccount(String username)
+	throws SQLException {
+		log.debug("Trying to deactivate account " + username);
+		Connection conn = connectionPool.getConnection();
+		PreparedStatement sth = null;
+		try {
+			sth = conn.prepareStatement("CALL DeactivateAccount_prc(?)");
+			sth.setString(1, username);
+			int rowAffected = sth.executeUpdate();
+			return rowAffected > 0;
+		} finally {
+			if (sth != null)
+				sth.close();
+			conn.close();
+		}
+	}
 
 	// Location
-	
 	public boolean registerLocation(String username, InetAddress address, short port)
 	throws SQLException {
 		// (Username VARCHAR(32), Address BINARY(4), Port SMALLINT)
@@ -208,7 +250,7 @@ public class Database {
 		}		
 	}
 	
-	public boolean invalidateLocation(String username, InetAddress address, short port)
+	public boolean unregisterLocation(String username, InetAddress address, short port)
 	throws SQLException {
 		log.debug("Invalidating location" + address.getHostAddress() +
 				":" + port + " from " + username);
@@ -224,6 +266,7 @@ public class Database {
 		} finally {
 			if (sth != null)
 				sth.close();
+			conn.close();
 		}
 
 	}
@@ -256,5 +299,40 @@ public class Database {
 				sth.close();
 		}
 		return locations;
+	}
+	
+	public Set<UserData> getContactLocationData(String username)
+	throws SQLException {
+		Map<String,UserData> mapData = new HashMap<String, UserData>();
+		log.debug("Getting contact location data for " + username);
+		Connection conn = connectionPool.getConnection();
+		PreparedStatement sth = null;
+		try {
+			sth = conn.prepareStatement("CALL SendContactData_prc(?)");
+			sth.setString(1, username);
+			ResultSet contactRS = sth.executeQuery();
+			while (contactRS.next()) {
+				String contactUsername = contactRS.getString("USERNAME");
+				if (mapData.containsKey(contactUsername)) {
+					mapData.put(contactUsername, new UserData(contactUsername));
+				}
+				Set<Location> locationSet = mapData.get(contactUsername).getLocations();
+				try {
+					locationSet.add(
+							new Location(contactRS.getBytes("ADDRESS"), contactRS.getShort("PORT")));
+				} catch (UnknownHostException e) {
+					log.warn("[locateUser]",e);
+					continue;
+				} catch (InvalidLocationException e) {
+					log.warn("[locateUser]",e);
+					continue;
+				}
+			}
+		} finally {
+			if (sth != null)
+				sth.close();
+			conn.close();
+		}
+		return new HashSet<UserData>(mapData.values());
 	}
 }

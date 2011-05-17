@@ -3,15 +3,20 @@ package fractus.domain;
 import java.util.Set;
 
 public class UserData {
-	private String userName;
-	private Set<UserData> contacts;
+	private String username;
 	private Set<Location> locations;
 	
-	public UserData() {
-		
+	public UserData(String username) {
+		this.username =  username;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public Set<Location> getLocations() {
+		return locations;
 	}
 	
-	public Set<UserData> getContacts() {
-		return contacts;
-	}
+	
 }

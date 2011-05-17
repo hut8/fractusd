@@ -23,19 +23,18 @@ import fractus.net.ProtocolBuffer.IdentifyKeyRes.ResponseCode;
 
 public class IdentifyKeyReqStrategy implements PacketStrategy {
 
-    private final static Logger log =
-    	Logger.getLogger(IdentifyKeyReqStrategy.class.getName());	
-	private UserTracker userTracker;
+	private final static Logger log =
+		Logger.getLogger(IdentifyKeyReqStrategy.class.getName());	
 	private ConnectorContext connectorContext;
-	
+
 	public IdentifyKeyReqStrategy(ConnectorContext connectorContext) {
 		this.connectorContext = connectorContext;
 	}
-	
+
 	private void sendResponse(ProtocolBuffer.IdentifyKeyRes.ResponseCode responseCode, String username) {
 		ProtocolBuffer.IdentifyKeyRes.Builder responseBuilder =
 			ProtocolBuffer.IdentifyKeyRes.newBuilder()
-				.setCode(responseCode);
+			.setCode(responseCode);
 		if (username != null) {
 			responseBuilder.setUsername(username);
 		}
@@ -44,15 +43,15 @@ public class IdentifyKeyReqStrategy implements PacketStrategy {
 		FractusConnector connector = connectorContext.getFractusConnector();
 		connector.sendMessage(message);
 	}
-	
+
 	private void sendResponse(ProtocolBuffer.IdentifyKeyRes.ResponseCode responseCode) {
 		sendResponse(responseCode, null);
 	}
-	
+
 	@Override
 	public void dispatch(byte[] contents) {
 		log.debug("Received message to dispatch");
-		
+
 		// Deserialize packet contents
 		ProtocolBuffer.IdentifyKeyReq request;
 		try {
@@ -72,14 +71,14 @@ public class IdentifyKeyReqStrategy implements PacketStrategy {
 		X509EncodedKeySpec ks = new X509EncodedKeySpec(pubKeyByteString.toByteArray());
 		KeyFactory kf;
 		try {
-			 kf = java.security.KeyFactory.getInstance("ECDH");
+			kf = java.security.KeyFactory.getInstance("ECDH");
 		} catch (NoSuchAlgorithmException e) {
 			log.error("Cryptography error: could not initialize ECDH keyfactory!", e);
 			return;
 		}
-		
+
 		ECPublicKey remotePublicKey;
-		
+
 		try {
 			remotePublicKey = (ECPublicKey)kf.generatePublic(ks);
 		} catch (InvalidKeySpecException e) {
@@ -89,14 +88,14 @@ public class IdentifyKeyReqStrategy implements PacketStrategy {
 			log.warn("Received valid X.509 key from client but it was not EC Public Key material",e);
 			return;
 		}
-		
+
 		ECPoint remotePoint = remotePublicKey.getQ();
 		log.debug("Computed target Q point from given ECPK");
-		
+
 		// Attempt to identify key
 		String keyOwner = null;
 		try {
-			keyOwner = userTracker.identifyKey(remotePoint, connectorContext.getUsername());
+			keyOwner = UserTracker.getInstance().identifyKey(remotePoint, connectorContext.getUsername());
 		} catch (SQLException e1) {
 			log.warn("[dispatch]",e1);
 		}
@@ -107,24 +106,24 @@ public class IdentifyKeyReqStrategy implements PacketStrategy {
 		}
 
 		log.info("Identified key owner as" + keyOwner);
-		
+
 		// Verify that remote user should know about this key
 		boolean authorized = false;
 		try {
-			authorized = userTracker.verifyContact(connectorContext.getUsername(), keyOwner);
+			authorized = UserTracker.getInstance().verifyContact(connectorContext.getUsername(), keyOwner);
 		} catch (SQLException e) {
 			log.error("Encountered database error while confirming contacts", e);
 			// TODO: Send error to client
 			return;
 		}
-		
+
 		if (!authorized) {
 			log.warn("Unauthorized attempt to identify key owner by ["
 					+connectorContext.getUsername()+"] - owner is [" + keyOwner + "]");
 			sendResponse(ResponseCode.UNKNOWN_KEY);
 			return;
 		}
-		
+
 		// Owner identified, client authorized.  Send answer.
 		log.info("Key requested by " + connectorContext.getUsername() +
 				" identified as " + keyOwner + " (Success)");

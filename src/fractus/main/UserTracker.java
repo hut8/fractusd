@@ -191,7 +191,7 @@ public class UserTracker {
 		
 		boolean success = false;
 		try {
-			success = Database.getInstance().invalidateLocation(username, ipAddress, port.shortValue());
+			success = Database.getInstance().unregisterLocation(username, ipAddress, port.shortValue());
 		} catch (SQLException e) {
 			return LocationOperationResponse.DATABASE_ERROR;
 		}

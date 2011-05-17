@@ -1,5 +1,7 @@
 package fractus.strategy;
 
+import org.apache.log4j.Logger;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import fractus.net.FractusConnectorInitializer;
@@ -9,7 +11,9 @@ public class CipherCapabilitiesStrategy
 implements PacketStrategy {
 
 	private FractusConnectorInitializer initializer;
-	
+    private final static Logger log =
+    	Logger.getLogger(CipherCapabilitiesStrategy.class);
+    
 	public CipherCapabilitiesStrategy(FractusConnectorInitializer initializer) {
 		this.initializer = initializer;
 	}
@@ -20,7 +24,7 @@ implements PacketStrategy {
 		try {
 			cipherCapabilities = ProtocolBuffer.CipherCapabilities.parseFrom(contents);
 		} catch (InvalidProtocolBufferException e) {
-			// TODO Auto-generated catch block
+			log.warn("Invalid Protocol Buffer",e);
 			return;
 		}
 		this.initializer.receiveCipherCapabilities(cipherCapabilities.getCipherSuitesList());

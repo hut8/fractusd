@@ -71,17 +71,5 @@ public class FractusMessage {
         prototype.serialized = baos.toByteArray();
         log.debug("FractusMessage built successfully.");
         return prototype;
-    }
-
-//    public FractusMessage(FractusPacket packet) throws IOException {
-//        byte[] packetContents = packet.getContents();
-//        DataInputStream dis = new DataInputStream(new ByteArrayInputStream(packetContents));
-//        Short packetDescriptor = dis.readShort();
-//        // Validate and assign descriptor
-//        //ProtocolBuffer.PublicKey.newBuilder().
-//
-//        //Integer sequence = dis.readInt();
-//
-//    }
-    
+    }    
 }
