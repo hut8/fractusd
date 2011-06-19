@@ -24,7 +24,6 @@ import fractus.main.UserTracker;
  */
 public class RegisterKeyReqStrategy
 implements PacketStrategy {
-
 	private final static Logger log =
 		Logger.getLogger(RegisterKeyReqStrategy.class.getName());
 	private ConnectorContext connectorContext;
@@ -54,7 +53,8 @@ implements PacketStrategy {
 
 		// Get connector from context
 		FractusConnector connector = connectorContext.getFractusConnector();
-
+		// Zero-out the remote user if we've gotten here (foil attackers)
+		connectorContext.setUsername(null);
 		// Deserialize packet
 		ProtocolBuffer.RegisterKeyReq request;
 		try {
@@ -62,6 +62,7 @@ implements PacketStrategy {
 		} catch (InvalidProtocolBufferException e) {
 			// Invalid request received.  Disconnect and abort.
 			log.warn("Invalid protocol buffer from " + connectorContext.toString(), e);
+			// TODO: Send protocol error
 			connector.disconnect();
 			return;
 		}
@@ -72,7 +73,8 @@ implements PacketStrategy {
 
 		boolean authSuccess = false;
 		try { 
-			authSuccess = AccountManager.getInstance().authenticate(username, password);
+			authSuccess = AccountManager.getInstance()
+			.authenticate(username, password);
 		} catch (SQLException e) {
 			log.error("Could not authenticate user due to database error", e);
 			sendResponse(ResponseCode.SERVER_ERROR);
@@ -87,7 +89,12 @@ implements PacketStrategy {
 		
 		// Register key
 		try {
-			UserTracker.getInstance().registerKey(connectorContext.getClientCipher().getRemotePoint(), username);
+			UserTracker.getInstance()
+				.registerKey(
+						connectorContext.getClientCipher().getRemotePoint(),
+						username
+						);
+			// From this point forward, associate this context with the given username
 			connectorContext.setUsername(username);
 			sendResponse(ResponseCode.SUCCESS);
 			return;

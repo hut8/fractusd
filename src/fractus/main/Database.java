@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ import fractus.domain.Location;
 import fractus.domain.Location.InvalidLocationException;
 import fractus.domain.UserData;
 import fractus.main.UserTracker.ContactOperationResponse;
+import fractus.net.ProtocolBuffer;
 import fractus.domain.AccountData;
 
 /**
@@ -301,7 +303,7 @@ public class Database {
 		return locations;
 	}
 	
-	public Set<UserData> getContactLocationData(String username)
+	public Set<UserData> getContactData(String username)
 	throws SQLException {
 		Map<String,UserData> mapData = new HashMap<String, UserData>();
 		log.debug("Getting contact location data for " + username);

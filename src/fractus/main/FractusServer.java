@@ -85,7 +85,7 @@ public class FractusServer {
 //            return;
 //        }
 
-        char[] passwd = null;
+        char[] passwd = "1337".toCharArray();
 
         /* check for just generating key */
         if (args.length > 0) {
@@ -125,7 +125,6 @@ public class FractusServer {
         log.info("Processing cryptographic key");
         KeyPair keyPair = ServerKeyManager.decryptKey(passwd, args[0]);
         EncryptionManager em = new EncryptionManager(keyPair);
-        passwd = "1337".toCharArray();
         //passwd = cons.readPassword("%s", "Enter private key passphrase:");
         log.info("Overwriting password buffer");
         java.util.Arrays.fill(passwd, ' ');

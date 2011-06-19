@@ -52,7 +52,9 @@ implements PacketStrategy {
 			if (connectorContext.getUsername() != null) {
 				LocationOperationResponse res =
 					userTracker.unregisterLocation(
-							connectorContext.getUsername(), location.getAddress(), location.getPort());
+							connectorContext.getUsername(),
+							location.getAddress(),
+							location.getPort());
 				switch (res) {
 				case DATABASE_ERROR:
 					protoBufRC = ProtocolBuffer.UnregisterLocationRes.ResponseCode.INTERNAL_ERROR;
